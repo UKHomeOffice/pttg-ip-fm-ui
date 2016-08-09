@@ -5,11 +5,15 @@ services:
     image: quay.io/ukhomeofficedigital/pttg-family-migration-ui:0.1.0
     ports:
      - "8000:8080"
+    depends_on:
+     - pttg-income-proving-api
     links:
      - pttg-income-proving-api
   pttg-income-proving-api:
     container_name: income-container
     image: quay.io/ukhomeofficedigital/pttg-income-proving-api:0.1.0
+    depends_on:
+     - pttg-test-mongodb
     ports:
      - "8081:8080"
   pttg-test-mongodb:
@@ -20,6 +24,8 @@ services:
   pttg-test-loader-mongodb:
     container_name: mongo-loader-container
     image: quay.io/ukhomeofficedigital/pttg-test-loader-mongodb:0.1.0
+    depends_on:
+      - pttg-test-mongodb
 
 
 
