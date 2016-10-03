@@ -15,7 +15,7 @@ Feature: Failure - Category A Financial Requirement (with no dependents - weekly
       | Application raised Date | 15/01/2015 |
     Then the service displays the following result
       | Page dynamic heading                  | Davina Love doesn't meet the Category A requirement |
-      | Category A check failure reason       | they haven't met the required weekly amount.        |
+      | Page dynamic detail       | they haven't met the required weekly amount.        |
       | Your Search Individual Name           | Davina Love                                         |
       | Your Search National Insurance Number | DV123456A                                           |
       | Your Search Application raised Date   | 15/01/2015                                          |
@@ -28,7 +28,7 @@ Feature: Failure - Category A Financial Requirement (with no dependents - weekly
       | Application raised Date | 15/01/2015 |
     Then the service displays the following result
       | Page dynamic heading                  | Xavier Snow doesn't meet the Category A requirement |
-      | Category A check failure reason       | they haven't met the required weekly amount.        |
+      | Page dynamic detail       | they haven't met the required weekly amount.        |
       | Your Search Individual Name           | Xavier Snow                                         |
       | Your Search National Insurance Number | XS123456B                                           |
       | Your Search Application raised Date   | 15/01/2015                                          |
@@ -42,7 +42,7 @@ Feature: Failure - Category A Financial Requirement (with no dependents - weekly
       | Application raised Date | 15/01/2015 |
     Then the service displays the following result
       | Page dynamic heading                  | Paul Young doesn't meet the Category A requirement |
-      | Category A check failure reason       | they haven't met the required weekly amount.       |
+      | Page dynamic detail       | they haven't met the required weekly amount.       |
       | Your Search Individual Name           | Paul Young                                         |
       | Your Search National Insurance Number | PY123456B                                          |
       | Your Search Application raised Date   | 15/01/2015                                         |
@@ -56,7 +56,7 @@ Feature: Failure - Category A Financial Requirement (with no dependents - weekly
       | Application raised date | 03/07/2015 |
     Then the service displays the following result
       | Page dynamic heading                  | Raj Patel doesn't meet the Category A requirement           |
-      | Category A check failure reason       | they haven't been with their current employer for 6 months. |
+      | Page dynamic detail       | they haven't been with their current employer for 6 months. |
       | Your Search Individual Name           | Raj Patel                                                   |
       | Your Search National Insurance Number | RP123456C                                                   |
       | Your Search Application raised Date   | 03/07/2015                                                  |
@@ -70,7 +70,7 @@ Feature: Failure - Category A Financial Requirement (with no dependents - weekly
       | Application raised date | 03/07/2015 |
     Then the service displays the following result
       | Page dynamic heading                  | John James doesn't meet the Category A requirement          |
-      | Category A check failure reason       | they haven't been with their current employer for 6 months. |
+      | Page dynamic detail       | they haven't been with their current employer for 6 months. |
       | Your Search Individual Name           | John James                                                  |
       | Your Search National Insurance Number | JJ123456A                                                   |
       | Your Search Application raised Date   | 03/07/2015                                                  |
@@ -85,7 +85,7 @@ Feature: Failure - Category A Financial Requirement (with no dependents - weekly
       | Application raised date | 03/07/2015 |
     Then the service displays the following result
       | Page dynamic heading                  | Peter Jones doesn't meet the Category A requirement         |
-      | Category A check failure reason       | they haven't been with their current employer for 6 months. |
+      | Page dynamic detail       | they haven't been with their current employer for 6 months. |
       | Your Search Individual Name           | Peter Jones                                                 |
       | Your Search National Insurance Number | PJ123456A                                                   |
       | Your Search Application raised Date   | 03/07/2015                                                  |

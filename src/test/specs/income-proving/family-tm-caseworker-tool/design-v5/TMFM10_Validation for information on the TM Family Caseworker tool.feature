@@ -48,7 +48,7 @@ Feature: Input validation
       | NINO                    | QQ129956A  |
       | Application Raised Date | 85/01/2015 |
     Then the service displays the following result
-      | application—raised-date-error | Enter a valid application raised date |
+      | application raised date-error | Enter a valid application raised date |
 
   Scenario: Caseworker enters an incorrect Application Raised Date
     Given Caseworker is using the Income Proving Service Case Worker Tool
@@ -56,7 +56,7 @@ Feature: Input validation
       | NINO                    | QQ128856A  |
       | Application Raised Date | 01/13/2015 |
     Then the service displays the following result
-      | application—raised-date-error | Enter a valid application raised date |
+      | application raised date-error | Enter a valid application raised date |
 
   Scenario: Caseworker enters an incorrect Application Raised date
     Given Caseworker is using the Income Proving Service Case Worker Tool
@@ -64,7 +64,7 @@ Feature: Input validation
       | NINO                    | QQ128856A  |
       | Application Raised Date | 01/01/201k |
     Then the service displays the following result
-      | application—raised-date-error | Enter a valid application raised date |
+      | application raised date-error | Enter a valid application raised date |
 
   Scenario: Caseworker enters a blank Application Raised Date
     Given Caseworker is using the Income Proving Service Case Worker Tool
@@ -72,7 +72,7 @@ Feature: Input validation
       | NINO                    | QQ128856A |
       | Application Raised Date |           |
     Then the service displays the following result
-      | application—raised-date-error | Enter a valid application raised date |
+      | application raised date-error | Enter a valid application raised date |
 
   Scenario: Caseworker is prevented from entering a future date as the Application Raised Date
     Given Caseworker is using the Income Proving Service Case Worker Tool
@@ -80,4 +80,4 @@ Feature: Input validation
       | NINO                    | QQ125556A  |
       | Application Raised Date | 01/01/2017 |
     Then the service displays the following result
-      | application—raised-date-error | Enter a valid application raised date |
+      | application raised date-error | Enter a valid application raised date |

@@ -8,7 +8,7 @@ Feature: Category A Financial Requirement
       | Application Raised Date | 03/07/2015 |
     Then the service displays the following result
       | Page dynamic heading                  | Kumar Sangakkara Dilshan doesn't meet the Category A requirement |
-      | Category A check failure reason       | they haven't been with their current employer for 6 months.      |
+      | Page dynamic detail                   | they haven't been with their current employer for 6 months.      |
       | Your Search Individual Name           | Kumar Sangakkara Dilshan                                         |
       | Your Search National Insurance Number | KS123456C                                                        |
       | Your Search Application Raised Date   | 03/07/2015                                                       |
@@ -22,7 +22,7 @@ Feature: Category A Financial Requirement
       | Dependants              | 2          |
     Then the service displays the following result
       | Page dynamic heading                  | Brian Sinclair doesn't meet the Category A requirement |
-      | Category A check failure reason       | they haven't met the required monthly amount.          |
+      | Page dynamic detail                   | they haven't met the required monthly amount.          |
       | Your Search Individual Name           | Brian Sinclair                                         |
       | Your Search Dependants                | 2                                                      |
       | Your Search National Insurance Number | BS123456B                                              |
@@ -87,7 +87,7 @@ Feature: Category A Financial Requirement
       | Application Raised Date | 03/07/2015 |
     Then the service displays the following result
       | Page dynamic heading                  | There is no record for RK123456C with HMRC                                                                                                 |
-      | Page dynamic sub text                 | We couldn't perform the financial requirement check as no income information exists with HMRC for the National Insurance Number RK123456C. |
+      | Page dynamic detail                 | We couldn't perform the financial requirement check as no income information exists with HMRC for the National Insurance Number RK123456C. |
       | Your Search National Insurance Number | RK123456C                                                                                                                                  |
       | Your Search Application Raised Date   | 03/07/2015                                                                                                                                 |
 

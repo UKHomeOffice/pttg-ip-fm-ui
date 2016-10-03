@@ -32,7 +32,7 @@ Feature: Failure - Category A Financial Requirement (with dependents - monthly p
       | Dependants              | 4          |
     Then the service displays the following result
       | Page dynamic heading                  | Shelly Patel doesn't meet the Category A requirement |
-      | Category A check failure reason       | they haven't met the required monthly amount.        |
+      | Page dynamic detail       | they haven't met the required monthly amount.        |
       | Your Search Individual Name           | Shelly Patel                                         |
       | Your Search Dependants                | 4                                                    |
       | Your Search National Insurance Number | SP123456B                                            |
@@ -50,7 +50,7 @@ Feature: Failure - Category A Financial Requirement (with dependents - monthly p
       | Dependants              | 2          |
     Then the service displays the following result
       | Page dynamic heading                  | Brian Sinclair doesn't meet the Category A requirement |
-      | Category A check failure reason       | they haven't met the required monthly amount.          |
+      | Page dynamic detail       | they haven't met the required monthly amount.          |
       | Your Search Individual Name           | Brian Sinclair                                         |
       | Your Search Dependants                | 2                                                      |
       | Your Search National Insurance Number | BS123456B                                              |
@@ -69,7 +69,7 @@ Feature: Failure - Category A Financial Requirement (with dependents - monthly p
       | Dependants              | 3          |
     Then the service displays the following result
       | Page dynamic heading                  | Steve Yu doesn't meet the Category A requirement            |
-      | Category A check failure reason       | they haven't been with their current employer for 6 months. |
+      | Page dynamic detail       | they haven't been with their current employer for 6 months. |
       | Your Search Individual Name           | Steve Yu                                                    |
       | Your Search Dependants                | 3                                                           |
       | Your Search National Insurance Number | SY987654C                                                   |

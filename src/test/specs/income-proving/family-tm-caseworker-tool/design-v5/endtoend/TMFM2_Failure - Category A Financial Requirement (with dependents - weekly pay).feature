@@ -29,7 +29,7 @@ Feature: Failure - Category A Financial Requirement (with Dependantss - weekly p
       | Dependants              | 3          |
     Then the service displays the following result
       | Page dynamic heading                  | Donald Sweet doesn't meet the Category A requirement |
-      | Category A check failure reason       | they haven't met the required weekly amount.         |
+      | Page dynamic detail       | they haven't met the required weekly amount.         |
       | Your Search Individual Name           | Donald Sweet                                         |
       | Your Search Dependants                | 3                                                    |
       | Your Search National Insurance Number | DS123456C                                            |
@@ -45,7 +45,7 @@ Feature: Failure - Category A Financial Requirement (with Dependantss - weekly p
       | Dependants              | 2          |
     Then the service displays the following result
       | Page dynamic heading                  | John Lister doesn't meet the Category A requirement         |
-      | Category A check failure reason       | they haven't been with their current employer for 6 months. |
+      | Page dynamic detail       | they haven't been with their current employer for 6 months. |
       | Your Search Individual Name           | John Lister                                                 |
       | Your Search Dependants                | 2                                                           |
       | Your Search National Insurance Number | JL123456B                                                   |
@@ -62,7 +62,7 @@ Feature: Failure - Category A Financial Requirement (with Dependantss - weekly p
       | Dependants              | 3          |
     Then the service displays the following result
       | Page dynamic heading                  | Gary Goldstein doesn't meet the Category A requirement      |
-      | Category A check failure reason       | they haven't been with their current employer for 6 months. |
+      | Page dynamic detail       | they haven't been with their current employer for 6 months. |
       | Your Search Individual Name           | Gary Goldstein                                              |
       | Your Search Dependants                | 3                                                           |
       | Your Search National Insurance Number | GG987654A                                                   |

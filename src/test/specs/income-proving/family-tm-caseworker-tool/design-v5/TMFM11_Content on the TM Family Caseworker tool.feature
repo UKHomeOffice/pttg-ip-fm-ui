@@ -18,8 +18,8 @@ Feature: Page content
       | NINO                    | TL123456A  |
       | Application Raised Date | 23/01/2015 |
     Then the service displays the following result
-      | Page heading     | Financial requirement check                                   |
-      | Page sub heading | Does the applicant meet the Category A financial requirement? |
+      | Page static heading     | Financial requirement check                                   |
+      | Page static sub heading | Does the applicant meet the Category A financial requirement? |
 
   Scenario: Page checks for appendix link
     Given Caseworker is using the Income Proving Service Case Worker Tool

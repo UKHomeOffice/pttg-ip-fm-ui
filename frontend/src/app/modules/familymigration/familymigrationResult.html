@@ -1,0 +1,64 @@
+<div id="page2" class="ng-scope">
+  <div ng-if="haveResult">
+    <h2 id="pageStaticHeading">Financial requirement check</h2>
+    <h3 id="pageStaticSubHeading">Does the applicant meet the Category A financial requirement?</h3>
+
+    <div class="govuk-box-highlight" id="outcome" ng-if="success">
+      <h1 class="bold-large">Yes, <span id="outcomeBoxIndividualName">{{ outcomeBoxIndividualName }}</span> meets the requirement</h1>
+      <p>calculated on income information between <span id="outcomeFromDate">{{ outcomeFromDate }}</span> and <span id="outcomeToDate">{{ outcomeToDate }}</span></p>
+    </div>
+
+    <div class="govuk-box-highlight panel-fail" id="outcome" ng-if="!success">
+      <h1 class="bold-large" id="pageDynamicHeading"><span id="outcomeBoxIndividualName">{{ outcomeBoxIndividualName }}</span> doesn't meet the Category A requirement</h1>
+      <p id="pageStaticDetail">They don't meet the financial requirement because:</p>
+      <p id="pageDynamicDetail"><span>{{ reason }}</span></p>
+    </div>
+  </div>
+
+
+  <div ng-if="!haveResult">
+    <h1 class="form-title heading-large"><span id="pageDynamicHeading">{{ heading }}</span></h1>
+
+    <p class="lede ng-scope"><span id="pageDynamicDetail" class="ng-binding">{{ reason }}</span></p>
+  </div>
+
+  <div ng-if="!success">
+    <h2 id="whatToDoNextHeading">What to do next</h2>
+    <p id="whatToDoNextSubHeading">You should consider if the applicant meets the financial requirement under any other category.</p>
+  </div>
+
+
+  <h2 class="heading-medium ng-scope">Your search</h2>
+  <table class="ng-scope">
+    <tr>
+      <th scope="col">Individual</th>
+      <th scope="col">Dependants</th>
+      <th scope="col">National Insurance Number</th>
+      <th scope="col">Application raised</th>
+    </tr>
+
+    <tr>
+      <td><span id="yourSearchIndividualName" class="ng-binding">{{ individual.forename}} {{ individual.surname }}</span></td>
+      <td><span id="yourSearchDependants">{{ familyDetails.dependants }}</span></td>
+      <td><span id="yourSearchNationalInsuranceNumber">{{ familyDetails.nino }}</span></td>
+      <td><span id="yourSearchApplicationRaisedDate">{{ familyDetails.displayDate }}</span></td>
+    </tr>
+  </table>
+
+  <br />
+  <br />
+
+  <div class="form-group">
+      <input type="submit" class="button" value="Start a new search" ng-click="newSearch()">
+  </div>
+
+  <div class="form-group ng-scope">
+    <details role="group">
+      <summary role="button" aria-controls="details-content-0" aria-expanded="false"><span class="summary" id="pageAppendixTitle">Where can I find the appendix?</span></summary>
+      <div class="panel panel-border-narrow" id="details-content-0" aria-hidden="true">
+        <p>You can find all the guidance on gov.uk under <a href="https://www.gov.uk/government/publications/chapter-8-appendix-fm-family-members" id="chapter8Link">Chapter 8 of the immigration directorate instructions.</a></p>
+        <p>You can also view <a href="https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/469692/Appendix_FM_1_7_Financial_Requirement_August_2015.pdf" id="fm1_7Link">Appendix FM 1.7</a> which relates specifically to this financial requirement.</p>
+      </div>
+    </details>
+</div>
+</div>
