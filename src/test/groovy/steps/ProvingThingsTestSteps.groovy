@@ -253,6 +253,13 @@ class ProvingThingsTestSteps {
         driver.manage().timeouts().implicitlyWait(defaultTimeout, SECONDS)
     }
 
+    @Then("^The service returns to the input page on clicking of the Start a new search button\$")
+    public void the_service_returns_to_the_input_page_on_clicking_of_the_Start_a_new_search_button(DataTable expectedResult) {
+        driver.findElement(By.className("button")).click()
+        assertTextFieldEqualityForTable(expectedResult)
+
+    }
+
     @Then("^the error summary list contains the text\$")
     public void the_error_summary_list_contains_the_text(DataTable expectedText) {
 
