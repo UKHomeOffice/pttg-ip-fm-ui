@@ -87,7 +87,22 @@ Feature: Category A Financial Requirement
       | Application Raised Date | 03/07/2015 |
     Then the service displays the following result
       | Page dynamic heading                  | There is no record for RK123456C with HMRC                                                                                                 |
-      | Page dynamic detail                 | We couldn't perform the financial requirement check as no income information exists with HMRC for the National Insurance Number RK123456C. |
+      | Page dynamic detail                   | We couldn't perform the financial requirement check as no income information exists with HMRC for the National Insurance Number RK123456C. |
       | Your Search National Insurance Number | RK123456C                                                                                                                                  |
       | Your Search Application Raised Date   | 03/07/2015                                                                                                                                 |
 
+  Scenario: Caseworker clicks on the start a new search button in query result page
+    Given Caseworker is using the Income Proving Service Case Worker Tool
+    Given the account data for KS123456C
+    When Robert submits a query
+      | NINO                    | KS123456C  |
+      | Application Raised Date | 03/07/2015 |
+    Then the service displays the following result
+      | Page dynamic heading                  | Kumar Sangakkara Dilshan doesn't meet the Category A requirement |
+      | Page dynamic detail                   | they haven't been with their current employer for 6 months.      |
+      | Your Search Individual Name           | Kumar Sangakkara Dilshan                                         |
+      | Your Search National Insurance Number | KS123456C                                                        |
+      | Your Search Application Raised Date   | 03/07/2015                                                       |
+    And The service returns to the input page on clicking of the Start a new search button
+      | Page sub heading | Family Migration     |
+      | Page sub title   | Individual's details |
