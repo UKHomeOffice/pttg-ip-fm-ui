@@ -71,5 +71,10 @@ familymigrationModule.controller('FamilymigrationResultCtrl', ['$scope', '$state
       $scope.reason = 'Please try again later.';
     }
   };
-  console.log(res);
+
+
+  $scope.newSearch = function () {
+    FamilymigrationService.reset();
+    $state.go('familymigration');
+  };
 }]);

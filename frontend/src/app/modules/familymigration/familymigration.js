@@ -15,11 +15,9 @@ familymigrationModule.factory('FamilymigrationService', ['IOService', '$state', 
 
   this.submit = function (nino, dependants, applicationRaisedDate) {
     IOService.get('incomeproving/v1/individual/' + nino + '/financialstatus', {dependants: dependants, applicationRaisedDate: applicationRaisedDate}, {timeout: 5000 }).then(function (res) {
-      // console.log(res);
       lastAPIresponse = res;
       $state.go('familymigrationResults');
     }, function (res) {
-      console.log(res);
       lastAPIresponse = res;
       $state.go('familymigrationResults');
     });
@@ -31,6 +29,12 @@ familymigrationModule.factory('FamilymigrationService', ['IOService', '$state', 
 
   this.getFamilyDetails = function () {
     return familyDetails;
+  };
+
+  this.reset = function () {
+    familyDetails.nino = '';
+    familyDetails.applicationRaisedDate = '';
+    familyDetails.dependants = '';
   };
 
   return this;
