@@ -17,5 +17,6 @@ RUN npm install
 RUN npm install gulp
 
 RUN find / -name node_modules
+RUN echo $PATH
 
 ENTRYPOINT ["gradle"]
