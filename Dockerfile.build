@@ -16,4 +16,6 @@ RUN npm install phantomjs -g
 RUN npm install
 RUN npm install gulp
 
+RUN find / -name node_modules
+
 ENTRYPOINT ["gradle"]
