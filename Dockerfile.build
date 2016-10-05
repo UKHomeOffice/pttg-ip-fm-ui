@@ -2,7 +2,7 @@ FROM quay.io/ukhomeofficedigital/gradle:v2.13.6
 
 MAINTAINER Jon Shanks "jon.shanks@digital.homeoffice.gov.uk"
 ENV NODE_VERSION v4.4.2
-ENV PATH "${PATH}:/opt/nodejs/bin"
+ENV PATH "${PATH}:/opt/nodejs/bin:/opt/nodejs/lib"
 
 WORKDIR /opt/nodejs
 
