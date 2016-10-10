@@ -15,10 +15,10 @@ build_app() {
   ENV_OPTS="GIT_COMMIT=${GIT_COMMIT} -e VERSION=${VERSION}"
   [ -n "${BUILD_NUMBER}" ] && ENV_OPTS="BUILD_NUMBER=${BUILD_NUMBER} -e ${ENV_OPTS}"
 
-#  oldContainers=$(docker ps -a -q -f status=exited)
-#  if [[ $oldContainers ]]; then
-#    docker rm -v $oldContainers
-#  fi
+  oldContainers=$(docker ps -a -q -f status=exited)
+  if [[ $oldContainers ]]; then
+    docker rm -v $oldContainers
+  fi
   docker run --name pttg-ip-fm-ui-build -e ${ENV_OPTS}  "${GRADLE_IMAGE}" "${@}"
   mkdir -p build/libs
   docker cp pttg-ip-fm-ui-build:/work/build/libs/pttg-ip-fm-ui-${VERSION}.${GIT_COMMIT}.jar build/libs/
