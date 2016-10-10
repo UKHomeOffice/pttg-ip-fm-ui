@@ -34,9 +34,6 @@ if (System.getenv('VERSION')) {
 
 jar {
     baseName = 'pttg-ip-fm-ui'
-    if (System.getenv('BUILD_NUMBER')) {
-        version =  version + '-' + System.getenv('BUILD_NUMBER')
-    }
     if (System.getenv('GIT_COMMIT')) {
         version = version + '.' + System.getenv('GIT_COMMIT')
     }

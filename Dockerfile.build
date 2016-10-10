@@ -2,23 +2,17 @@ FROM quay.io/ukhomeofficedigital/gradle:v2.13.6
 
 MAINTAINER Jon Shanks "jon.shanks@digital.homeoffice.gov.uk"
 ENV NODE_VERSION v4.4.2
-ENV PATH "${PATH}:/opt/nodejs/bin:/opt/nodejs/lib"
+ENV PATH "${PATH}:/opt/nodejs/bin:/work"
 
 WORKDIR /opt/nodejs
 
 RUN yum install -y curl git-all bzip2 && \
     curl https://nodejs.org/dist/${NODE_VERSION}/node-${NODE_VERSION}-linux-x64.tar.gz | tar xz --strip-components=1
 
-COPY . /code/
+WORKDIR /work
 
-WORKDIR /code
+RUN  git clone https://github.com/UKHomeOffice/pttg-ip-fm-ui.git . && ls -l && npm install phantomjs -g  && \
+npm install && ls -l
 
-RUN npm install phantomjs -g
-RUN npm install
-RUN npm install gulp
-
-RUN find / -name node_modules
-RUN echo $PATH
-RUN ln -s /opt/nodejs/lib/node_modules/npm/node_modules node_modules
 
 ENTRYPOINT ["gradle"]

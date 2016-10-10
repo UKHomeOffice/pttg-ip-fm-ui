@@ -7,42 +7,30 @@ GIT_COMMIT=${GIT_COMMIT:-$(git rev-parse --short HEAD)}
 GIT_COMMIT=${GIT_COMMIT:0:7}
 VERSION=$(grep ^version build.gradle | cut -d= -f 2 | tr -d ' ' | sed -e "s|'||g" | sed -e "s|version|v|g")
 
-echo "=== version"
-echo $VERSION
 build_image_for_app_build() {
-  docker build -t "${GRADLE_IMAGE}" -f Dockerfile.build .
+  docker build --no-cache -t "${GRADLE_IMAGE}" -f Dockerfile.build .
 }
 
 build_app() {
-  local MOUNT="${PWD}:/code"
-
-  # Mount in the local gradle cache into the docker container
- # [ -d "${HOME}/.gradle/caches" ] && MOUNT="${MOUNT} -v ${HOME}/.gradle/caches:/root/.gradle/caches"
-
-  # Mount in local maven repository into the docker container
-  #[ -d "${HOME}/.m2/repository" ] && MOUNT="${MOUNT} -v ${HOME}/.m2/repository:/root/.m2/repository"
-
-  # Mount in local gradle user directory
-  #[ -d "${HOME}/.gradle" ] && MOUNT="${MOUNT} -v ${HOME}/.gradle:/root/.gradle"
-
   ENV_OPTS="GIT_COMMIT=${GIT_COMMIT} -e VERSION=${VERSION}"
   [ -n "${BUILD_NUMBER}" ] && ENV_OPTS="BUILD_NUMBER=${BUILD_NUMBER} -e ${ENV_OPTS}"
 
-  docker run -e ${ENV_OPTS} -v ${MOUNT} "${GRADLE_IMAGE}" "${@}"
+#  oldContainers=$(docker ps -a -q -f status=exited)
+#  if [[ $oldContainers ]]; then
+#    docker rm -v $oldContainers
+#  fi
+  docker run --name pttg-ip-fm-ui-build -e ${ENV_OPTS}  "${GRADLE_IMAGE}" "${@}"
+  mkdir -p build/libs
+  docker cp pttg-ip-fm-ui-build:/work/build/libs/pttg-ip-fm-ui-${VERSION}.${GIT_COMMIT}.jar build/libs/
 }
 
 set_props() {
-  [ -n "${BUILD_NUMBER}" ] && VERSION="${VERSION}-${BUILD_NUMBER}"
   [ -n "${GIT_COMMIT}" ] && VERSION="$VERSION.${GIT_COMMIT}"
   echo "VERSION=${VERSION}" > version.properties
 }
 
 build_image_that_runs_app() {
-
-    echo "Docker version "
-    echo ${VERSION}
-
-  docker build --build-arg VERSION=${VERSION} --build-arg JAR_PATH=build/libs \
+  docker build --no-cache --build-arg VERSION=${VERSION} --build-arg JAR_PATH=build/libs \
     -t quay.io/ukhomeofficedigital/pttg-ip-fm-ui:${VERSION} .
 }
 
