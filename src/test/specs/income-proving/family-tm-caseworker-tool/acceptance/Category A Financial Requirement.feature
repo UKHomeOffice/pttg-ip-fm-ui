@@ -1,7 +1,9 @@
 Feature: Category A Financial Requirement
 
-  Scenario: Does not meet the Category A employment duration Requirement (with current employer for only 3 months)
+  Background:
     Given Caseworker is using the Income Proving Service Case Worker Tool
+
+  Scenario: Does not meet the Category A employment duration Requirement (with current employer for only 3 months)
     Given the account data for KS123456C
     When Robert submits a query
       | NINO                    | KS123456C  |
@@ -14,7 +16,6 @@ Feature: Category A Financial Requirement
       | Your Search Application Raised Date   | 03/07/2015                                                       |
 
   Scenario: Does not meet the Category A Financial Requirement (earned < the Cat A financial threshold)
-    Given Caseworker is using the Income Proving Service Case Worker Tool
     Given the account data for BS123456B
     When Robert submits a query
       | NINO                    | BS123456B  |
@@ -29,7 +30,6 @@ Feature: Category A Financial Requirement
       | Your Search Application Raised Date   | 10/02/2015                                             |
 
   Scenario: Meets the Category A Financial Requirement with 1 dependant
-    Given Caseworker is using the Income Proving Service Case Worker Tool
     Given the account data for TL123456A
     When Robert submits a query
       | NINO                    | TL123456A  |
@@ -46,7 +46,6 @@ Feature: Category A Financial Requirement
       | Your Search Application Raised Date   | 03/01/2015 |
 
   Scenario:  Caseworker enters the National Insurance Number with spaces
-    Given Caseworker is using the Income Proving Service Case Worker Tool
     Given the account data for TL123456A
     When Robert submits a query
       | NINO                    | TL 12 34 56 A |
@@ -63,7 +62,6 @@ Feature: Category A Financial Requirement
       | Your Search Application Raised Date   | 03/01/2015 |
 
   Scenario:  Caseworker enters the Application Raised Date with single numbers for the day and month
-    Given Caseworker is using the Income Proving Service Case Worker Tool
     Given the account data for TL123456A
     When Robert submits a query
       | NINO                    | TL123456A |
@@ -80,7 +78,6 @@ Feature: Category A Financial Requirement
       | Your Search Application Raised Date   | 03/01/2015 |
 
   Scenario: Caseworker enters a NINO where no records exist within the period stated
-    Given Caseworker is using the Income Proving Service Case Worker Tool
     Given no record for RK123456C
     When Robert submits a query
       | NINO                    | RK123456C  |
@@ -92,17 +89,8 @@ Feature: Category A Financial Requirement
       | Your Search Application Raised Date   | 03/07/2015                                                                                                                                 |
 
   Scenario: Caseworker clicks on the start a new search button in query result page
-    Given Caseworker is using the Income Proving Service Case Worker Tool
-    Given the account data for KS123456C
-    When Robert submits a query
-      | NINO                    | KS123456C  |
-      | Application Raised Date | 03/07/2015 |
+    Given the income check is performed
+    When the new search button is clicked
     Then the service displays the following result
-      | Page dynamic heading                  | Kumar Sangakkara Dilshan doesn't meet the Category A requirement |
-      | Page dynamic detail                   | they haven't been with their current employer for 6 months.      |
-      | Your Search Individual Name           | Kumar Sangakkara Dilshan                                         |
-      | Your Search National Insurance Number | KS123456C                                                        |
-      | Your Search Application Raised Date   | 03/07/2015                                                       |
-    And The service returns to the input page on clicking of the Start a new search button
       | Page sub heading | Family Migration     |
       | Page sub title   | Individual's details |

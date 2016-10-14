@@ -48,6 +48,8 @@ class ProvingThingsTestSteps {
     private int delay = 1
     def defaultTimeout = 2000
 
+    def defaultFields
+
     def dateParts = ["Day", "Month", "Year"]
     def dateDelimiter = "/"
 
@@ -146,6 +148,11 @@ class ProvingThingsTestSteps {
         return response.getStatusCode();
     }
 
+    @Given("^the default details are\$")
+    public void the_default_details_are(DataTable arg1) throws Throwable {
+        defaultFields = arg1
+    }
+
     @Given("^the account data for (.*)\$")
     def the_account_data_for(String nino) {
         testDataLoader.stubTestData(nino, incomeUriRegex.replaceFirst("nino", nino))
@@ -199,25 +206,33 @@ class ProvingThingsTestSteps {
 
     @When("^the income check is performed\$")
     def the_income_check_is_performed() {
-
-        Map<String, String> validDefaultEntries = [
+        if (defaultFields) {
+            submitEntries(defaultFields.asMap(String.class, String.class))
+        } else {
+            Map<String, String> validDefaultEntries = [
                 'Application raised date': '01/05/2016',
                 'Dependants'             : '0',
                 'NINO'                   : defaultNino
-        ]
-
-        submitEntries(validDefaultEntries)
+            ]
+            submitEntries(validDefaultEntries)
+        }
     }
 
-    @When("^Robert is displayed the Income Proving Service Case Worker Tool input page\$")
-    public void robert_is_displayed_the_Income_Proving_Service_Case_Worker_Tool_input_page() {
-        // SD65 This method is empty because the validation (in the Then function) is done on the input page opened in the Given function
+    @When("^the new search button is clicked\$")
+    public void the_new_search_button_is_clicked() throws Throwable {
+        driver.sleep(delay)
+        driver.findElement(By.className("button--newSearch")).click()
     }
 
     @When("^Robert submits a query\$")
     public void robert_submits_a_query(DataTable arg1) {
         Map<String, String> entries = arg1.asMap(String.class, String.class)
-        submitEntries(entries)
+        if (defaultFields) {
+            Map<String, String> defaultEntries = defaultFields.asMap(String.class, String.class)
+            submitEntries(defaultEntries + entries)
+        } else {
+            submitEntries(entries)
+        }
     }
 
 
