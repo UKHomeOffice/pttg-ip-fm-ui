@@ -47,6 +47,23 @@
     border-bottom: none;
   }
 
+.form-group--topspace {
+  padding-top: 30px;
+}
+
+.button-info {
+  background-color: #dee0e2;
+  box-shadow: 0 2px 0 #b5babe;
+  color: #0b0c0c;
+
+  &:hover {
+    background-color: darken(#dee0e2, 5%);
+    box-shadow: 0 2px 0 darken(#b5babe, 5%);
+    color: #0b0c0c;
+  }
+}
+
+
 @media (min-width: 641px){
 	table th, table td {
 	    font-size: 16px;

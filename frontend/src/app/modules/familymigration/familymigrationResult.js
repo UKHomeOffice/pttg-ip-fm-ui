@@ -77,4 +77,9 @@ familymigrationModule.controller('FamilymigrationResultCtrl', ['$scope', '$state
     FamilymigrationService.reset();
     $state.go('familymigration');
   };
+
+  // edit search button
+  $scope.editSearch = function () {
+    $state.go('familymigration');
+  };
 }]);

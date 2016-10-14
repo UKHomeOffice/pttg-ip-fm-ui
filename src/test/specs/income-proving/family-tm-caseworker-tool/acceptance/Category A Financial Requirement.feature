@@ -94,3 +94,15 @@ Feature: Category A Financial Requirement
     Then the service displays the following result
       | Page sub heading | Family Migration     |
       | Page sub title   | Individual's details |
+
+  Scenario: edit search button is clicked
+    Given the account data for BS123456B
+    Given Robert submits a query
+      | NINO                    | BS123456B  |
+      | Application Raised Date | 10/02/2015 |
+      | Dependants              | 2          |
+    When the edit search button is clicked
+    Then the inputs will be populated with
+      | NINO                    | BS123456B  |
+      | Application Raised Date | 10/02/2015 |
+      | Dependants              | 2          |
