@@ -22,6 +22,7 @@ build_app() {
   docker run --name pttg-ip-fm-ui-build -e ${ENV_OPTS}  "${GRADLE_IMAGE}" "${@}"
   mkdir -p build/libs
   docker cp pttg-ip-fm-ui-build:/work/build/libs/pttg-ip-fm-ui-${VERSION}.${GIT_COMMIT}.jar build/libs/
+  docker cp pttg-ip-fm-ui-build:/work/build/reports build/reports
 }
 
 set_props() {
