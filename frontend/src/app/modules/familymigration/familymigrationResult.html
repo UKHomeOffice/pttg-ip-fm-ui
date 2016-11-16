@@ -1,30 +1,33 @@
 <div id="page2" class="ng-scope">
   <div ng-if="haveResult">
-    <h2 id="pageStaticHeading">Financial requirement check</h2>
-    <h3 id="pageStaticSubHeading">Does the applicant meet the Category A financial requirement?</h3>
 
-    <div class="govuk-box-highlight" id="outcome" ng-if="success">
-      <h1 class="bold-large">Yes, <span id="outcomeBoxIndividualName">{{ outcomeBoxIndividualName }}</span> meets the requirement</h1>
-      <p>calculated on income information between <span id="outcomeFromDate">{{ outcomeFromDate }}</span> and <span id="outcomeToDate">{{ outcomeToDate }}</span></p>
+    <div id="outcome" ng-if="success" class="govuk-box-highlight">
+      <h1 class="heading-large" id="pageDynamicHeading" tabindex="-1">Passed</h1>
+
+      <p><span id="outcomeBoxIndividualName">{{ outcomeBoxIndividualName }}</span> meets the Category A requirement</p>
+
+      <p>Calculated on income information between <span id="outcomeFromDate">{{ outcomeFromDate }}</span> and <span id="outcomeToDate">{{ outcomeToDate }}</span></p>
     </div>
 
-    <div class="govuk-box-highlight panel-fail" id="outcome" ng-if="!success">
-      <h1 class="bold-large" id="pageDynamicHeading"><span id="outcomeBoxIndividualName">{{ outcomeBoxIndividualName }}</span> doesn't meet the Category A requirement</h1>
-      <p id="pageStaticDetail">They don't meet the financial requirement because:</p>
-      <p id="pageDynamicDetail"><span>{{ reason }}</span></p>
+    <div id="outcome" ng-if="!success">
+      <h1 class="heading-large" id="pageDynamicHeading">Not passed</h1>
+      <p id="pageDynamicDetail"><span id="outcomeBoxIndividualName">{{ outcomeBoxIndividualName }}</span> doesn't meet the Category A requirement</p>
+      <p id="pageDynamicReason">{{ reason }}</p>
     </div>
   </div>
 
 
   <div ng-if="!haveResult">
-    <h1 class="form-title heading-large"><span id="pageDynamicHeading">{{ heading }}</span></h1>
+    <h1 class="form-title heading-large"><span id="pageDynamicHeading" tabindex="-1">{{ heading }}</span></h1>
 
     <p class="lede ng-scope"><span id="pageDynamicDetail" class="ng-binding">{{ reason }}</span></p>
   </div>
 
-  <div ng-if="!success">
-    <h2 id="whatToDoNextHeading">What to do next</h2>
-    <p id="whatToDoNextSubHeading">You should consider if the applicant meets the financial requirement under any other category.</p>
+  <div ng-if="!success" class="panel panel-border-wide text">
+    <h2 id="whatToDoNextHeading" class="heading-small">What to do next</h2>
+    <ul class="list list-bullet">
+      <li id="whatToDoNextSubHeading">You should consider if the applicant meets the financial requirement under any other category.</li>
+    </ul>
   </div>
 
 
