@@ -16,7 +16,6 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 /**
  * @Author Home Office Digital
  */
-@ContextConfiguration
 @SpringBootTest(
         webEnvironment = RANDOM_PORT,
         classes = [ServiceRunner.class],
