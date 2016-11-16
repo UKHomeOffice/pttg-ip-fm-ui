@@ -3,7 +3,8 @@ Feature: Input validation
   Date formats: Format should be dd/mm/yyyy or d/m/yyyy
 
   Background:
-    Given Caseworker is using the Income Proving Service Case Worker Tool
+    Given the api health check response has status 200
+    And Caseworker is using the Income Proving Service Case Worker Tool
     And the default details are
       | NINO                    | AA123456A  |
       | Application Raised Date | 01/05/2015 |

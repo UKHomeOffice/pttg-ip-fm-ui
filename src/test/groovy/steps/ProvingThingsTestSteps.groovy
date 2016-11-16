@@ -363,4 +363,11 @@ class ProvingThingsTestSteps {
 
         assert result == expected
     }
+
+    @Then("^the availability warning box should not be shown\$")
+    public void the_availability_warning_box_should_not_be_shown() throws Throwable {
+        driver.manage().timeouts().implicitlyWait(1, SECONDS)
+        assert(driver.findElements(By.cssSelector(".availability")).isEmpty())
+        driver.manage().timeouts().implicitlyWait(defaultTimeout, SECONDS)
+    }
 }

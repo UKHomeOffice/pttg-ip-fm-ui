@@ -1,7 +1,8 @@
 Feature: System errors - specify messages shown in response to (simulated) connection failures etc
 
     Background:
-        Given Caseworker is using the Income Proving Service Case Worker Tool
+        Given the api health check response has status 200
+        And Caseworker is using the Income Proving Service Case Worker Tool
 
     Scenario: Sensible connection timeout
         Given the api response is delayed for 10 seconds
