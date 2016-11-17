@@ -26,7 +26,7 @@ import static org.hamcrest.core.StringContains.containsString
 import static org.springframework.http.HttpStatus.BAD_GATEWAY
 import static org.springframework.http.HttpStatus.NOT_FOUND
 import static org.springframework.http.MediaType.APPLICATION_JSON
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE
+import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo
 import static org.springframework.test.web.client.response.MockRestResponseCreators.*
@@ -110,7 +110,7 @@ class ServiceSpec extends Specification {
         then:
         response.with {
             andExpect(status().isOk())
-            andExpect(content().contentType(APPLICATION_JSON_VALUE))
+            andExpect(content().contentType(APPLICATION_JSON_UTF8_VALUE))
             andExpect(MockMvcResultMatchers.jsonPath("individual.forename", is(FORENAME)))
             andExpect(jsonPath("categoryCheck.failureReason", is("reason")))
         }
