@@ -3,10 +3,7 @@
 
     <div id="outcome" ng-if="success" class="govuk-box-highlight">
       <h1 class="heading-large" id="pageDynamicHeading" tabindex="-1">Passed</h1>
-
       <p><span id="outcomeBoxIndividualName">{{ outcomeBoxIndividualName }}</span> meets the Category A requirement</p>
-
-      <p>Calculated on income information between <span id="outcomeFromDate">{{ outcomeFromDate }}</span> and <span id="outcomeToDate">{{ outcomeToDate }}</span></p>
     </div>
 
     <div id="outcome" ng-if="!success">
@@ -16,37 +13,51 @@
     </div>
   </div>
 
-
   <div ng-if="!haveResult">
     <h1 class="form-title heading-large"><span id="pageDynamicHeading" tabindex="-1">{{ heading }}</span></h1>
-
-    <p class="lede ng-scope"><span id="pageDynamicDetail" class="ng-binding">{{ reason }}</span></p>
+    <p class="lede ng-scope"><span id="pageDynamicDetail">{{ reason }}</span></p>
   </div>
+
 
   <div ng-if="!success" class="panel panel-border-wide text">
     <h2 id="whatToDoNextHeading" class="heading-small">What to do next</h2>
-    <ul class="list list-bullet">
+    <ol class="list list-number">
       <li id="whatToDoNextSubHeading">You should consider if the applicant meets the financial requirement under any other category.</li>
-    </ul>
+    </ol>
+  </div>
+
+
+  <div ng-if="haveResult">
+    <h2 class="heading-medium">Results</h2>
+    <table class="ng-scope">
+      <tr>
+        <th scope="row">Individual</th>
+        <td><span id="yourSearchIndividualName">{{ individual.forename}} {{ individual.surname }}</span></td>
+      </tr>
+      <tr ng-if="success">
+        <th scope="row">Income within date range</th>
+        <td><span id="outcomeFromDate">{{ outcomeFromDate }}</span> - <span id="outcomeToDate">{{ outcomeToDate }}</span></td>
+      </tr>
+    </table>
   </div>
 
 
   <h2 class="heading-medium ng-scope">Your search</h2>
-  <table class="ng-scope">
+  <table>
     <tr>
-      <th scope="col">Individual</th>
-      <th scope="col">Dependants</th>
-      <th scope="col">National Insurance Number</th>
-      <th scope="col">Application raised</th>
-    </tr>
-
-    <tr>
-      <td><span id="yourSearchIndividualName" class="ng-binding">{{ individual.forename}} {{ individual.surname }}</span></td>
+      <th scope="row">Dependants</th>
       <td><span id="yourSearchDependants">{{ familyDetails.dependants }}</span></td>
+    </tr>
+    <tr>
+      <th scope="row">National Insurance number</th>
       <td><span id="yourSearchNationalInsuranceNumber">{{ familyDetails.nino }}</span></td>
+    </tr>
+    <tr>
+      <th scope="row">Application raised</th>
       <td><span id="yourSearchApplicationRaisedDate">{{ familyDetails.displayDate }}</span></td>
     </tr>
   </table>
+
 
   <div class="form-group form-group--topspace">
       <input type="submit" class="button button--editSearch button-info" value="Edit" ng-click="editSearch()">
