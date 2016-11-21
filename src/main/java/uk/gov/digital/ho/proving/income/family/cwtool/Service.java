@@ -18,6 +18,7 @@ import uk.gov.digital.ho.proving.income.family.cwtool.audit.AuditActions;
 import uk.gov.digital.ho.proving.income.family.cwtool.domain.api.ApiResponse;
 import uk.gov.digital.ho.proving.income.family.cwtool.domain.api.Nino;
 import uk.gov.digital.ho.proving.income.family.cwtool.domain.client.FinancialStatusResponse;
+import uk.gov.digital.ho.proving.income.family.cwtool.health.ApiAvailabilityChecker;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -35,7 +36,7 @@ import static uk.gov.digital.ho.proving.income.family.cwtool.audit.AuditEventTyp
 import static uk.gov.digital.ho.proving.income.family.cwtool.audit.AuditEventType.SEARCH_RESULT;
 
 @RestController
-@RequestMapping("/incomeproving/v1/individual/{nino}/financialstatus")
+@RequestMapping("/incomeproving/v1")
 @ControllerAdvice
 public class Service {
 
@@ -53,18 +54,24 @@ public class Service {
     @Autowired
     private ApplicationEventPublisher auditor;
 
+    @Autowired
+    private ApiAvailabilityChecker apiAvailabilityChecker;
+
     @Retryable(interceptor = "connectionExceptionInterceptor")
-    @RequestMapping(method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(path = "/individual/{nino}/financialstatus", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity checkStatus(@Valid Nino nino,
-                                      @RequestParam(value = "applicationRaisedDate", required = true) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate applicationRaisedDate,
-                                      @RequestParam(value = "dependants", required = false) Integer dependants) {
+                                      @RequestParam(value = "applicationRaisedDate", required = true)
+                                      @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate applicationRaisedDate,
+                                      @RequestParam(value = "dependants", required = false) Integer dependants,
+                                      @CookieValue(value = "kc-access", defaultValue = "") String accessToken) {
 
         LOGGER.debug("CheckStatus: Nino - {} applicationRaisedDate - {} dependants- {}", value("nino", nino.getNino()), applicationRaisedDate, dependants);
 
         UUID eventId = AuditActions.nextId();
         auditor.publishEvent(auditEvent(SEARCH, eventId, auditData(nino, applicationRaisedDate, dependants)));
 
-        ApiResponse apiResult = restTemplate.exchange(buildUrl(nino.getNino(), applicationRaisedDate, dependants), GET, entity(), ApiResponse.class).getBody();
+        ApiResponse apiResult = restTemplate.exchange(buildUrl(nino.getNino(), applicationRaisedDate, dependants), GET,
+                addTokenToHeaders(entity(), accessToken), ApiResponse.class).getBody();
 
         LOGGER.debug("Api result: {}", value("checkStatusApiResult", apiResult));
 
@@ -125,5 +132,18 @@ public class Service {
         auditData.put("response", response);
 
         return auditData;
+    }
+
+    private HttpEntity addTokenToHeaders(HttpEntity<?> entity, String accessToken) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.putAll(entity.getHeaders());
+        headers.add("Cookie", "kc-access="+accessToken);
+        HttpEntity<?> newEntity = new HttpEntity<>(headers);
+        return newEntity;
+    }
+
+    @RequestMapping(path = "availability", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity availability() {
+        return apiAvailabilityChecker.check();
     }
 }
