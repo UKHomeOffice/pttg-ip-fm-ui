@@ -5,20 +5,20 @@
       <span id="pageSubHeading">Family Migration</span>
     </h1>
 
-    <h2 class="form-title heading-large" id="pageSubTitle">Individual's details</h2>
+    <h2 class="form-title heading-medium" id="pageSubTitle">Individual's details</h2>
 
     <div class="text">
-      <p class="lede" id="pageSubText">You can check an individual meets the Category A requirement using a National Insurance Number.</p>
+      <p class="lede" id="pageSubText">You can check an individual meets the Category A requirement using a National Insurance number.</p>
     </div>
 
     <hod-form name="familyDetails" submit="detailsSubmit">
-      <hod-text name="nino" label="National Insurance Number" hint="For example, 'QQ 12 34 56 C'." field="familyDetails.nino" config="conf.nino"></hod-text>
+      <hod-text name="nino" label="National Insurance number" field="familyDetails.nino" config="conf.nino"></hod-text>
 
       <hod-number name="dependants" label="Number of dependants" field="familyDetails.dependants" config="conf.dependants" required="false"></hod-number>
 
-      <hod-date name="applicationRaisedDate" label="When was the application raised" field="familyDetails.applicationRaisedDate" hint="For example, 31 3 1980" config="conf.applicationRaisedDate"></hod-date>
+      <hod-date name="applicationRaisedDate" label="When was the application raised" field="familyDetails.applicationRaisedDate" config="conf.applicationRaisedDate"></hod-date>
 
-      <hod-submit value="Check eligibility"></hod-submit>
+      <hod-submit value="{{ submitButton.text }}" disabled="{{ submitButton.disabled }}"></hod-submit>
     </hod-form>
   </div>
 </div>

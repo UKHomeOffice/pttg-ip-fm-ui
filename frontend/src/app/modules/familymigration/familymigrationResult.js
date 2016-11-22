@@ -55,18 +55,18 @@ familymigrationModule.controller('FamilymigrationResultCtrl', ['$scope', '$state
       // $scope.heading = res.data.individual.forename + ' ' + res.data.individual.surname + ' doesn\'t meet the Category A requirement';
       switch (res.data.categoryCheck.failureReason) {
         case 'NOT_ENOUGH_RECORDS':
-          $scope.reason = 'they haven\'t been with their current employer for 6 months.';
+          $scope.reason = 'They haven\'t been with their current employer for 6 months.';
           break;
 
         default:
-          $scope.reason = 'they haven\'t met the required monthly amount.';
+          $scope.reason = 'They haven\'t met the required monthly amount.';
       }
 
     }
   } else {
     if (res.status === 404) {
       $scope.heading = 'There is no record for ' + $scope.familyDetails.nino + ' with HMRC';
-      $scope.reason = 'We couldn\'t perform the financial requirement check as no income information exists with HMRC for the National Insurance Number ' + $scope.familyDetails.nino + '.';
+      $scope.reason = 'We couldn\'t perform the financial requirement check as no income information exists with HMRC.';
     } else {
       $scope.heading = 'You can’t use this service just now. The problem will be fixed as soon as possible';
       $scope.reason = 'Please try again later.';
