@@ -58,17 +58,20 @@ public class Service {
     private ApiAvailabilityChecker apiAvailabilityChecker;
 
     @Retryable(interceptor = "connectionExceptionInterceptor")
-    @RequestMapping(path="/individual/{nino}/financialstatus", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(path = "/individual/{nino}/financialstatus", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity checkStatus(@Valid Nino nino,
-                                      @RequestParam(value = "applicationRaisedDate", required = true) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate applicationRaisedDate,
-                                      @RequestParam(value = "dependants", required = false) Integer dependants) {
+                                      @RequestParam(value = "applicationRaisedDate", required = true)
+                                      @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate applicationRaisedDate,
+                                      @RequestParam(value = "dependants", required = false) Integer dependants,
+                                      @CookieValue(value = "kc-access", defaultValue = "") String accessToken) {
 
         LOGGER.debug("CheckStatus: Nino - {} applicationRaisedDate - {} dependants- {}", value("nino", nino.getNino()), applicationRaisedDate, dependants);
 
         UUID eventId = AuditActions.nextId();
         auditor.publishEvent(auditEvent(SEARCH, eventId, auditData(nino, applicationRaisedDate, dependants)));
 
-        ApiResponse apiResult = restTemplate.exchange(buildUrl(nino.getNino(), applicationRaisedDate, dependants), GET, entity(), ApiResponse.class).getBody();
+        ApiResponse apiResult = restTemplate.exchange(buildUrl(nino.getNino(), applicationRaisedDate, dependants), GET,
+                addTokenToHeaders(entity(), accessToken), ApiResponse.class).getBody();
 
         LOGGER.debug("Api result: {}", value("checkStatusApiResult", apiResult));
 
@@ -131,8 +134,16 @@ public class Service {
         return auditData;
     }
 
+    private HttpEntity addTokenToHeaders(HttpEntity<?> entity, String accessToken) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.putAll(entity.getHeaders());
+        headers.add("Cookie", "kc-access="+accessToken);
+        HttpEntity<?> newEntity = new HttpEntity<>(headers);
+        return newEntity;
+    }
+
     @RequestMapping(path = "availability", method = RequestMethod.GET, produces = "application/json")
-    public ResponseEntity availability(){
+    public ResponseEntity availability() {
         return apiAvailabilityChecker.check();
     }
 }

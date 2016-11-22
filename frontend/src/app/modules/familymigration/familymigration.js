@@ -91,7 +91,9 @@ function ($rootScope, $scope, $state, $stateParams, FamilymigrationService, IOSe
       }
     },
     dependants: {
-      required: false
+      required: false,
+      classes: { 'form-control-1-8': true },
+      max: 99,
     },
     applicationRaisedDate: {
       max: moment().format('YYYY-MM-DD'),
@@ -109,10 +111,17 @@ function ($rootScope, $scope, $state, $stateParams, FamilymigrationService, IOSe
     }
   };
 
+  $scope.submitButton = {
+    text: 'Check eligibility',
+    disabled: false
+  };
+
   $scope.detailsSubmit = function (isValid) {
     $scope.familyDetails.nino = ($scope.familyDetails.nino.replace(/[^a-zA-Z0-9]/g, '')).toUpperCase();
     if (isValid) {
       FamilymigrationService.submit($scope.familyDetails.nino, $scope.familyDetails.dependants, $scope.familyDetails.applicationRaisedDate);
+      $scope.submitButton.text = 'Sending';
+      $scope.submitButton.disabled = true;
     }
   };
 }]);
