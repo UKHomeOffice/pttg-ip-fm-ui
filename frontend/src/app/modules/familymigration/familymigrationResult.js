@@ -39,10 +39,11 @@ familymigrationModule.controller('FamilymigrationResultCtrl', ['$scope', '$state
   }
 
   $scope.familyDetails.displayDate = displayDate($scope.familyDetails.applicationRaisedDate);
-  $scope.individual = res.data.individual;
+
 
   $scope.haveResult = (res.data && res.data.categoryCheck) ? true: false;
   if ($scope.haveResult) {
+    $scope.individual = res.data.individual;
     $scope.outcomeBoxIndividualName = res.data.individual.forename + ' ' + res.data.individual.surname;
     $scope.outcomeFromDate = displayDate(res.data.categoryCheck.assessmentStartDate);
     $scope.outcomeToDate = displayDate(res.data.categoryCheck.applicationRaisedDate);
