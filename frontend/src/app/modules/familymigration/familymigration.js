@@ -5,7 +5,8 @@
 var familymigrationModule = angular.module('hod.familymigration', ['ui.router']);
 
 
-familymigrationModule.factory('FamilymigrationService', ['IOService', '$state', function (IOService, $state) {
+familymigrationModule.factory('FamilymigrationService', ['IOService', '$state', 'AvailabilityService', '$rootScope',
+  function (IOService, $state, AvailabilityService, $rootScope) {
   var lastAPIresponse = {};
   var familyDetails = {
     nino: '',
@@ -19,7 +20,20 @@ familymigrationModule.factory('FamilymigrationService', ['IOService', '$state', 
       $state.go('familymigrationResults');
     }, function (res) {
       lastAPIresponse = res;
-      $state.go('familymigrationResults');
+      console.log('Error', res);
+      var availableconf = AvailabilityService.getConfig();
+      console.log(availableconf);
+      IOService.get(availableconf.url).then(function (res) {
+        // var ok = (res.status === 200) ? true: false;
+        console.log('Availability', res.status);
+        $state.go('familymigrationResults');
+      }, function (err) {
+        // stay where we are, but tell the availability test to re-fire
+        console.log('Availability FAILTED', err);
+        $rootScope.$broadcast('retestAvailability');
+      });
+
+
     });
   };
 

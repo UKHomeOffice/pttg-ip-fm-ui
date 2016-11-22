@@ -20,7 +20,11 @@
 
       <hod-date name="applicationRaisedDate" label="When was the application raised" field="familyDetails.applicationRaisedDate" hint="For example, 31 3 1980" config="conf.applicationRaisedDate"></hod-date>
 
-      <hod-submit value="Check eligibility"></hod-submit>
+      <hod-submit value="Check eligibility" ng-show="hodAvailability"></hod-submit>
+
+      <div class="error-summary" ng-if="!hodAvailability">
+        <p>System offline</p>
+      </div>
     </hod-form>
   </div>
 </div>
