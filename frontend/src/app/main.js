@@ -27,7 +27,7 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
 }]);
 
 
-app.run(['$location', '$rootScope', '$window', '$timeout', 'AvailabilityService', function($location, $rootScope, $window, $timeout, AvailabilityService) {
+app.run(['$location', '$rootScope', '$window', '$timeout', 'AvailabilityService', '$rootElement', function($location, $rootScope, $window, $timeout, AvailabilityService, $rootElement) {
   // see http://simplyaccessible.com/article/spangular-accessibility/
 
   AvailabilityService.setURL('availability');
@@ -43,6 +43,14 @@ app.run(['$location', '$rootScope', '$window', '$timeout', 'AvailabilityService'
         e[0].focus();
       }
     });
+
+  });
+
+
+  $rootScope.$on('$viewContentLoaded', function () {
+    window.setTimeout(function() {
+      $rootElement.find('input').checkAndTriggerAutoFillEvent();
+    }, 200);
 
   });
 }]);
