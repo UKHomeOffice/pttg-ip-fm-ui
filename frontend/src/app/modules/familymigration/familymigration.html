@@ -20,7 +20,7 @@
 
       <hod-date name="applicationRaisedDate" label="When was the application raised" field="familyDetails.applicationRaisedDate" config="conf.applicationRaisedDate"></hod-date>
 
-      <hod-submit value="{{ submitButton.text }}" disabled="{{ submitButton.disabled }}"></hod-submit>
+      <hod-submit value="{{ submitButton.text }}" disabled="{{ submitButton.disabled || hodAvailability===false}}"></hod-submit>
 
     </hod-form>
   </div>

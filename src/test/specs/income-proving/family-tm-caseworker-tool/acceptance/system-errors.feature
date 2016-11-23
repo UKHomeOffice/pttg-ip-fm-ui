@@ -36,8 +36,7 @@ Feature: System errors - specify messages shown in response to (simulated) conne
         Given the api is unreachable
         When the income check is performed
         Then the service displays the following page content
-            | Page dynamic heading        | You can’t use this service just now. The problem will be fixed as soon as possible |
-            | Page dynamic detail         | Please try again later.                                                            |
+            | Availability-heading        | You can’t use this service just now |
 
     Scenario: Handling API server validation errors - missing parameter
         Given the api response is a validation error - missing parameter

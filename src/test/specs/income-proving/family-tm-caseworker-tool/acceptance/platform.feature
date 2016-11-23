@@ -14,6 +14,7 @@ Feature: Capabilities required for platform integration and support eg healthche
     And Caseworker is using the Income Proving Service Case Worker Tool
     Then the service displays the following result
       | availability-heading | You can’t use this service just now |
+    And the submit button should be disabled
 
 
   ## Warning should not be shown when available ##
@@ -21,15 +22,18 @@ Feature: Capabilities required for platform integration and support eg healthche
     Given the api health check response has status 200
     And Caseworker is using the Income Proving Service Case Worker Tool
     Then the availability warning box should not be shown
+    And the submit button should be enabled
 
 
-    ## Warning should go away when system comes back up ##
-
+  ## Warning should go away when system comes back up ##
   Scenario: Out of order message disappears when availability changes to OK
     Given the api health check response has status 503
     And Caseworker is using the Income Proving Service Case Worker Tool
     And the service displays the following result
       | availability-heading | You can’t use this service just now |
+    And the submit button should be disabled
     When the api health check response has status 200
     And after at least 2 seconds
     Then the availability warning box should not be shown
+    And the submit button should be enabled
+

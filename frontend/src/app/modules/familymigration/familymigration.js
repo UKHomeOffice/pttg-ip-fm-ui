@@ -15,25 +15,26 @@ familymigrationModule.factory('FamilymigrationService', ['IOService', '$state', 
   };
 
   this.submit = function (nino, dependants, applicationRaisedDate) {
-    IOService.get('individual/' + nino + '/financialstatus', {dependants: dependants, applicationRaisedDate: applicationRaisedDate}, {timeout: 5000 }).then(function (res) {
-      lastAPIresponse = res;
-      $state.go('familymigrationResults');
-    }, function (res) {
-      lastAPIresponse = res;
-      console.log('Error', res);
-      var availableconf = AvailabilityService.getConfig();
-      console.log(availableconf);
-      IOService.get(availableconf.url).then(function (res) {
-        // var ok = (res.status === 200) ? true: false;
-        console.log('Availability', res.status);
-        $state.go('familymigrationResults');
-      }, function (err) {
-        // stay where we are, but tell the availability test to re-fire
-        console.log('Availability FAILTED', err);
-        $rootScope.$broadcast('retestAvailability');
+    return new Promise (function (resolve, reject) {
+      IOService.get('individual/' + nino + '/financialstatus', {dependants: dependants, applicationRaisedDate: applicationRaisedDate}, {timeout: 5000 }).then(function (res) {
+        lastAPIresponse = res;
+        return resolve();
+
+      }, function (res) {
+        // An error occurred
+        lastAPIresponse = res;
+
+        // test the availability again
+        var availableconf = AvailabilityService.getConfig();
+        IOService.get(availableconf.url).then(function (res) {
+          $state.go('familymigrationResults');
+          return reject({response: lastAPIresponse, availability: true});
+        }, function (err) {
+          // stay where we are, but tell the availability test to re-fire
+
+          return reject({response: lastAPIresponse, availability: false});
+        });
       });
-
-
     });
   };
 
@@ -119,9 +120,23 @@ function ($rootScope, $scope, $state, $stateParams, FamilymigrationService, IOSe
   $scope.detailsSubmit = function (isValid) {
     $scope.familyDetails.nino = ($scope.familyDetails.nino.replace(/[^a-zA-Z0-9]/g, '')).toUpperCase();
     if (isValid) {
-      FamilymigrationService.submit($scope.familyDetails.nino, $scope.familyDetails.dependants, $scope.familyDetails.applicationRaisedDate);
       $scope.submitButton.text = 'Sending';
       $scope.submitButton.disabled = true;
+
+      FamilymigrationService.submit($scope.familyDetails.nino, $scope.familyDetails.dependants, $scope.familyDetails.applicationRaisedDate).then(function () {
+        // eveything was OK go to the results page
+        $state.go('familymigrationResults');
+      }, function (err) {
+        if (err.availability) {
+          // something went wrong but availability check says OK so just show generic error page
+          $state.go('familymigrationResults');
+        } else {
+          // something is wrong, availability reports down, so stay here and poll until issue resolved
+          $rootScope.$broadcast('retestAvailability');
+          $scope.submitButton.text = 'Check eligibility';
+          $scope.submitButton.disabled = false;
+        }
+      });
     }
   };
 }]);
