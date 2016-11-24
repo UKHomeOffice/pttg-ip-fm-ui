@@ -8,6 +8,7 @@ Feature: Category A Financial Requirement
     When Robert submits a query
       | NINO                    | KS123456C  |
       | Application Raised Date | 03/07/2015 |
+      | Dependants              | 0          |
     Then the service displays the following result
       | Page dynamic heading                  | Not passed                                                       |
       | Page dynamic detail                   | Kumar Sangakkara Dilshan doesn't meet the Category A requirement |
@@ -84,6 +85,7 @@ Feature: Category A Financial Requirement
     When Robert submits a query
       | NINO                    | RK123456C  |
       | Application Raised Date | 03/07/2015 |
+      | Dependants              | 0          |
     Then the service displays the following result
       | Page dynamic heading                  | There is no record for RK123456C with HMRC                                                     |
       | Page dynamic detail                   | We couldn't perform the financial requirement check as no income information exists with HMRC. |
