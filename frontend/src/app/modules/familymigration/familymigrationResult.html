@@ -19,10 +19,13 @@
   </div>
 
 
-  <div ng-if="!success" class="panel panel-border-wide text">
+  <div class="panel panel-border-wide text">
     <h2 id="whatToDoNextHeading" class="heading-small">What to do next</h2>
     <ol class="list list-number">
-      <li id="whatToDoNextSubHeading">You should consider if the applicant meets the financial requirement under any other category.</li>
+
+      <li ng-if="haveResult">check that the name matches applicant's details</li>
+      <li>check you have entered the correct information</li>
+      <li id="whatToDoNextSubHeading" ng-if="!success">You should consider if the applicant meets the financial requirement under any other category.</li>
     </ol>
   </div>
 

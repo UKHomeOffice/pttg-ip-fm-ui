@@ -63,6 +63,16 @@ familymigrationModule.controller(
 function ($rootScope, $scope, $state, $stateParams, FamilymigrationService, IOService, $window) {
   $scope.familyDetails = FamilymigrationService.getFamilyDetails();
 
+  var appRaisedDateMsg = {
+    summary: 'The application raised date is invalid',
+    msg:     'Enter a valid application raised date'
+  };
+
+  var dependantsMsg = {
+    summary: 'The number of dependants is invalid',
+    msg:     'Enter a valid number of dependants'
+  }
+
   $scope.conf = {
     nino: {
       validate: function (val) {
@@ -73,26 +83,45 @@ function ($rootScope, $scope, $state, $stateParams, FamilymigrationService, IOSe
             return true;
           }
         }
-        return { summary: 'The National Insurance Number is invalid', msg: 'Enter a valid National Insurance Number'};
+        return { summary: 'The National Insurance number is invalid', msg: 'Enter a valid National Insurance number'};
       }
     },
     dependants: {
       required: false,
-      classes: { 'form-control-1-8': true },
       max: 99,
+      classes: { 'form-control-1-8': true },
+      validate: function (v, s) {
+        var n = Number(v);
+        var ok = true;
+        if (n < 0 || n > 99) {
+          ok = false;
+        }
+
+        if (v.length === 0) {
+          ok = false;
+        }
+
+        if (Math.ceil(n) !== Math.floor(n)) {
+          // not a whole number
+          ok = false;
+        }
+
+        if (ok) {
+          return true;
+        }
+
+        return {
+          summary: 'The number of dependants is invalid',
+          msg: 'Enter a valid number of dependants'
+        };
+      }
     },
     applicationRaisedDate: {
       max: moment().format('YYYY-MM-DD'),
       errors: {
-        required: {
-          msg: 'Enter a valid application raised date'
-        },
-        invalid: {
-          msg: 'Enter a valid application raised date'
-        },
-        max: {
-          msg: 'Enter a valid application raised date'
-        }
+        required: appRaisedDateMsg,
+        invalid: appRaisedDateMsg,
+        max: appRaisedDateMsg
       }
     }
   };
