@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -26,14 +27,17 @@ public final class CategoryCheck {
     @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate assessmentStartDate;
 
+    private BigDecimal threshold;
+
     public CategoryCheck() {
     }
 
-    public CategoryCheck(boolean passed, String failureReason, LocalDate applicationRaisedDate, LocalDate assessmentStartDate) {
+    public CategoryCheck(boolean passed, String failureReason, LocalDate applicationRaisedDate, LocalDate assessmentStartDate, BigDecimal threhsold) {
         this.passed = passed;
         this.failureReason = failureReason;
         this.applicationRaisedDate = applicationRaisedDate;
         this.assessmentStartDate = assessmentStartDate;
+        this.threshold = threshold;
     }
 
     public boolean isPassed() {
@@ -68,6 +72,14 @@ public final class CategoryCheck {
         this.assessmentStartDate = assessmentStartDate;
     }
 
+    public BigDecimal getThreshold() {
+        return threshold;
+    }
+
+    public void setThreshold(BigDecimal threshold) {
+        this.threshold = threshold;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -76,12 +88,13 @@ public final class CategoryCheck {
         return passed == that.passed &&
                 Objects.equals(failureReason, that.failureReason) &&
                 Objects.equals(applicationRaisedDate, that.applicationRaisedDate) &&
-                Objects.equals(assessmentStartDate, that.assessmentStartDate);
+                Objects.equals(assessmentStartDate, that.assessmentStartDate) &&
+                Objects.equals(threshold, that.threshold);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(passed, failureReason, applicationRaisedDate, assessmentStartDate);
+        return Objects.hash(passed, failureReason, applicationRaisedDate, assessmentStartDate, threshold);
     }
 
     @Override
@@ -91,6 +104,7 @@ public final class CategoryCheck {
                 ", failureReason='" + failureReason + '\'' +
                 ", applicationRaisedDate=" + applicationRaisedDate +
                 ", assessmentStartDate=" + assessmentStartDate +
+                ", threshold=" + threshold +
                 '}';
     }
 }

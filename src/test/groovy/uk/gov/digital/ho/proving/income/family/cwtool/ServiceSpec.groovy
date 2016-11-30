@@ -19,6 +19,7 @@ import uk.gov.digital.ho.proving.income.family.cwtool.exception.ServiceException
 import uk.gov.digital.ho.proving.income.family.cwtool.integration.RestServiceErrorHandler
 
 import java.time.LocalDate
+import java.util.zip.ZipEntry
 
 import static org.hamcrest.core.AllOf.allOf
 import static org.hamcrest.core.Is.is
@@ -275,7 +276,7 @@ class ServiceSpec extends Specification {
 
     def ApiResponse buildResponse() {
         ApiResponse response = new ApiResponse()
-        response.setCategoryCheck(new CategoryCheck(true, "reason", LocalDate.parse(RAISED_DATE),LocalDate.parse(RAISED_DATE)))
+        response.setCategoryCheck(new CategoryCheck(true, "reason", LocalDate.parse(RAISED_DATE),LocalDate.parse(RAISED_DATE), BigDecimal.ZERO))
         response.setIndividual(new Individual(MR, FORENAME, SURNAME, NINO))
         response
     }
