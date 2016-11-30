@@ -1,7 +1,8 @@
 Feature: Category A Financial Requirement
 
   Background:
-    Given Caseworker is using the Income Proving Service Case Worker Tool
+    Given the api health check response has status 200
+    And Caseworker is using the Income Proving Service Case Worker Tool
 
   Scenario: Does not meet the Category A employment duration Requirement (with current employer for only 3 months)
     Given the account data for KS123456C

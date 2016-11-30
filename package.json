@@ -12,6 +12,7 @@
     "angular-ui-router": "^0.3.1",
     "angular-ui-validate": "^1.2.2",
     "async": "^2.0.1",
+    "autofill-event": "0.0.1",
     "del": "^2.2.0",
     "govuk-elements-sass": "^1.1.2",
     "govuk_frontend_toolkit": "^4.6.0",

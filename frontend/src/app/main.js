@@ -3,12 +3,13 @@ var app = angular.module('hod.proving', [
   'ngAria',
   'hod.familymigration',
   'hod.forms',
-  'hod.io'
+  'hod.io',
+  'hod.availability'
 ]);
 
 
 app.constant('CONFIG', {
-  api: '/'//'http://127.0.0.1:3001/'//$('html').data('api')
+  api: '/incomeproving/v1/'
 });
 
 
@@ -26,8 +27,10 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
 }]);
 
 
-app.run(['$location', '$rootScope', '$window', '$timeout', function($location, $rootScope, $window, $timeout) {
+app.run(['$location', '$rootScope', '$window', '$timeout', 'AvailabilityService', '$rootElement', function($location, $rootScope, $window, $timeout, AvailabilityService, $rootElement) {
   // see http://simplyaccessible.com/article/spangular-accessibility/
+
+  AvailabilityService.setURL('availability');
 
   $rootScope.$on('$viewContentLoaded', function () {
     // http://stackoverflow.com/questions/25596399/set-element-focus-in-angular-way
@@ -40,6 +43,14 @@ app.run(['$location', '$rootScope', '$window', '$timeout', function($location, $
         e[0].focus();
       }
     });
+
+  });
+
+
+  $rootScope.$on('$viewContentLoaded', function () {
+    window.setTimeout(function() {
+      $rootElement.find('input').checkAndTriggerAutoFillEvent();
+    }, 200);
 
   });
 }]);
