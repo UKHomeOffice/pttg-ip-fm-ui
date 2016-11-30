@@ -5,8 +5,7 @@
 var familymigrationModule = angular.module('hod.familymigration', ['ui.router']);
 
 
-familymigrationModule.factory('FamilymigrationService', ['IOService', '$state', 'AvailabilityService', '$rootScope',
-  function (IOService, $state, AvailabilityService, $rootScope) {
+familymigrationModule.factory('FamilymigrationService', ['IOService', '$state', function (IOService, $state) {
   var lastAPIresponse = {};
   var familyDetails = {
     nino: '',
@@ -15,26 +14,12 @@ familymigrationModule.factory('FamilymigrationService', ['IOService', '$state', 
   };
 
   this.submit = function (nino, dependants, applicationRaisedDate) {
-    return new Promise (function (resolve, reject) {
-      IOService.get('individual/' + nino + '/financialstatus', {dependants: dependants, applicationRaisedDate: applicationRaisedDate}, {timeout: 5000 }).then(function (res) {
-        lastAPIresponse = res;
-        return resolve();
-
-      }, function (res) {
-        // An error occurred
-        lastAPIresponse = res;
-
-        // test the availability again
-        var availableconf = AvailabilityService.getConfig();
-        IOService.get(availableconf.url).then(function (res) {
-          $state.go('familymigrationResults');
-          return reject({response: lastAPIresponse, availability: true});
-        }, function (err) {
-          // stay where we are, but tell the availability test to re-fire
-
-          return reject({response: lastAPIresponse, availability: false});
-        });
-      });
+    IOService.get('individual/' + nino + '/financialstatus', {dependants: dependants, applicationRaisedDate: applicationRaisedDate}, {timeout: 5000 }).then(function (res) {
+      lastAPIresponse = res;
+      $state.go('familymigrationResults');
+    }, function (res) {
+      lastAPIresponse = res;
+      $state.go('familymigrationResults');
     });
   };
 
