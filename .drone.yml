@@ -8,8 +8,8 @@ pipeline:
     commands:
       - docker build -f Dockerfile.build -t gradle-node .
     when:
-      event: push
       branch: master
+      event: push
 
   my-build:
     privileged: true
@@ -21,8 +21,8 @@ pipeline:
       - mkdir -p build/libs
       - docker cp pttg-ip-fm-ui-build:/work/build/libs/ build
     when:
-      event: push
       branch: master
+      event: push
 
   my-docker-build:
     privileged: true
@@ -31,9 +31,10 @@ pipeline:
       - DOCKER_HOST=tcp://127.0.0.1:2375
     commands:
       - docker build -t quay.io/ukhomeofficedigital/pttg-ip-fm-ui:${DRONE_COMMIT_SHA} .
+
     when:
-      event: push
       branch: master
+      event: push
 
   image_to_quay:
     image: docker:1.11
@@ -43,8 +44,8 @@ pipeline:
       - docker login -u="ukhomeofficedigital+pttg" -p=${DOCKER_PASSWORD} quay.io
       - docker push quay.io/ukhomeofficedigital/pttg-ip-fm-ui:${DRONE_COMMIT_SHA}
     when:
-      event: push
       branch: master
+      event: push
 
   predeploy:
     image: plugins/git
@@ -53,8 +54,8 @@ pipeline:
     commands:
       - git clone https://github.com/UKHomeOffice/kube-pttg-ip-fm-ui.git
     when:
-      event: [push, deployment]
       branch: master
+      event: [push, deployment]
 
   deploy_to_dev:
     image: quay.io/ukhomeofficedigital/kd:v0.2.2
@@ -68,8 +69,8 @@ pipeline:
       - cd kube-pttg-ip-fm-ui
       - ./deploy.sh
     when:
-      event: push
       branch: master
+      event: push
 
   deploy_to_test:
     image: quay.io/ukhomeofficedigital/kd:v0.2.2
