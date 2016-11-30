@@ -5,6 +5,8 @@
       <span id="pageSubHeading">Family Migration</span>
     </h1>
 
+    <hod-availability></hod-availability>
+
     <h2 class="form-title heading-medium" id="pageSubTitle">Individual's details</h2>
 
     <div class="text">
@@ -16,9 +18,10 @@
 
       <hod-number name="dependants" label="Number of dependants" field="familyDetails.dependants" config="conf.dependants" required="false"></hod-number>
 
-      <hod-date name="applicationRaisedDate" label="When was the application raised" field="familyDetails.applicationRaisedDate" config="conf.applicationRaisedDate"></hod-date>
+      <hod-date name="applicationRaisedDate" label="Application raised date" field="familyDetails.applicationRaisedDate" config="conf.applicationRaisedDate"></hod-date>
 
-      <hod-submit value="{{ submitButton.text }}" disabled="{{ submitButton.disabled }}"></hod-submit>
+      <hod-submit value="{{ submitButton.text }}" disabled="{{ submitButton.disabled || hodAvailability===false}}"></hod-submit>
+
     </hod-form>
   </div>
 </div>
