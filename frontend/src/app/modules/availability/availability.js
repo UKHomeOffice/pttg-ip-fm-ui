@@ -28,8 +28,7 @@ availabilityModule.factory('AvailabilityService', ['IOService', function (IOServ
 }]);
 
 
-availabilityModule.directive('hodAvailability', ['IOService', 'AvailabilityService', '$timeout', '$rootScope',
-function (IOService, AvailabilityService, $timeout, $rootScope) {
+availabilityModule.directive('hodAvailability', ['IOService', 'AvailabilityService', '$timeout', function (IOService, AvailabilityService, $timeout) {
   return {
     restrict: 'E',
     compile: function (element, attrs) {
@@ -38,7 +37,6 @@ function (IOService, AvailabilityService, $timeout, $rootScope) {
         var conf = AvailabilityService.getConfig();
         var setAvailability = function (a) {
           scope.isAvailable = a;
-          $rootScope.hodAvailability = a;
           scope.$applyAsync();
 
           if (!a && conf.interval) {
@@ -61,10 +59,6 @@ function (IOService, AvailabilityService, $timeout, $rootScope) {
 
         // start the test process
         testAvailability();
-
-        $rootScope.$on('retestAvailability', function () {
-          testAvailability();
-        });
       };
     },
     scope: {
