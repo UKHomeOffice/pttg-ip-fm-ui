@@ -51,6 +51,7 @@ jar.into('static') {
     from('src/main/webapp')
 }
 
+
 jar.mustRunAfter(gulp_build)
 
 dependencies {
