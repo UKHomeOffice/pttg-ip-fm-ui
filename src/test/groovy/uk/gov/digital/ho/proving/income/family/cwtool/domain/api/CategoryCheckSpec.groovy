@@ -14,7 +14,7 @@ class CategoryCheckSpec  extends Specification {
     def "generates meaningful toString instead of just a hash"() {
 
         given:
-        def instance = new CategoryCheck(true, "reason", LocalDate.now(), LocalDate.now(), 0)
+        def instance = new CategoryCheck(true, "reason", LocalDate.now(), LocalDate.now(), 0, new ArrayList())
 
         when:
         def output = instance.toString()

@@ -8,6 +8,7 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -29,15 +30,18 @@ public final class CategoryCheck {
 
     private BigDecimal threshold;
 
+    private List<String> employers;
+
     public CategoryCheck() {
     }
 
-    public CategoryCheck(boolean passed, String failureReason, LocalDate applicationRaisedDate, LocalDate assessmentStartDate, BigDecimal threhsold) {
+    public CategoryCheck(boolean passed, String failureReason, LocalDate applicationRaisedDate, LocalDate assessmentStartDate, BigDecimal threshold, List<String> employers) {
         this.passed = passed;
         this.failureReason = failureReason;
         this.applicationRaisedDate = applicationRaisedDate;
         this.assessmentStartDate = assessmentStartDate;
         this.threshold = threshold;
+        this.employers = employers;
     }
 
     public boolean isPassed() {
@@ -78,6 +82,14 @@ public final class CategoryCheck {
 
     public void setThreshold(BigDecimal threshold) {
         this.threshold = threshold;
+    }
+
+    public List<String> getEmployers() {
+        return employers;
+    }
+
+    public void setEmployers(List<String> employers) {
+        this.employers = employers;
     }
 
     @Override

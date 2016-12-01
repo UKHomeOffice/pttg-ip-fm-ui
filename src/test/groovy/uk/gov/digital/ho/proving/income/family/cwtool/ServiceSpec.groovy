@@ -276,7 +276,7 @@ class ServiceSpec extends Specification {
 
     def ApiResponse buildResponse() {
         ApiResponse response = new ApiResponse()
-        response.setCategoryCheck(new CategoryCheck(true, "reason", LocalDate.parse(RAISED_DATE),LocalDate.parse(RAISED_DATE), BigDecimal.ZERO))
+        response.setCategoryCheck(new CategoryCheck(true, "reason", LocalDate.parse(RAISED_DATE),LocalDate.parse(RAISED_DATE), BigDecimal.ZERO, new ArrayList()))
         response.setIndividual(new Individual(MR, FORENAME, SURNAME, NINO))
         response
     }
