@@ -63,7 +63,6 @@ familymigrationModule.controller('FamilymigrationResultCtrl', ['$scope', '$state
         default:
           $scope.reason = 'They haven\'t met the required monthly amount.';
       }
-
     }
   } else {
     if (res.status === 404) {
@@ -85,4 +84,53 @@ familymigrationModule.controller('FamilymigrationResultCtrl', ['$scope', '$state
   $scope.editSearch = function () {
     $state.go('familymigration');
   };
+
+
+    // #### COPY AND PASTE ####
+  $scope.copyToClipboardBtnText = RESULT_TEXT.copybtn;
+  var lineLength = function (str, len) {
+    while (str.length < len) {
+      str += ' ';
+    }
+    return str;
+  };
+
+  // compile the copy text
+  var copyText = text.heading.toUpperCase() + "\n" + text.reason + "\n\nRESULTS\n";
+  _.each($scope.summary, function (obj) {
+    copyText += lineLength(obj.label + ': ', 36) + obj.value + "\n";
+  });
+
+  // add the your search to it
+  copyText += "\n\nSEARCH CRITERIA\n";
+  _.each($scope.searchCriteria, function (obj) {
+    copyText += lineLength(obj.label + ': ', 36) + obj.value + "\n";
+  });
+  $scope.copyText = copyText;
+
+  // init the clipboard object
+  var clipboard = new Clipboard('.button--copy', {
+    text: function () {
+      return copyText;
+    }
+  });
+
+  var timeoutResetButtonText = function () {
+    $timeout(function () {
+      $scope.copyToClipboardBtnText = RESULT_TEXT.copybtn;
+      $scope.$applyAsync();
+    }, 2000);
+  };
+
+  clipboard.on('success', function(e) {
+    $scope.copyToClipboardBtnText = RESULT_TEXT.copiedbtn;
+    $scope.$applyAsync();
+    e.clearSelection();
+    timeoutResetButtonText();
+  });
+  clipboard.on('error', function(e) {
+    console.log('ClipBoard error', e);
+    $scope.copysummary = e.action + ' ' + e.trigger;
+    $scope.$applyAsync();
+  });
 }]);

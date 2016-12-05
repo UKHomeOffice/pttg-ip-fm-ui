@@ -110,7 +110,8 @@ gulp.task('vendor', function () {
     'node_modules/angular-ui-validate/dist/validate.min.js',
     'node_modules/underscore/underscore-min.js',
     'node_modules/moment/min/moment.min.js',
-    'node_modules/autofill-event/autofill-event.js'
+    'node_modules/autofill-event/autofill-event.js',
+    'node_modules/clipboard/dist/clipboard.min.js'
   ])
   .pipe(plumber())
   .pipe(concat('vendor.js'))
