@@ -13,7 +13,9 @@
     "passed" : false,
     "applicationRaisedDate" : "2015-02-10",
     "assessmentStartDate" : "2015-03-25",
-    "failureReason" : "MONTHLY_VALUE_BELOW_THRESHOLD"
+    "failureReason" : "MONTHLY_VALUE_BELOW_THRESHOLD",
+    "threshold" : "999.99",
+    "employers" : ["The Home Office"]
   }
 }
 

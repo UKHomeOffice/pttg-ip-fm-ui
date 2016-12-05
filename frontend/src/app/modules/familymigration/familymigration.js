@@ -137,20 +137,23 @@ function ($rootScope, $scope, $state, $stateParams, FamilymigrationService, IOSe
       $scope.submitButton.text = 'Sending';
       $scope.submitButton.disabled = true;
 
-      FamilymigrationService.submit($scope.familyDetails.nino, $scope.familyDetails.dependants, $scope.familyDetails.applicationRaisedDate).then(function () {
-        // eveything was OK go to the results page
-        $state.go('familymigrationResults');
-      }, function (err) {
-        if (err.availability) {
-          // something went wrong but availability check says OK so just show generic error page
-          $state.go('familymigrationResults');
-        } else {
-          // something is wrong, availability reports down, so stay here and poll until issue resolved
-          $rootScope.$broadcast('retestAvailability');
-          $scope.submitButton.text = 'Check eligibility';
-          $scope.submitButton.disabled = false;
-        }
-      });
+      FamilymigrationService.submit($scope.familyDetails.nino, $scope.familyDetails.dependants, $scope.familyDetails.applicationRaisedDate)
+
+
+      // .then(function () {
+      //   // eveything was OK go to the results page
+      //   $state.go('familymigrationResults');
+      // }, function (err) {
+      //   if (err.availability) {
+      //     // something went wrong but availability check says OK so just show generic error page
+      //     $state.go('familymigrationResults');
+      //   } else {
+      //     // something is wrong, availability reports down, so stay here and poll until issue resolved
+      //     $rootScope.$broadcast('retestAvailability');
+      //     $scope.submitButton.text = 'Check eligibility';
+      //     $scope.submitButton.disabled = false;
+      //   }
+      // });
     }
   };
 }]);

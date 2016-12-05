@@ -37,9 +37,21 @@
         <th scope="row">Individual</th>
         <td><span id="yourSearchIndividualName">{{ individual.forename}} {{ individual.surname }}</span></td>
       </tr>
+      <tr>
+        <th scope="row">Threshold</th>
+        <td><span id="threshold">{{ threshold | currency : '£' }}</span></td>
+      </tr>
       <tr ng-if="success">
         <th scope="row">Income within date range</th>
         <td><span id="outcomeFromDate">{{ outcomeFromDate }}</span> - <span id="outcomeToDate">{{ outcomeToDate }}</span></td>
+      </tr>
+      <tr ng-if="employers.length">
+        <th scope="row">Employers</th>
+        <td>
+          <ol class="list list-number">
+            <li ng-repeat="e in employers" id="employer{{ $index }}">{{ e }}</li>
+          </ol>
+        </td>
       </tr>
     </table>
   </div>

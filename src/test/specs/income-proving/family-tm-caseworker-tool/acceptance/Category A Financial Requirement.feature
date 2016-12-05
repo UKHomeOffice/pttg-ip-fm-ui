@@ -14,6 +14,10 @@ Feature: Category A Financial Requirement
       | Page dynamic heading                  | Not passed                                                       |
       | Page dynamic detail                   | Kumar Sangakkara Dilshan doesn't meet the Category A requirement |
       | Page dynamic reason                   | They haven't been with their current employer for 6 months.      |
+      | Threshold                             | £123.45                                                          |
+      | Employer0                             | Pizza Ltd                                                        |
+      | Employer1                             | Morrisons                                                        |
+      | Employer2                             | The Home Office                                                  |
       | Your Search Individual Name           | Kumar Sangakkara Dilshan                                         |
       | Your Search National Insurance Number | KS123456C                                                        |
       | Your Search Application Raised Date   | 03/07/2015                                                       |
@@ -32,6 +36,9 @@ Feature: Category A Financial Requirement
       | Your Search Dependants                | 2                                                      |
       | Your Search National Insurance Number | BS123456B                                              |
       | Your Search Application Raised Date   | 10/02/2015                                             |
+      | Threshold                             | £999.99                                                |
+      | Employer0                             | The Home Office                                        |
+
 
   Scenario: Meets the Category A Financial Requirement with 1 dependant
     Given the account data for TL123456A
@@ -40,14 +47,16 @@ Feature: Category A Financial Requirement
       | Application Raised Date | 03/01/2015 |
       | Dependants              | 1          |
     Then the service displays the following result
-      | Page dynamic heading                  | Passed     |
-      | Outcome Box Individual Name           | Tony Ledo  |
-      | Outcome From Date                     | 25/07/2014 |
-      | Outcome To Date                       | 03/01/2015 |
-      | Your Search Individual Name           | Tony Ledo  |
-      | Your Search Dependants                | 1          |
-      | Your Search National Insurance Number | TL123456A  |
-      | Your Search Application Raised Date   | 03/01/2015 |
+      | Page dynamic heading                  | Passed          |
+      | Outcome Box Individual Name           | Tony Ledo       |
+      | Outcome From Date                     | 25/07/2014      |
+      | Outcome To Date                       | 03/01/2015      |
+      | Your Search Individual Name           | Tony Ledo       |
+      | Your Search Dependants                | 1               |
+      | Your Search National Insurance Number | TL123456A       |
+      | Your Search Application Raised Date   | 03/01/2015      |
+      | Threshold                             | £128.64         |
+      | Employer0                             | ZX Spectrum 48K |
 
   Scenario:  Caseworker enters the National Insurance Number with spaces
     Given the account data for TL123456A
@@ -64,6 +73,8 @@ Feature: Category A Financial Requirement
       | Your Search Dependants                | 1          |
       | Your Search National Insurance Number | TL123456A  |
       | Your Search Application Raised Date   | 03/01/2015 |
+      | Threshold                             | £128.64         |
+      | Employer0                             | ZX Spectrum 48K |
 
   Scenario:  Caseworker enters the Application Raised Date with single numbers for the day and month
     Given the account data for TL123456A
@@ -80,6 +91,8 @@ Feature: Category A Financial Requirement
       | Your Search Dependants                | 1          |
       | Your Search National Insurance Number | TL123456A  |
       | Your Search Application Raised Date   | 03/01/2015 |
+      | Threshold                             | £128.64         |
+      | Employer0                             | ZX Spectrum 48K |
 
   Scenario: Caseworker enters a NINO where no records exist within the period stated
     Given no record for RK123456C

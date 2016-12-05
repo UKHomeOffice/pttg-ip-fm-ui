@@ -43,6 +43,8 @@ familymigrationModule.controller('FamilymigrationResultCtrl', ['$scope', '$state
 
   $scope.haveResult = (res.data && res.data.categoryCheck) ? true: false;
   if ($scope.haveResult) {
+    $scope.employers = res.data.categoryCheck.employers || []
+    $scope.threshold = res.data.categoryCheck.threshold
     $scope.individual = res.data.individual;
     $scope.outcomeBoxIndividualName = res.data.individual.forename + ' ' + res.data.individual.surname;
     $scope.outcomeFromDate = displayDate(res.data.categoryCheck.assessmentStartDate);
