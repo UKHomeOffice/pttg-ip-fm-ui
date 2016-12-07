@@ -1,4 +1,4 @@
-/* global angular Clipboard moment _ */
+/* global angular Clipboard moment _ ga */
 
 /* jshint node: true */
 
@@ -29,7 +29,12 @@ familymigrationModule.constant('RESULT_TEXT', {
   copysummary: 'The check financial status service confirmed that {{name}} {{passed}} the requirements as the daily closing balance was {{above}} the total funds required.'
 })
 
-familymigrationModule.controller('FamilymigrationResultCtrl', ['$scope', '$state', '$filter', 'FamilymigrationService', 'RESULT_TEXT', '$timeout', function ($scope, $state, $filter, FamilymigrationService, RESULT_TEXT, $timeout) {
+familymigrationModule.controller('FamilymigrationResultCtrl', ['$scope', '$state', '$stateParams', '$filter', 'FamilymigrationService', function ($scope, $state, $stateParams, $filter, FamilymigrationService) {
+
+  // track that we're now on the main form details page
+  ga('set', 'page', $state.href($state.current.name, $stateParams));
+  ga('send', 'pageview');
+
   var res = FamilymigrationService.getLastAPIresponse()
   $scope.familyDetails = FamilymigrationService.getFamilyDetails()
 
