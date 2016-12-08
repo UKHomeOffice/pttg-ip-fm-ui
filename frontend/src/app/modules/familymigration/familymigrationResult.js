@@ -1,4 +1,4 @@
-/* global angular Clipboard moment _ */
+/* global angular Clipboard moment _ ga */
 
 /* jshint node: true */
 
@@ -29,7 +29,8 @@ familymigrationModule.constant('RESULT_TEXT', {
   copysummary: 'The check financial status service confirmed that {{name}} {{passed}} the requirements as the daily closing balance was {{above}} the total funds required.'
 })
 
-familymigrationModule.controller('FamilymigrationResultCtrl', ['$scope', '$state', '$filter', 'FamilymigrationService', 'RESULT_TEXT', '$timeout', function ($scope, $state, $filter, FamilymigrationService, RESULT_TEXT, $timeout) {
+familymigrationModule.controller('FamilymigrationResultCtrl', ['$scope', '$state', '$stateParams', '$filter', 'FamilymigrationService', 'RESULT_TEXT', '$timeout', function ($scope, $state, $stateParams, $filter, FamilymigrationService, RESULT_TEXT, $timeout) {
+  var state = 'error'
   var res = FamilymigrationService.getLastAPIresponse()
   $scope.familyDetails = FamilymigrationService.getFamilyDetails()
 
@@ -54,6 +55,7 @@ familymigrationModule.controller('FamilymigrationResultCtrl', ['$scope', '$state
     $scope.outcomeToDate = displayDate(res.data.categoryCheck.applicationRaisedDate)
 
     if (res.data.categoryCheck.passed) {
+      state = 'passed'
       $scope.copysummary = $scope.outcomeBoxIndividualName + ' meets the Category A requirement'
       $scope.success = true
     } else {
@@ -62,20 +64,24 @@ familymigrationModule.controller('FamilymigrationResultCtrl', ['$scope', '$state
       // $scope.heading = res.data.individual.forename + ' ' + res.data.individual.surname + ' doesn\'t meet the Category A requirement';
       switch (res.data.categoryCheck.failureReason) {
         case 'NOT_ENOUGH_RECORDS':
+          state = 'notpassed/recordcount'
           $scope.reason = 'They haven\'t been with their current employer for 6 months.'
           break
 
         default:
+          state = 'notpassed/threshold'
           $scope.reason = 'They haven\'t met the required monthly amount.'
       }
     }
   } else {
     if (res.status === 404) {
+      state = 'failure/norecord'
       $scope.heading = 'There is no record for ' + $scope.familyDetails.nino + ' with HMRC'
       $scope.reason = 'We couldn\'t perform the financial requirement check as no income information exists with HMRC.'
     } else {
       $scope.heading = 'You can’t use this service just now. The problem will be fixed as soon as possible'
       $scope.reason = 'Please try again later.'
+      state = 'failure'
     }
   };
 
@@ -88,6 +94,10 @@ familymigrationModule.controller('FamilymigrationResultCtrl', ['$scope', '$state
   $scope.editSearch = function () {
     $state.go('familymigration')
   }
+
+  // track
+  ga('set', 'page', $state.href($state.current.name, $stateParams) + '/' + state)
+  ga('send', 'pageview')
 
   // ######################## //
   // #### COPY AND PASTE #### //
