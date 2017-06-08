@@ -3,36 +3,42 @@ Feature: Category A Financial Requirement
   Background:
     Given the api health check response has status 200
     And Caseworker is using the Income Proving Service Case Worker Tool
-
-  Scenario: Does not meet the Category A employment duration Requirement (with current employer for only 3 months)
-    Given the account data for KS123456C
-    When Robert submits a query
+    When case worker submits query
       | NINO                    | KS123456C  |
       | Application Raised Date | 03/07/2015 |
-      | Dependants              | 0          |
+      | First name              |Joh         |############
+      | Surname                 |Smi         |############
+      | Date of birth           |01/01/1969  |############
+
+  Scenario: Does not meet the Category A employment duration Requirement (with current employer for only 3 months)
+    #Given the account data for KS123456C
+    And
+      |dependents             | 0 |
     Then the service displays the following result
       | Page dynamic heading                  | Not passed                                                       |
-      | Page dynamic detail                   | Kumar Sangakkara Dilshan doesn't meet the Category A requirement |
+      | Page dynamic detail                   | John Smith doesn't meet the Category A requirement               |
       | Page dynamic reason                   | They haven't been with their current employer for 6 months.      |
       | Threshold                             | £123.45                                                          |
       | Employer0                             | Pizza Ltd                                                        |
       | Employer1                             | Morrisons                                                        |
       | Employer2                             | The Home Office                                                  |
-      | Your Search Individual Name           | Kumar Sangakkara Dilshan                                         |
+      | Your Search Individual Name           | John Smith                                                       |
       | Your Search National Insurance Number | KS123456C                                                        |
       | Your Search Application Raised Date   | 03/07/2015                                                       |
 
   Scenario: Does not meet the Category A Financial Requirement (earned < the Cat A financial threshold)
-    Given the account data for BS123456B
-    When Robert submits a query
-      | NINO                    | BS123456B  |
-      | Application Raised Date | 10/02/2015 |
-      | Dependants              | 2          |
+    #Given the account data for BS123456B
+   # When Robert submits a query
+      #| NINO                    | BS123456B  | #####
+      #| Application Raised Date | 10/02/2015 |#####
+      And ###
+        | Dependants              | 2          |#####
+
     Then the service displays the following result
       | Page dynamic heading                  | Not passed                                             |
-      | Page dynamic detail                   | Brian Sinclair doesn't meet the Category A requirement |
+      | Page dynamic detail                   | John Smith doesn't meet the Category A requirement |
       | Page dynamic reason                   | They haven't met the required monthly amount.          |
-      | Your Search Individual Name           | Brian Sinclair                                         |
+      | Your Search Individual Name           | John Smith                                         |
       | Your Search Dependants                | 2                                                      |
       | Your Search National Insurance Number | BS123456B                                              |
       | Your Search Application Raised Date   | 10/02/2015                                             |
@@ -41,10 +47,10 @@ Feature: Category A Financial Requirement
 
 
   Scenario: Meets the Category A Financial Requirement with 1 dependant
-    Given the account data for TL123456A
-    When Robert submits a query
-      | NINO                    | TL123456A  |
-      | Application Raised Date | 03/01/2015 |
+    #Given the account data for TL123456A
+    And
+      #| NINO                    | TL123456A  |
+      #| Application Raised Date | 03/01/2015 |
       | Dependants              | 1          |
     Then the service displays the following result
       | Page dynamic heading                  | Passed          |
