@@ -1,5 +1,7 @@
 Feature: Input validation
   National Insurance Numbers (NINO) - Format and Security: A NINO is made up of two letters, six numbers and a final letter (which is always A, B, C, or D)
+ First Name - First three letters of first name
+  Last Name - Fisrt three letters of last name
   Date formats: Format should be dd/mm/yyyy or d/m/yyyy
 
   Background:
@@ -7,6 +9,9 @@ Feature: Input validation
     And Caseworker is using the Income Proving Service Case Worker Tool
     And the default details are
       | NINO                    | AA123456A  |
+      |First name               | Mar         |
+      |Last name                | Jon         |
+      |Date of birth            | 07/07/1976  |
       | Application Raised Date | 01/05/2015 |
       | Dependants              | 0          |
 
