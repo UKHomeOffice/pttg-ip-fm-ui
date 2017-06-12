@@ -38,7 +38,7 @@ Feature: Page content
       | NINO                    | TL123456A  |
       | First name              |Ton         |#
       | Last name               |Led         |#
-      |Date of birth            |05/05/1980  |#
+      | Date of birth           |05/05/1980  |#
     Then the service displays the following result
       | Page appendix title | Where can I find the appendix?                         |
       | Chapter 8 link      | Chapter 8 of the immigration directorate instructions. |
