@@ -7,14 +7,17 @@ Feature: Page content
       | NINO                    | AA123456A  |
       | Application Raised Date | 23/01/2015 |
       | Dependants              | 0          |
-      | First name              |Joh         |##############
-      | Surname                 |Smi         |############
-      | Date of birth           |01/01/1969  |############
+      | First name              |Mar         |##############
+      | Surname                 |Jon         |############
+      | Date of birth           |07/07/1976  |############
 
   Scenario: Check for important text on the page
     Given the account data for JL123456A
     When caseworker submits a query
       | NINO                    | JL123456A  | #####
+      |First name               |Jil         |#
+      |Last name                |Lew         |#
+      |date of birth            |08/08/1980  |#
     Then the service displays the following result
       | Page dynamic detail          | Jill Lewondoski doesn't meet the Category A requirement|
       | Page dynamic reason          | They haven't met the required monthly amount. |
@@ -32,7 +35,10 @@ Feature: Page content
   Scenario: Page checks for appendix link
     Given the account data for TL123456A
     When Case worker submits a query
-      #| NINO                    | TL123456A  |
+      | NINO                    | TL123456A  |
+      | First name              |Ton         |#
+      | Last name               |Led         |#
+      |Date of birth            |05/05/1980  |#
     Then the service displays the following result
       | Page appendix title | Where can I find the appendix?                         |
       | Chapter 8 link      | Chapter 8 of the immigration directorate instructions. |
