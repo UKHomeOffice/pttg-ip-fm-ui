@@ -6,7 +6,8 @@
   "individual" : {
     "forename" : "Tony",
     "surname" : "Ledo",
-    "nino" : "TL123456A"
+    "nino" : "TL123456A",
+    "dob" : "1980-05-05"
   },
   "categoryCheck" : {
     "category" : "A",

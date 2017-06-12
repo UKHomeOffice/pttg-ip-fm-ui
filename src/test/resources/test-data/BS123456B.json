@@ -6,7 +6,8 @@
   "individual" : {
     "forename" : "Brian",
     "surname" : "Sinclair",
-    "nino" : "BS123456B"
+    "nino" : "BS123456B",
+    "dob":"1970-06-06"
   },
   "categoryCheck" : {
     "category" : "A",

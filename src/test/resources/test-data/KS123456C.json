@@ -6,7 +6,8 @@
   "individual" : {
     "forename" : "Kumar",
     "surname" : "Sangakkara",
-    "nino" : "KS123456C"
+    "nino" : "KS123456C",
+    "dob" : "1978-01-01"
   },
   "categoryCheck" : {
     "category" : "A",
