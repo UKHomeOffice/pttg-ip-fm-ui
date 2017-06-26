@@ -6,8 +6,8 @@ Feature: Category A Financial Requirement
     When Caseworker submits query
       | NINO                    | KS123456C  |
       | Application Raised Date | 03/07/2015 |
-      | First name              |Kum         |############
-      | Surname                 |San         |############
+      | First name              |Kumar         |############
+      | Surname                 |Sangakkara         |############
       | Date of birth           |01/01/1978  |############
 
   Scenario: Does not meet the Category A employment duration Requirement (with current employer for only 3 months)
