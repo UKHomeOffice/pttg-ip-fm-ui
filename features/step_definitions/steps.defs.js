@@ -165,16 +165,13 @@ const expandFields = function (obj) {
 
 const selectRadio = function (d, key, val) {
   const rID = key + '-' + val.toLowerCase() + '-label'
-    // console.log('selectRadio', rID)
   let elem
   return d.findElement({id: rID}).then(function (el) {
     elem = el
-        // return el.SendKeys(Keys.Return)
     return el.click()
   }).then(function (result) {
     return true
   }, function (err) {
-        // console.log('NOT CLICKED', key, val, elem, err)
     return false
   })
 }
@@ -190,7 +187,6 @@ const inputEnterText = function (d, key, val) {
 }
 
 const completeInput = function (d, key, val) {
-    // console.log('completeInput', key, val)
   if (isRadio(key)) {
     return selectRadio(d, key, val)
   }
@@ -206,9 +202,11 @@ const completeInputs = function (d, data) {
 }
 
 const submitAction = function (d) {
-  return d.findElement({className: 'button'}).click().then(function () {
+  return d.findElement({className: 'button'}).then(function (btn) {
+    return btn.click()
+  }).then(function (clicked) {
     return seleniumWebdriver.until.elementLocated({id: 'outcome'})
-  }).then(function () {
+  }).then(function (foundit) {
     return justWait(500)
   })
 }
@@ -286,7 +284,6 @@ defineSupportCode(function ({Given, When, Then}) {
   Given(/^the income check is performed$/, {timeout: 10 * 1000}, function () {
     const d = this.driver
     const data = expandFields(this.defaults)
-    console.log(data)
     return completeInputs(d, data).then(function () {
       return submitAction(d)
     })

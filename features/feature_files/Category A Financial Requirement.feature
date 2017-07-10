@@ -107,7 +107,8 @@ Feature: Category A Financial Requirement
       | Your Search Application Raised Date   | 03/07/2015                                                                                     |
 
   Scenario: Caseworker clicks on the start a new search button in query result page
-    Given the income check is performed
+    Given the account data for BS123456B
+    And the income check is performed
     When the new search button is clicked
     Then the service displays the following result
       | Page sub heading | Family Migration     |

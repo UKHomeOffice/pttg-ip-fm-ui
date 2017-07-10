@@ -1,5 +1,5 @@
 // require OUR APPLICATION THAT WE'RE TESTING
-// require('../../server.js')
+require('../../server.js')
 //
 
 require('chromedriver')
