@@ -1,0 +1,21 @@
+{
+  "status" : {
+    "code" : "100",
+    "message" : "OK"
+  },
+  "individual" : {
+    "forename" : "Kumar",
+    "surname" : "Sangakkara Dilshan",
+    "nino" : "KS123456C"
+  },
+  "categoryCheck" : {
+    "category" : "A",
+    "passed" : false,
+    "applicationRaisedDate" : "2015-07-03",
+    "assessmentStartDate" : "2015-03-25",
+    "failureReason" : "NOT_ENOUGH_RECORDS",
+    "threshold" : "123.45",
+    "employers" : ["Pizza Ltd", "Morrisons", "The Home Office"]
+  }
+}
+

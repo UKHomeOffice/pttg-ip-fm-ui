@@ -5,7 +5,6 @@ var sourcePath = 'frontend/src/';
 var gulp = require('gulp');
 var async = require('async');
 var run = require('run-sequence');
-var minifyHTML = require('gulp-html-minifier');
 var uglify = require('gulp-uglify');
 var templateCache = require('gulp-angular-templatecache');
 var del = require('del');
@@ -14,7 +13,7 @@ var plumber = require('gulp-plumber');
 var gutil = require('gulp-util');
 var sass = require('gulp-sass');
 var autoprefixer = require('gulp-autoprefixer');
-var htmlmin = require('gulp-htmlmin');
+var htmlmin = require('gulp-htmlmin')
 var sourcemaps = require('gulp-sourcemaps');
 
 
@@ -78,8 +77,7 @@ gulp.task('uglify', function () {
   return gulp.src([
     sourcePath + 'app/main.js',
     '_temp/templates.js',
-    sourcePath + 'app/modules/**/*.js',
-    'node_modules/pttg-angular/src/app/modules/forms/forms.js'
+    sourcePath + 'app/modules/**/*.js'
     ])
   .pipe(sourcemaps.init())
   .pipe(plumber())
@@ -92,8 +90,7 @@ gulp.task('uglify', function () {
 
 gulp.task('angTemplates', function () {
   return gulp.src([
-    sourcePath + 'app/modules/**/*.html',
-    'node_modules/pttg-angular/src/app/modules/form*/*.html'
+    sourcePath + 'app/modules/**/*.html'
   ])
   .pipe(plumber())
   .pipe(htmlmin({collapseWhitespace: true}))
@@ -138,6 +135,16 @@ gulp.task('templateAndUglify', function () {
 
 
 gulp.task('startwatch', function() {
+  var nodemon = require('gulp-nodemon')
+
+  nodemon({
+    script: 'server.js',
+    ext: 'js',
+    env: { 'NODE_ENV': 'development' },
+    cwd: __dirname,
+    ignore: ['node_modules/**'],
+    watch: ['server.js']
+  })
   gulp.watch(sourcePath + 'index.html', ['minifyHtml']);
   gulp.watch(sourcePath + 'app/modules/**/*.html', ['templateAndUglify']);
   gulp.watch([sourcePath + 'app/main.js', sourcePath + 'app/modules/**/*.js'], ['uglify']);
