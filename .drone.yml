@@ -16,7 +16,7 @@ pipeline:
     environment:
       - DOCKER_HOST=tcp://127.0.0.1:2375
     commands:
-      - docker build -f Dockerfile_test -t pttg-ip-fm-ui-test .
+      - docker build -f Dockerfile_test -t pttg-ip-fm-git statusui-test .
       - docker run pttg-ip-fm-ui-test
     when:
       event: push
@@ -34,8 +34,8 @@ pipeline:
     when:
       event: push
       branch: master
-
-  get-kube-configuration-deployment::
+  
+  get-kube-configuration-deployment:
     image: plugins/git
     environment:
       - DOCKER_HOST=tcp://127.0.0.1:2375
