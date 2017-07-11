@@ -6,7 +6,7 @@
     "init": "npm install",
     "test": "snyk test && gulp test",
     "test:all": "npm run test:unit && npm run test:bdd",
-    "test:unit": "gulp test",
+    "test:unit": "gulp",
     "test:bdd": "./node_modules/.bin/cucumber.js",
     "postinstall": "gulp"
   },
