@@ -1,0 +1,25 @@
+FROM quay.io/ukhomeofficedigital/pttg-bdd-base
+
+ENV PTTG_API_ENDPOINT localhost
+ENV USER pttg
+ENV GROUP pttg
+ENV NAME pttg-ip-fm-ui
+
+ARG VERSION
+
+WORKDIR /app
+
+RUN groupadd -r ${GROUP} && \
+    useradd -r -g ${GROUP} ${USER} -d /app && \
+    mkdir -p /app && \
+    chown -R ${USER}:${GROUP} /app
+
+COPY . /app
+RUN npm --loglevel warn install
+RUN npm --loglevel warn run postinstall
+
+RUN chown -R ${USER}:${GROUP} /app
+
+USER pttg
+
+ENTRYPOINT /app/run-test.sh
