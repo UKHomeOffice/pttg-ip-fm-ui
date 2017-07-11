@@ -1,64 +1,52 @@
 pipeline:
 
-  pre-build:
+  build:
     privileged: true
     image: docker:1.11
     environment:
       - DOCKER_HOST=tcp://127.0.0.1:2375
     commands:
-      - docker build -f Dockerfile.build -t gradle-node .
+      - docker build -t pttg-ip-fm-ui .
     when:
-      branch: master
       event: push
 
-  my-build:
+  test:
     privileged: true
     image: docker:1.11
     environment:
       - DOCKER_HOST=tcp://127.0.0.1:2375
     commands:
-      - docker run --name pttg-ip-fm-ui-build gradle-node build
-      - mkdir -p build/libs
-      - docker cp pttg-ip-fm-ui-build:/work/build/libs/ build
+      - docker build -f Dockerfile_test -t pttg-ip-fm-ui-test .
+      - docker run pttg-ip-fm-ui-test
     when:
-      branch: master
       event: push
 
-  my-docker-build:
-    privileged: true
-    image: docker:1.11
-    environment:
-      - DOCKER_HOST=tcp://127.0.0.1:2375
-    commands:
-      - docker build -t quay.io/ukhomeofficedigital/pttg-ip-fm-ui:${DRONE_COMMIT_SHA} .
-
-    when:
-      branch: master
-      event: push
-
-  image_to_quay:
+  push:
     image: docker:1.11
     environment:
       - DOCKER_HOST=tcp://127.0.0.1:2375
     commands:
       - docker login -u="ukhomeofficedigital+pttg" -p=${DOCKER_PASSWORD} quay.io
+      - docker tag pttg-ip-fm-ui quay.io/ukhomeofficedigital/pttg-ip-fm-ui:${DRONE_COMMIT_SHA}
+      - docker tag pttg-ip-fm-ui quay.io/ukhomeofficedigital/pttg-ip-fm-ui:latest
       - docker push quay.io/ukhomeofficedigital/pttg-ip-fm-ui:${DRONE_COMMIT_SHA}
+      - docker push quay.io/ukhomeofficedigital/pttg-ip-fm-ui:latest
     when:
-      branch: master
       event: push
+      branch: master
 
-  predeploy:
+  get-kube-configuration-deployment::
     image: plugins/git
     environment:
       - DOCKER_HOST=tcp://127.0.0.1:2375
     commands:
       - git clone https://github.com/UKHomeOffice/kube-pttg-ip-fm-ui.git
     when:
-      branch: master
       event: [push, deployment]
+      branch: master
 
-  deploy_to_dev:
-    image: quay.io/ukhomeofficedigital/kd:v0.2.2
+  deploy-to-dev:
+    image: quay.io/ukhomeofficedigital/kd:v0.2.3
     environment:
       - DOCKER_HOST=tcp://127.0.0.1:2375
       - KUBE_NAMESPACE=pt-i-dev
@@ -69,11 +57,11 @@ pipeline:
       - cd kube-pttg-ip-fm-ui
       - ./deploy.sh
     when:
-      branch: master
       event: push
+      branch: master
 
-  deploy_to_test:
-    image: quay.io/ukhomeofficedigital/kd:v0.2.2
+  deploy-to-test:
+    image: quay.io/ukhomeofficedigital/kd:v0.2.3
     environment:
       - DOCKER_HOST=tcp://127.0.0.1:2375
       - KUBE_NAMESPACE=pt-i-test
@@ -87,6 +75,35 @@ pipeline:
       event: deployment
       environment: test
 
+  deploy-to-preprod:
+    image: quay.io/ukhomeofficedigital/kd:v0.2.3
+    environment:
+      - DOCKER_HOST=tcp://127.0.0.1:2375
+      - KUBE_NAMESPACE=pt-i-preprod
+      - ENVIRONMENT=preprod
+      - VERSION=${DRONE_COMMIT_SHA}
+      - KUBE_SERVER_DEV=https://kube-dev.dsp.notprod.homeoffice.gov.uk
+    commands:
+      - cd kube-pttg-ip-fm-ui
+      - ./deploy.sh
+    when:
+      event: deployment
+      environment: preprod
+
+  deploy-to-prod:
+    image: quay.io/ukhomeofficedigital/kd:v0.2.3
+    environment:
+      - DOCKER_HOST=tcp://127.0.0.1:2375
+      - KUBE_NAMESPACE=pt-i-prod
+      - ENVIRONMENT=prod
+      - VERSION=${DRONE_COMMIT_SHA}
+      - KUBE_SERVER_PROD=https://kube.dsp.digital.homeoffice.gov.uk
+    commands:
+      - cd kube-pttg-ip-fm-ui
+      - ./deploy-prod.sh
+    when:
+      event: deployment
+      environment: prod
 
 services:
   dind:
