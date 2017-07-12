@@ -1,0 +1,100 @@
+<div id="page2" class="ng-scope">
+  <div ng-if="haveResult">
+
+    <div id="outcome" ng-if="success" class="govuk-box-highlight">
+      <h1 class="heading-large" id="pageDynamicHeading" tabindex="-1">Passed</h1>
+      <p><span id="outcomeBoxIndividualName">{{ outcomeBoxIndividualName }}</span> meets the Category A requirement</p>
+    </div>
+
+    <div id="outcome" ng-if="!success">
+      <h1 class="heading-large" id="pageDynamicHeading">Not passed</h1>
+      <p id="pageDynamicDetail"><span id="outcomeBoxIndividualName">{{ outcomeBoxIndividualName }}</span> doesn't meet the Category A requirement</p>
+      <p id="pageDynamicReason">{{ reason }}</p>
+    </div>
+  </div>
+
+  <div ng-if="!haveResult">
+    <h1 class="form-title heading-large"><span id="pageDynamicHeading" tabindex="-1">{{ heading }}</span></h1>
+    <p class="lede ng-scope"><span id="pageDynamicDetail">{{ reason }}</span></p>
+  </div>
+
+
+  <div class="panel panel-border-wide text">
+    <h2 id="whatToDoNextHeading" class="heading-small">What to do next</h2>
+    <ol class="list list-number">
+
+      <li ng-if="haveResult">check that the name matches applicant's details</li>
+      <li>check you have entered the correct information</li>
+      <li id="whatToDoNextSubHeading" ng-if="!success">You should consider if the applicant meets the financial requirement under any other category.</li>
+    </ol>
+  </div>
+
+
+  <div ng-if="haveResult">
+    <h2 class="heading-medium">Results</h2>
+    <table class="ng-scope">
+      <tr>
+        <th scope="row">Individual</th>
+        <td><span id="yourSearchIndividualName">{{ individual.forename}} {{ individual.surname }}</span></td>
+      </tr>
+      <tr>
+        <th scope="row">Threshold</th>
+        <td><span id="threshold">{{ threshold | currency : '£' }}</span></td>
+      </tr>
+      <tr ng-if="success">
+        <th scope="row">Income within date range</th>
+        <td><span id="outcomeFromDate">{{ outcomeFromDate }}</span> - <span id="outcomeToDate">{{ outcomeToDate }}</span></td>
+      </tr>
+      <tr ng-if="employers.length">
+        <th scope="row">Employers</th>
+        <td>
+          <ol class="list list-number">
+            <li ng-repeat="e in employers" id="employer{{ $index }}">{{ e }}</li>
+          </ol>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">Summary</th>
+        <td><span id="copySummary">{{ copysummary }}</span><br />
+          <input id="copyBtn" type="submit" class="button button--copy button-info" value="{{ copyToClipboardBtnText }}" />
+        </td>
+      </tr>
+    </table>
+  </div>
+
+
+  <h2 class="heading-medium ng-scope">Your search</h2>
+  <table>
+    <tr>
+      <th scope="row">Dependants</th>
+      <td><span id="yourSearchDependants">{{ familyDetails.dependants }}</span></td>
+    </tr>
+    <tr>
+      <th scope="row">National Insurance number</th>
+      <td><span id="yourSearchNationalInsuranceNumber">{{ familyDetails.nino }}</span></td>
+    </tr>
+    <tr>
+      <th scope="row">Application raised</th>
+      <td><span id="yourSearchApplicationRaisedDate">{{ familyDetails.displayDate }}</span></td>
+    </tr>
+  </table>
+
+
+  <div class="form-group form-group--topspace">
+      <input id="editSearchBtn" type="submit" class="button button--editSearch button-info" value="Edit" ng-click="editSearch()">
+  </div>
+
+  <div class="form-group form-group--topspace">
+      <input id="newSearchBtn" type="submit" class="button button--newSearch" value="Begin a new check" ng-click="newSearch()">
+  </div>
+
+  <div class="form-group ng-scope">
+    <details role="group">
+      <summary role="button" aria-controls="details-content-0" aria-expanded="false"><span class="summary" id="pageAppendixTitle">Where can I find the appendix?</span></summary>
+      <div class="panel panel-border-narrow" id="details-content-0" aria-hidden="true">
+        <p>You can find all the guidance on gov.uk under <a href="https://www.gov.uk/government/publications/chapter-8-appendix-fm-family-members" id="chapter8Link">Chapter 8 of the immigration directorate instructions.</a></p>
+        <p>You can also view <a href="https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/469692/Appendix_FM_1_7_Financial_Requirement_August_2015.pdf" id="fm1_7Link">Appendix FM 1.7</a> which relates specifically to this financial requirement.</p>
+      </div>
+    </details>
+</div>
+</div>
