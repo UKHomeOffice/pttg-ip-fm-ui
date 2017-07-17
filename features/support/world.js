@@ -16,7 +16,7 @@ var reportPath = path.resolve('report/')
 // config
 var shareBrowserInstances = true
 var browserName = 'chrome'// usePhantomJS ? 'phantomjs' : 'chrome'
-var headless = true
+var headless = false
 var showReport = false
 //
 
@@ -46,6 +46,9 @@ function CustomWorld (done) {
 
   this.driver = shareBrowserInstances ? globalDriver : getNewBrowser(browserName)
   this.defaults = {
+    dob: '04/05/1980',
+    firstName: 'Ant',
+    surname: 'Dec',
     applicationRaisedDate: '01/05/2016',
     dependants: '0',
     nino: 'AA123456A'

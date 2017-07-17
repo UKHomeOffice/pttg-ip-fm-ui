@@ -1,6 +1,6 @@
 Feature: Input validation
   National Insurance Numbers (NINO) - Format and Security: A NINO is made up of two letters, six numbers and a final letter (which is always A, B, C, or D)
- First Name - First three letters of first name
+  First Name - First three letters of first name
   Last Name - Fisrt three letters of last name
   Date formats: Format should be dd/mm/yyyy or d/m/yyyy
 
@@ -9,9 +9,9 @@ Feature: Input validation
     And Caseworker is using the Income Proving Service Case Worker Tool
     And the default details are
       | NINO                    | AA123456A  |
-      |First name               | Mar         |
-      |Last name                | Jon         |
-      |Date of birth            | 07/07/1976  |
+      | First name              | Mar        |
+      | Last name               | Jon        |
+      | Date of birth           | 07/07/1976 |
       | Application Raised Date | 01/05/2015 |
       | Dependants              | 0          |
 
@@ -19,31 +19,31 @@ Feature: Input validation
 
   Scenario: Caseworker does NOT enter a National Insurance Number
     When Robert submits a query
-      | NINO                    |            |
+      | NINO |  |
     Then the service displays the following result
       | nino-error | Enter a valid National Insurance number |
 
   Scenario: Caseworker enters incorrect National Insurance Number prefixed with two characters
     When Robert submits a query
-      | NINO                    | 11123456A  |
+      | NINO | 11123456A |
     Then the service displays the following result
       | nino-error | Enter a valid National Insurance number |
 
   Scenario: Caseworker enters incorrect National Insurance Number with two characters in the middle
     When Robert submits a query
-      | NINO                    | QQ12HR56A  |
+      | NINO | QQ12HR56A |
     Then the service displays the following result
       | nino-error | Enter a valid National Insurance number |
 
   Scenario: Caseworker enters incorrect National Insurance Number with the last digit being a number
     When Robert submits a query
-      | NINO                    | QQ1235560  |
+      | NINO | QQ1235560 |
     Then the service displays the following result
       | nino-error | Enter a valid National Insurance number |
 
   Scenario: Caseworker enters incorrect National Insurance Number is not 9 characters
     When Robert submits a query
-      | NINO                    | QQ12545    |
+      | NINO | QQ12545 |
     Then the service displays the following result
       | nino-error | Enter a valid National Insurance number |
 
@@ -70,7 +70,7 @@ Feature: Input validation
 
   Scenario: Caseworker enters a blank Application Raised Date
     When Robert submits a query
-      | Application Raised Date |           |
+      | Application Raised Date |  |
     Then the service displays the following result
       | application raised date-error | Enter a valid application raised date |
 
@@ -85,18 +85,18 @@ Feature: Input validation
     #### Number of dependants
   Scenario: Caseworker enters incorrect number of dependants: blank
     When Robert submits a query
-      | Dependants                    | |
+      | Dependants |  |
     Then the service displays the following result
       | dependants-error | Enter a valid number of dependants |
 
   Scenario: Caseworker enters incorrect number of dependants: negative
     When Robert submits a query
-      | Dependants                    | -9 |
+      | Dependants | -9 |
     Then the service displays the following result
       | dependants-error | Enter a valid number of dependants |
 
   Scenario: Caseworker enters incorrect number of dependants: alpha
     When Robert submits a query
-      | Dependants                    | a9 |
+      | Dependants | a9 |
     Then the service displays the following result
       | dependants-error | Enter a valid number of dependants |
