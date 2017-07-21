@@ -9,7 +9,7 @@ Feature: Input validation
     And Caseworker is using the Income Proving Service Case Worker Tool
     And the default details are
       | NINO                    | AA123456A  |
-      | First name              | Mar        |
+      | Forename              | Mar        |
       | Last name               | Jon        |
       | Date of birth           | 07/07/1976 |
       | Application Raised Date | 01/05/2015 |

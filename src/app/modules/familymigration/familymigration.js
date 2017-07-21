@@ -9,9 +9,9 @@ var familymigrationModule = angular.module('hod.familymigration', ['ui.router'])
 familymigrationModule.factory('FamilymigrationService', ['IOService', '$state', function (IOService, $state) {
   var lastAPIresponse = {}
   var familyDetails = {
-    firstName: '',
+    forename: '',
     surname: '',
-    dob: '',
+    dateOfBirth: '',
     nino: '',
     applicationRaisedDate: '',
     dependants: ''
@@ -43,8 +43,8 @@ familymigrationModule.factory('FamilymigrationService', ['IOService', '$state', 
 
   this.reset = function () {
     familyDetails = {
-      dob: '',
-      firstName: '',
+      dateOfBirth: '',
+      forename: '',
       surname: '',
       nino: '',
       applicationRaisedDate: '',
@@ -103,7 +103,7 @@ familymigrationModule.controller(
     }
 
     $scope.conf = {
-      firstName: {
+      forename: {
 
       },
       surname: {
@@ -158,7 +158,7 @@ familymigrationModule.controller(
           max: appRaisedDateMsg
         }
       },
-      dob: {
+      dateOfBirth: {
         max: moment().subtract(10, 'years').format('YYYY-MM-DD'),
         errors: {
           max: {

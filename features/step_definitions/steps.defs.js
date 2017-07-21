@@ -12,7 +12,7 @@ const request = require('request')
 chai.use(chaiAsPromised)
 
 const urls = {
-  financialstatus: 'incomeproving/v1/individual/:nino/financialstatus'
+  financialstatus: 'incomeproving/v2/individual/:nino/financialstatus'
 }
 
 const radioElements = {
@@ -156,7 +156,7 @@ const expandFields = function (obj) {
     return o
   }
 
-  _.each(['dob', 'applicationRaisedDate'], function (key) {
+  _.each(['dateOfBirth', 'applicationRaisedDate'], function (key) {
     obj = splitDates(obj, key)
   })
 

@@ -7,15 +7,15 @@ Feature: Page content
       | NINO                    | AA123456A  |
       | Application Raised Date | 23/01/2015 |
       | Dependants              | 0          |
-      | First name              | Mar        |
+      | Forename              | Mar        |
       | Surname                 | Jon        |
-      | DOB                     | 07/07/1976 |
+      | Date Of Birth                     | 07/07/1976 |
 
   Scenario: Check for important text on the page
     Given the account data for JL123456A
     When caseworker submits a query
       | NINO          | JL123456A  |
-      | First name    | Jil        |
+      | Forename    | Jil        |
       | Last name     | Lew        |
       | date of birth | 08/08/1980 |
     Then the service displays the following result
@@ -36,9 +36,9 @@ Feature: Page content
     Given the account data for TL123456A
     When caseworker submits a query
       | NINO       | TL123456A  |
-      | First name | Ton        |
+      | Forename | Ton        |
       | Last name  | Led        |
-      | DOB        | 05/05/1980 |
+      | Date Of Birth        | 05/05/1980 |
     Then the service displays the following result
       | Page appendix title | Where can I find the appendix?                         |
       | Chapter 8 link      | Chapter 8 of the immigration directorate instructions. |
