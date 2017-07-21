@@ -9,7 +9,7 @@ var app = angular.module('hod.proving', [
 
 
 app.constant('CONFIG', {
-  api: '/incomeproving/v1/'
+  api: '/incomeproving/v2/'
 });
 
 

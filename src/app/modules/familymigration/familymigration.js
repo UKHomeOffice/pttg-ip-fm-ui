@@ -9,13 +9,22 @@ var familymigrationModule = angular.module('hod.familymigration', ['ui.router'])
 familymigrationModule.factory('FamilymigrationService', ['IOService', '$state', function (IOService, $state) {
   var lastAPIresponse = {}
   var familyDetails = {
+    forename: '',
+    surname: '',
+    dateOfBirth: '',
     nino: '',
     applicationRaisedDate: '',
     dependants: ''
   }
 
-  this.submit = function (nino, dependants, applicationRaisedDate) {
-    IOService.get('individual/' + nino + '/financialstatus', {dependants: dependants, applicationRaisedDate: applicationRaisedDate}, {timeout: 5000}).then(function (res) {
+  this.submit = function (fam) {
+    var nino = fam.nino
+    fam = angular.copy(fam)
+    delete fam.nino
+
+    console.log(nino)
+    console.log(fam)
+    IOService.get('individual/' + nino + '/financialstatus', fam, {timeout: 5000}).then(function (res) {
       lastAPIresponse = res
       $state.go('familymigrationResults')
     }, function (res) {
@@ -33,9 +42,14 @@ familymigrationModule.factory('FamilymigrationService', ['IOService', '$state', 
   }
 
   this.reset = function () {
-    familyDetails.nino = ''
-    familyDetails.applicationRaisedDate = ''
-    familyDetails.dependants = ''
+    familyDetails = {
+      dateOfBirth: '',
+      forename: '',
+      surname: '',
+      nino: '',
+      applicationRaisedDate: '',
+      dependants: ''
+    }
   }
 
   this.trackFormSubmission = function (frm) {
@@ -89,6 +103,12 @@ familymigrationModule.controller(
     }
 
     $scope.conf = {
+      forename: {
+
+      },
+      surname: {
+
+      },
       nino: {
         validate: function (val) {
           if (val) {
@@ -137,7 +157,15 @@ familymigrationModule.controller(
           invalid: appRaisedDateMsg,
           max: appRaisedDateMsg
         }
-      }
+      },
+      dateOfBirth: {
+        max: moment().subtract(10, 'years').format('YYYY-MM-DD'),
+        errors: {
+          max: {
+            msg: 'Enter a valid date of birth'
+          }
+        }
+      },
     }
 
     $scope.submitButton = {
@@ -152,7 +180,7 @@ familymigrationModule.controller(
         $scope.submitButton.text = 'Sending'
         $scope.submitButton.disabled = true
 
-        FamilymigrationService.submit($scope.familyDetails.nino, $scope.familyDetails.dependants, $scope.familyDetails.applicationRaisedDate)
+        FamilymigrationService.submit($scope.familyDetails)
 
         // .then(function () {
         //   // eveything was OK go to the results page

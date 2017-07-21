@@ -1,12 +1,13 @@
 {
   "status" : {
-    "code" : "100",
+    "code" : "200",
     "message" : "OK"
   },
   "individual" : {
     "forename" : "Kumar",
-    "surname" : "Sangakkara Dilshan",
-    "nino" : "KS123456C"
+    "surname" : "Sangakkara",
+    "nino" : "KS123456C",
+    "dob" : "1978-01-01"
   },
   "categoryCheck" : {
     "category" : "A",

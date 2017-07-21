@@ -1,6 +1,6 @@
 {
     "status" : {
-        "code" : "0000",
+        "code" : "400",
         "message" : "Parameter error: Invalid nino"
     }
 }

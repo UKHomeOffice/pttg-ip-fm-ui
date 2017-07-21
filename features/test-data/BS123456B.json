@@ -1,12 +1,13 @@
 {
   "status" : {
-    "code" : "100",
+    "code" : "200",
     "message" : "OK"
   },
   "individual" : {
     "forename" : "Brian",
     "surname" : "Sinclair",
-    "nino" : "BS123456B"
+    "nino" : "BS123456B",
+    "dob":"1970-06-06"
   },
   "categoryCheck" : {
     "category" : "A",

@@ -46,6 +46,9 @@ function CustomWorld (done) {
 
   this.driver = shareBrowserInstances ? globalDriver : getNewBrowser(browserName)
   this.defaults = {
+    dateOfBirth: '04/05/1980',
+    forename: 'Ant',
+    surname: 'Dec',
     applicationRaisedDate: '01/05/2016',
     dependants: '0',
     nino: 'AA123456A'
