@@ -27,9 +27,9 @@ pipeline:
       - DOCKER_HOST=tcp://127.0.0.1:2375
     commands:
       - docker login -u="ukhomeofficedigital+pttg" -p=${DOCKER_PASSWORD} quay.io
-      - docker tag pttg-ip-fm-ui quay.io/ukhomeofficedigital/pttg-ip-fm-ui:${DRONE_COMMIT_SHA}
+      - docker tag pttg-ip-fm-ui quay.io/ukhomeofficedigital/pttg-ip-fm-ui:build-${DRONE_BUILD_NUMBER}
       - docker tag pttg-ip-fm-ui quay.io/ukhomeofficedigital/pttg-ip-fm-ui:latest
-      - docker push quay.io/ukhomeofficedigital/pttg-ip-fm-ui:${DRONE_COMMIT_SHA}
+      - docker push quay.io/ukhomeofficedigital/pttg-ip-fm-ui:build-${DRONE_BUILD_NUMBER}
       - docker push quay.io/ukhomeofficedigital/pttg-ip-fm-ui:latest
     when:
       event: push
@@ -51,8 +51,9 @@ pipeline:
       - DOCKER_HOST=tcp://127.0.0.1:2375
       - KUBE_NAMESPACE=pt-i-dev
       - ENVIRONMENT=dev
-      - VERSION=${DRONE_COMMIT_SHA}
+      - VERSION=build-${DRONE_BUILD_NUMBER}
       - KUBE_SERVER_DEV=https://kube-dev.dsp.notprod.homeoffice.gov.uk
+      - KUBE_SERVER=https://kube-dev.dsp.notprod.homeoffice.gov.uk
     commands:
       - cd kube-pttg-ip-fm-ui
       - ./deploy.sh
@@ -60,35 +61,20 @@ pipeline:
       event: push
       branch: master
 
-  deploy-to-test:
+  deploy:
     image: quay.io/ukhomeofficedigital/kd:v0.2.3
     environment:
       - DOCKER_HOST=tcp://127.0.0.1:2375
-      - KUBE_NAMESPACE=pt-i-test
-      - ENVIRONMENT=test
-      - VERSION=${DRONE_COMMIT_SHA}
+      - KUBE_NAMESPACE=pt-i-${DRONE_DEPLOY_TO}
+      - ENVIRONMENT=${DRONE_DEPLOY_TO}
+      - VERSION=${IMAGE_VERSION}
+      - KUBE_SERVER=https://kube-dev.dsp.notprod.homeoffice.gov.uk
       - KUBE_SERVER_DEV=https://kube-dev.dsp.notprod.homeoffice.gov.uk
     commands:
       - cd kube-pttg-ip-fm-ui
       - ./deploy.sh
     when:
       event: deployment
-      environment: test
-
-  deploy-to-preprod:
-    image: quay.io/ukhomeofficedigital/kd:v0.2.3
-    environment:
-      - DOCKER_HOST=tcp://127.0.0.1:2375
-      - KUBE_NAMESPACE=pt-i-preprod
-      - ENVIRONMENT=preprod
-      - VERSION=${DRONE_COMMIT_SHA}
-      - KUBE_SERVER_DEV=https://kube-dev.dsp.notprod.homeoffice.gov.uk
-    commands:
-      - cd kube-pttg-ip-fm-ui
-      - ./deploy.sh
-    when:
-      event: deployment
-      environment: preprod
 
   deploy-to-prod:
     image: quay.io/ukhomeofficedigital/kd:v0.2.3
@@ -96,8 +82,8 @@ pipeline:
       - DOCKER_HOST=tcp://127.0.0.1:2375
       - KUBE_NAMESPACE=pt-i-prod
       - ENVIRONMENT=prod
-      - VERSION=${DRONE_COMMIT_SHA}
-      - KUBE_SERVER_PROD=https://kube.dsp.digital.homeoffice.gov.uk
+      - VERSION=${IMAGE_VERSION}
+      - KUBE_SERVER=https://kube.dsp.digital.homeoffice.gov.uk
     commands:
       - cd kube-pttg-ip-fm-ui
       - ./deploy-prod.sh
