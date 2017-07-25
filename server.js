@@ -53,5 +53,6 @@ app.get(uiBaseUrl + 'availability', function (req, res) {
 })
 
 app.get(uiBaseUrl + 'individual/:nino/financialstatus', function (req, res) {
+  console.log(JSON.stringify(req.headers));
   stdRelay(res, apiBaseUrl + 'individual/' + req.params.nino + '/financialstatus', req.query)
 })
