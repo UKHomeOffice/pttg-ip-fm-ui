@@ -12,13 +12,23 @@ var moment = require('moment')
 var path = require('path')
 process.chdir(path.resolve(__dirname))
 
-var stdRelay = function (res, uri, qs) {
-  request({uri: uri, qs: qs}, function (error, response, body) {
+var stdRelay = function (req, res, uri, qs) {
+  var headers = {}
+  if (req.headers['x-auth-userid']) {
+    headers['x-auth-userid'] = req.headers['x-auth-userid']
+  }
+
+  if (req.headers['kc-access']) {
+    headers['kc-access'] = req.headers['kc-access']
+  }
+  var opts = {uri: uri, qs: qs, headers: headers}
+  // console.log(opts)
+
+  request(opts, function (error, response, body) {
     var status = (response && response.statusCode) ? response.statusCode : 500
     if ((body === '' || body === '""') && status === 200) {
       status = 500
     }
-    
     res.setHeader('Content-Type', 'application/json')
     res.status(status)
     res.send(body)
@@ -49,10 +59,9 @@ app.get('/healthz', function (req, res) {
 })
 
 app.get(uiBaseUrl + 'availability', function (req, res) {
-  stdRelay(res, apiRoot + '/healthz', '')
+  stdRelay(req, res, apiRoot + '/healthz', '')
 })
 
 app.get(uiBaseUrl + 'individual/:nino/financialstatus', function (req, res) {
-  console.log(JSON.stringify(req.headers));
-  stdRelay(res, apiBaseUrl + 'individual/' + req.params.nino + '/financialstatus', req.query)
+  stdRelay(req, res, apiBaseUrl + 'individual/' + req.params.nino + '/financialstatus', req.query)
 })
