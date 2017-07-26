@@ -76,11 +76,7 @@ function addCaCertsForHttps (opts, headers) {
   log("About to call " + opts.uri, headers)
   if (opts.uri && opts.uri.toLowerCase().startsWith('https')) {
     log("Loading certs from  " + process.env.CA_CERTS_PATH, headers)
-    opts.agentOptions = {
-      ca: fs.readFileSync(process.env.CA_CERTS_PATH, 'utf8')
-    }
-
-    //opts.ca = fs.readFileSync(process.env.CA_CERTS_PATH, 'utf8')
+    opts.ca = fs.readFileSync(process.env.CA_CERTS_PATH, 'utf8')
   }
   log("Request opts  " + JSON.stringify(opts), headers)
   return opts
