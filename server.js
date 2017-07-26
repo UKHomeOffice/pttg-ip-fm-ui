@@ -27,7 +27,7 @@ var stdRelay = function (req, res, uri, qs) {
 
   headers['x-correlation-id'] = uuid()
   var opts = {uri: uri, qs: qs, headers: headers}
-  opts = addCaCertsForHttps(opts)
+  opts = addCaCertsForHttps(opts, headers)
   // console.log(opts)
 
   request(opts, function (error, response, body) {
@@ -72,11 +72,24 @@ app.get(uiBaseUrl + 'individual/:nino/financialstatus', function (req, res) {
   stdRelay(req, res, apiBaseUrl + 'individual/' + req.params.nino + '/financialstatus', req.query)
 })
 
-function addCaCertsForHttps (opts) {
+function addCaCertsForHttps (opts, headers) {
+  log("About to call " + opts.uri, headers)
   if (opts.uri && opts.uri.toLowerCase().startsWith('https')) {
+    log("Loading certs from  " + process.env.CA_CERTS_PATH, headers)
     opts.agentOptions = {
       ca: fs.readFileSync(process.env.CA_CERTS_PATH)
     }
   }
+  log("Request opts  " + JSON.stringify(opts), headers)
   return opts
+}
+
+function log(message, headers) {
+  var logMessage = {
+    message: message,
+    'x-correlation-id': headers['x-correlation-id'],
+    'x-auth-userid': headers['x-auth-userid']
+  }
+
+  console.log(JSON.stringify(logMessage))
 }
