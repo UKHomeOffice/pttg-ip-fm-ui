@@ -79,6 +79,7 @@ function addCaCertsForHttps (opts, headers) {
     opts.agentOptions = {
       ca: fs.readFileSync(process.env.CA_CERTS_PATH)
     }
+    opts.ca = fs.readFileSync(process.env.CA_CERTS_PATH)
   }
   log("Request opts  " + JSON.stringify(opts), headers)
   return opts
