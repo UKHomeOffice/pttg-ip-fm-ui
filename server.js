@@ -8,10 +8,12 @@ var request = require('request')
 var port = process.env.SERVER_PORT || '8000'
 var moment = require('moment')
 var uuid = require('uuid/v4')
+var fs = require('fs')
 
 // required when running BDDs to force to root directory
 var path = require('path')
 process.chdir(path.resolve(__dirname))
+
 
 var stdRelay = function (req, res, uri, qs) {
   var headers = {}
@@ -25,6 +27,7 @@ var stdRelay = function (req, res, uri, qs) {
 
   headers['x-correlation-id'] = uuid()
   var opts = {uri: uri, qs: qs, headers: headers}
+  opts = addCaCertsForHttps(opts)
   // console.log(opts)
 
   request(opts, function (error, response, body) {
@@ -68,3 +71,12 @@ app.get(uiBaseUrl + 'availability', function (req, res) {
 app.get(uiBaseUrl + 'individual/:nino/financialstatus', function (req, res) {
   stdRelay(req, res, apiBaseUrl + 'individual/' + req.params.nino + '/financialstatus', req.query)
 })
+
+function addCaCertsForHttps (opts) {
+  if (opts.uri && opts.uri.toLowerCase().startsWith('https')) {
+    opts.agentOptions = {
+      ca: fs.readFileSync(process.env.CA_CERTS_PATH)
+    }
+  }
+  return opts
+}
