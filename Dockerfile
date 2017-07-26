@@ -15,7 +15,6 @@ RUN groupadd -r ${GROUP} && \
     chown -R ${USER}:${GROUP} /app
 
 COPY . /app
-RUN npm i -g npm
 RUN npm --loglevel warn install --only=prod
 RUN npm --loglevel warn run postinstall
 
