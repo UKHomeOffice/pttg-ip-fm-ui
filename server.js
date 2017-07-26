@@ -7,6 +7,7 @@ var apiBaseUrl = apiRoot + '/incomeproving/v2/'
 var request = require('request')
 var port = process.env.SERVER_PORT || '8000'
 var moment = require('moment')
+var uuid = require('uuid/v4')
 
 // required when running BDDs to force to root directory
 var path = require('path')
@@ -21,6 +22,8 @@ var stdRelay = function (req, res, uri, qs) {
   if (req.headers['kc-access']) {
     headers['kc-access'] = req.headers['kc-access']
   }
+
+  headers['x-correlation-id'] = uuid()
   var opts = {uri: uri, qs: qs, headers: headers}
   // console.log(opts)
 
