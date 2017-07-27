@@ -30,7 +30,7 @@ var stdRelay = function (req, res, uri, qs) {
   opts = addCaCertsForHttps(opts, headers)
   // console.log(opts)
 
-  request(opts, function (error, response, body) {
+  request.get(opts, function (error, response, body) {
     var status = (response && response.statusCode) ? response.statusCode : 500
     if ((body === '' || body === '""') && status === 200) {
       status = 500
@@ -78,7 +78,6 @@ function addCaCertsForHttps (opts, headers) {
     log("Loading certs from  " + process.env.CA_CERTS_PATH, headers)
     opts.ca = fs.readFileSync(process.env.CA_CERTS_PATH, 'utf8')
   }
-  log("Request opts  " + JSON.stringify(opts), headers)
   return opts
 }
 
