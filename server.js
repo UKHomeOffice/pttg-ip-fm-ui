@@ -77,6 +77,9 @@ function addCaCertsForHttps (opts, headers) {
   if (opts.uri && opts.uri.toLowerCase().startsWith('https')) {
     log("Loading certs from  " + process.env.CA_CERTS_PATH, headers)
     opts.ca = fs.readFileSync(process.env.CA_CERTS_PATH, 'utf8')
+    // DSP certs do not include root ca - so we can not validate entire chain that OpenSSL requires
+    // so until we have entire chain in bundle lets not be strict
+    opts.strictSSL = false
   }
   return opts
 }
