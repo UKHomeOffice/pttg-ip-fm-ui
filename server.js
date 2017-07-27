@@ -30,7 +30,7 @@ var stdRelay = function (req, res, uri, qs) {
   opts = addCaCertsForHttps(opts, headers)
   // console.log(opts)
 
-  request.get(opts, function (error, response, body) {
+  request(opts, function (error, response, body) {
     var status = (response && response.statusCode) ? response.statusCode : 500
     if ((body === '' || body === '""') && status === 200) {
       status = 500
