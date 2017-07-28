@@ -15,11 +15,11 @@ RUN groupadd -r ${GROUP} && \
     chown -R ${USER}:${GROUP} /app
 
 COPY . /app
-RUN npm --loglevel warn install
-RUN npm --loglevel warn run postinstall
 
-RUN chown -R ${USER}:${GROUP} /app
-RUN chmod a+x /app/run-test.sh
+RUN npm --loglevel info install && \
+    npm --loglevel warn run postinstall  && \
+    chown -R ${USER}:${GROUP} /app  && \
+    chmod a+x /app/run-test.sh
 
 USER pttg
 
