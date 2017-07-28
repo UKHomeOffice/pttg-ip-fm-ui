@@ -16,7 +16,7 @@ RUN groupadd -r ${GROUP} && \
 
 COPY . /app
 
-RUN npm --loglevel info install && \
+RUN npm --loglevel warn install && \
     npm --loglevel warn run postinstall  && \
     chown -R ${USER}:${GROUP} /app  && \
     chmod a+x /app/run-test.sh
