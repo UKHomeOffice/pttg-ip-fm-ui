@@ -29,7 +29,26 @@ familymigrationModule.constant('RESULT_TEXT', {
   copysummary: 'The check financial status service confirmed that {{name}} {{passed}} the requirements as the daily closing balance was {{above}} the total funds required.'
 })
 
-familymigrationModule.controller('FamilymigrationResultCtrl', ['$scope', '$state', '$stateParams', '$filter', 'FamilymigrationService', 'RESULT_TEXT', '$timeout', function ($scope, $state, $stateParams, $filter, FamilymigrationService, RESULT_TEXT, $timeout) {
+familymigrationModule.controller('FamilymigrationResultCtrl', 
+  [
+    '$scope', 
+    '$state', 
+    '$stateParams', 
+    '$filter', 
+    'FamilymigrationService', 
+    'RESULT_TEXT', 
+    '$timeout',
+    '$window',
+  function (
+    $scope, 
+    $state, 
+    $stateParams, 
+    $filter, 
+    FamilymigrationService, 
+    RESULT_TEXT, 
+    $timeout,
+    $window
+  ) {
   var state = 'error'
   var res = FamilymigrationService.getLastAPIresponse()
   $scope.familyDetails = FamilymigrationService.getFamilyDetails()
@@ -74,10 +93,18 @@ familymigrationModule.controller('FamilymigrationResultCtrl', ['$scope', '$state
       }
     }
   } else {
+    console.log(res)
     if (res.status === 404) {
       state = 'failure/norecord'
       $scope.heading = 'There is no record for ' + $scope.familyDetails.nino + ' with HMRC'
       $scope.reason = 'We couldn\'t perform the financial requirement check as no income information exists with HMRC.'
+    } else if (res.status === 307) {
+      $scope.heading = 'Your Keycloak session has timed out'
+      $scope.reason = 'The page will now reload.'
+      state = 'failure'
+      $timeout(function () {
+        $window.location.reload();
+      }, 500)
     } else {
       $scope.heading = 'You can’t use this service just now. The problem will be fixed as soon as possible'
       $scope.reason = 'Please try again later.'

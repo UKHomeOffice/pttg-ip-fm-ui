@@ -22,8 +22,6 @@ familymigrationModule.factory('FamilymigrationService', ['IOService', '$state', 
     fam = angular.copy(fam)
     delete fam.nino
 
-    console.log(nino)
-    console.log(fam)
     IOService.get('individual/' + nino + '/financialstatus', fam, {timeout: 5000}).then(function (res) {
       lastAPIresponse = res
       $state.go('familymigrationResults')
