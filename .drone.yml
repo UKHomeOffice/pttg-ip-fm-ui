@@ -53,7 +53,6 @@ pipeline:
       - KUBE_NAMESPACE=pt-i-dev
       - ENVIRONMENT=dev
       - VERSION=build-${DRONE_BUILD_NUMBER}
-      - KUBE_SERVER_DEV=https://kube-dev.dsp.notprod.homeoffice.gov.uk
       - KUBE_SERVER=https://kube-dev.dsp.notprod.homeoffice.gov.uk
     commands:
       - cd kube-pttg-ip-fm-ui
@@ -70,12 +69,28 @@ pipeline:
       - ENVIRONMENT=${DRONE_DEPLOY_TO}
       - VERSION=${IMAGE_VERSION}
       - KUBE_SERVER=https://kube-dev.dsp.notprod.homeoffice.gov.uk
-      - KUBE_SERVER_DEV=https://kube-dev.dsp.notprod.homeoffice.gov.uk
     commands:
       - cd kube-pttg-ip-fm-ui
       - ./deploy.sh
     when:
       event: deployment
+      environment: [dev, test]
+
+  deploy-to-preprod:
+    image: quay.io/ukhomeofficedigital/kd:v0.2.3
+    environment:
+      - DOCKER_HOST=tcp://127.0.0.1:2375
+      - KUBE_NAMESPACE=pt-i-${DRONE_DEPLOY_TO}
+      - ENVIRONMENT=${DRONE_DEPLOY_TO}
+      - VERSION=${IMAGE_VERSION}
+      - KUBE_SERVER=https://kube-dev.dsp.notprod.homeoffice.gov.uk
+      - WHITELIST=62.25.109.196/24,213.251.23.164/24
+    commands:
+      - cd kube-pttg-ip-fm-ui
+      - ./deploy.sh
+    when:
+      event: deployment
+      environment: preprod
 
   deploy-to-prod:
     image: quay.io/ukhomeofficedigital/kd:v0.2.3
@@ -85,6 +100,7 @@ pipeline:
       - ENVIRONMENT=prod
       - VERSION=${IMAGE_VERSION}
       - KUBE_SERVER=https://kube.dsp.digital.homeoffice.gov.uk
+      - WHITELIST=62.25.109.196/24
     commands:
       - cd kube-pttg-ip-fm-ui
       - ./deploy-prod.sh
