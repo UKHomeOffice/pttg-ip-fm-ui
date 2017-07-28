@@ -104,7 +104,7 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
       state = 'failure'
       $timeout(function () {
         $window.location.reload();
-      }, 500)
+      }, 2000)
     } else {
       $scope.heading = 'You can’t use this service just now. The problem will be fixed as soon as possible'
       $scope.reason = 'Please try again later.'
