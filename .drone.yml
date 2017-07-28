@@ -19,7 +19,6 @@ pipeline:
       - docker build -f Dockerfile_test -t pttg-ip-fm-ui-test .
       - docker run pttg-ip-fm-ui-test
     when:
-      branch: disable
       event: push
 
   push:
