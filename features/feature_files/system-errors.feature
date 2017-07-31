@@ -8,8 +8,8 @@ Feature: System errors - specify messages shown in response to (simulated) conne
         Given the api response is delayed for 40 seconds
         When the income check is performed
         Then the service displays the following page content within 32 seconds
-            | Page dynamic heading        | You can’t use this service just now. The problem will be fixed as soon as possible |
-            | Page dynamic detail         | Please try again later.                                                            |
+            | Page dynamic heading        | Your Keycloak session has timed out |
+            | Page dynamic detail         | The page will now reload.           |
 
     Scenario: Coping with a garbage response
         Given the api response is garbage
