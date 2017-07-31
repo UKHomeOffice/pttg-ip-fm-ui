@@ -244,7 +244,7 @@ defineSupportCode(function ({Given, When, Then}) {
     callback()
   })
 
-  Given(/the api response is delayed for (\d+) seconds/, {timeout: 60000}, function (int, callback) {
+  Given(/the api response is delayed for (\d+) seconds/, {timeout: -1}, function (int, callback) {
     mockdata.stubItFile(urls.financialstatus, 'notfound.json', 200, int * 1000)
     callback()
   })
@@ -339,7 +339,7 @@ defineSupportCode(function ({Given, When, Then}) {
     })
   })
 
-  Then(/^the service displays the following page content within (\d+) seconds$/, {timeout: 20000}, function (int, table) {
+  Then(/^the service displays the following page content within (\d+) seconds$/, {timeout: 40000}, function (int, table) {
     const data = toCamelCaseKeys(_.object(table.rawTable))
     return confirmContentById(this.driver, data, int * 1000)
   })

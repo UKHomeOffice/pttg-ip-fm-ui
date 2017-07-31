@@ -22,7 +22,7 @@ familymigrationModule.factory('FamilymigrationService', ['IOService', '$state', 
     fam = angular.copy(fam)
     delete fam.nino
 
-    IOService.get('individual/' + nino + '/financialstatus', fam, {timeout: 5000}).then(function (res) {
+    IOService.get('individual/' + nino + '/financialstatus', fam, {timeout: 30000}).then(function (res) {
       lastAPIresponse = res
       $state.go('familymigrationResults')
     }, function (res) {
