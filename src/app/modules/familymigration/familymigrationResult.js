@@ -66,6 +66,7 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
 
   $scope.haveResult = (res.data && res.data.categoryCheck)
   if ($scope.haveResult) {
+    console.log('RESULT', res.data.categoryCheck.passed)
     $scope.employers = res.data.categoryCheck.employers || []
     $scope.threshold = res.data.categoryCheck.threshold
     $scope.individual = res.data.individual
@@ -93,7 +94,7 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
       }
     }
   } else {
-    console.log(res)
+    console.log('ERROR', res)
     if (res.status === 404) {
       state = 'failure/norecord'
       $scope.heading = 'There is no record for ' + $scope.familyDetails.nino + ' with HMRC'
