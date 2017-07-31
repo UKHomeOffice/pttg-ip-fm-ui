@@ -25,8 +25,14 @@ var stdRelay = function (req, res, uri, qs) {
     headers['kc-access'] = req.headers['kc-access']
   }
 
+
   headers['x-correlation-id'] = uuid()
-  var opts = {uri: uri, qs: qs, headers: headers}
+  var opts = {
+    uri: uri, 
+    qs: qs, 
+    headers: headers,
+    followRedirect: false
+  }
   opts = addCaCertsForHttps(opts, headers)
   // console.log(opts)
 
