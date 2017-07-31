@@ -99,7 +99,7 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
       state = 'failure/norecord'
       $scope.heading = 'There is no record for ' + $scope.familyDetails.nino + ' with HMRC'
       $scope.reason = 'We couldn\'t perform the financial requirement check as no income information exists with HMRC.'
-    } else if (res.status === 307) {
+    } else if (res.status === 307 || res.status === -1) {
       $scope.heading = 'Your Keycloak session has timed out'
       $scope.reason = 'The page will now reload.'
       state = 'failure'
