@@ -83,6 +83,21 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
       $scope.success = false
       // $scope.heading = res.data.individual.forename + ' ' + res.data.individual.surname + ' doesn\'t meet the Category A requirement';
       switch (res.data.categoryCheck.failureReason) {
+        case 'PAY_FREQUENCY_CHANGE':
+          state = 'notpassed/paymentfrequencychange'
+          $scope.reason = 'Change in payment frequency.'
+          break
+
+        case 'MULTIPLE_EMPLOYERS':
+          state = 'notpassed/multipleemployers'
+          $scope.reason = 'Payments from multiple employers.'
+          break
+
+        case 'UNKNOWN_PAY_FREQUENCY':
+          state = 'notpassed/unknownfrequency'
+          $scope.reason = 'Unable to calculate a payment frequency.'
+          break
+
         case 'NOT_ENOUGH_RECORDS':
           state = 'notpassed/recordcount'
           $scope.reason = 'They haven\'t been with their current employer for 6 months.'
