@@ -271,7 +271,7 @@ defineSupportCode(function ({Given, When, Then}) {
     })
   })
 
-  Given(/^the account data for ([0-9a-zA-Z]+)$/, function (nino, callback) {
+  Given(/^the account data for ([0-9_a-zA-Z]+)$/, function (nino, callback) {
     mockdata.stubItFile(urls.financialstatus, nino + '.json', 200)
     callback()
   })
