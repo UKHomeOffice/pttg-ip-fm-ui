@@ -140,7 +140,7 @@ formsModule.factory('FormsService', ['$rootScope', 'FormValidatorsService', func
         config: '=?'
       },
       transclude: true,
-      templateUrl: 'modules/forms/forms-text.html',
+      templateUrl: (conf.type === 'textarea') ? 'modules/forms/forms-textarea.html' : 'modules/forms/forms-text.html',
       compile: function (element, attrs) {
         defaultAttrs(attrs, {name: '', hint: '', label: ''})
         return function (scope, element, attrs, formCtrl) {
@@ -360,6 +360,10 @@ formsModule.directive('hodForm', ['$anchorScroll', 'FormsService', function ($an
                 a = obj.config.id + 'Part1'
                 break
 
+              case 'radio':
+                a = obj.config.id + '-' + obj.options[0].value + '-label'
+                break
+
               default:
                 a = obj.config.id + '0'
             }
@@ -407,6 +411,10 @@ formsModule.directive('hodForm', ['$anchorScroll', 'FormsService', function ($an
 
 formsModule.directive('hodText', ['FormsService', function (FormsService) {
   return FormsService.getStandardTextDirective({type: 'text'})
+}])
+
+formsModule.directive('hodTextarea', ['FormsService', function (FormsService) {
+  return FormsService.getStandardTextDirective({type: 'textarea'})
 }])
 
 formsModule.directive('hodNumber', ['FormsService', function (FormsService) {

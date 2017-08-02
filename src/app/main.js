@@ -2,6 +2,7 @@ var app = angular.module('hod.proving', [
   'ui.router',
   'ngAria',
   'hod.familymigration',
+  'hod.feedback',
   'hod.forms',
   'hod.io',
   'hod.availability'
