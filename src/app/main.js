@@ -32,27 +32,24 @@ app.run(['$location', '$rootScope', '$window', '$timeout', 'AvailabilityService'
 
   AvailabilityService.setURL('availability');
 
-  $rootScope.$on('$viewContentLoaded', function () {
+  var focusOnH1 = function () {
     // http://stackoverflow.com/questions/25596399/set-element-focus-in-angular-way
-
     // http://www.accessiq.org/news/features/2013/03/aria-and-accessibility-adding-focus-to-any-html-element
-
-    $timeout(function() {
-      var e = angular.element(document.querySelector('#pageTitle'));
+    $timeout(function () {
+      var e = angular.element(document.querySelector('h1'))
       if (e[0]) {
-        e[0].focus();
+        e[0].focus()
       }
     })
+  }
 
+  $rootScope.$on('focusOnH1', function (e) {
+    focusOnH1()
   })
 
-
-  // $rootScope.$on('$viewContentLoaded', function () {
-  //   window.setTimeout(function() {
-  //     $rootElement.find('input').checkAndTriggerAutoFillEvent();
-  //   }, 200);
-
-  // });
+  $rootScope.$on('$viewContentLoaded', function (e) {
+    focusOnH1()
+  })
 }]);
 
 
