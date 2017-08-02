@@ -42,12 +42,12 @@ var stdRelay = function (req, res, uri, qs) {
       status = 500
     }
 
-    console.log('\n\n######')
-    console.log(uri)
-    console.log(qs)
-    console.log(response.statusCode.status, status)
-    console.log(body)
-    console.log('######\n\n')
+    // console.log('\n\n######')
+    // console.log(uri)
+    // console.log(qs)
+    // console.log(response.statusCode.status, status)
+    // console.log(body)
+    // console.log('######\n\n')
 
     res.setHeader('Content-Type', 'application/json')
     res.status(status)
@@ -105,5 +105,5 @@ function log(message, headers) {
     'x-auth-userid': headers['x-auth-userid']
   }
 
-  console.log(JSON.stringify(logMessage))
+  // console.log(JSON.stringify(logMessage))
 }
