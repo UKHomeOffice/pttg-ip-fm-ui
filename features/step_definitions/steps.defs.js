@@ -267,7 +267,7 @@ defineSupportCode(function ({Given, When, Then}) {
       return d.navigate().refresh()
     }).then(function () {
       const el = d.findElement({id: 'pageTitle'})
-      return expect(el.getText()).to.eventually.equal('Financial requirement check\nFamily Migration')
+      return expect(el.getText()).to.eventually.equal('Income Proving Service\nFamily Migration')
     })
   })
 
