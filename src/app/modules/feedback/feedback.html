@@ -2,17 +2,25 @@
   
   <h1 class="heading-large" id="pageTitle" tabindex="-1">Feedback</h1>
 
-  
+  <div ng-if="!showForm">
+    <h2>Thank you for your feedback</h2>
 
+    <div class="form-group form-group--topspace">
+      <a id="newSearchBtn" class="button button--newSearch" ui-sref="familymigration">Begin a new check</a>
+    </div>
+  </div>
 
-  <hod-form name="feedback" config="conf.feedback" submit="feedbackSubmit">
-    <hod-radio name="match" config="conf.match" label="Did IPS match the paper assesment?" field="feedback.match" options="yesNoOptions"></hod-radio>
-
+  <hod-form name="feedback" config="conf.feedback" submit="feedbackSubmit" ng-if="showForm">
     <hod-radio name="correctIndividual" config="conf.correctIndividual" label="Was the correct individual retrieved?" field="feedback.correctIndividual" options="yesNoOptions"></hod-radio>
     <div class="panel panel-border-wide text" ng-show="feedback.correctIndividual==='no'">
-      <hod-textarea name="matchComment" config="conf.matchComment" label="Comment" field="feedback.correctIndividualComment"></hod-textarea>
+      <hod-textarea name="correctIndividualComment" config="conf.correctIndividualComment" label="Comment" field="feedback.correctIndividualComment"></hod-textarea>
     </div>
 
+    <hod-radio name="match" config="conf.match" label="Did IPS match the paper assesment?" field="feedback.match" options="yesNoOptions"></hod-radio>
+    <div class="panel panel-border-wide text" ng-show="feedback.match==='no'">
+      <hod-textarea name="matchComment" config="conf.matchComment" label="Comment" field="feedback.correctIndividualComment"></hod-textarea>
+    </div>
+    
     <h2 class="form-title heading-medium">Documents supplied</h2>
     <hod-radio name="documentSA103" config="conf.documentSA103" label="SA103" field="feedback.documents.sa103" options="yesNoOptions"></hod-radio>
     <hod-radio name="documentSA302" config="conf.documentSA302" label="SA302" field="feedback.documents.sa302" options="yesNoOptions"></hod-radio>
@@ -20,8 +28,6 @@
     <hod-radio name="documentPayslip" config="conf.documentPayslip" label="Payslips" field="feedback.documents.payslips" options="yesNoOptions"></hod-radio>
 
     <hod-textarea name="documentsOther" config="conf.documentsOther" label="Other" field="feedback.documents.other"></hod-textarea>
-
-
 
     <h2 class="form-title heading-medium">User satisfaction scoring</h2>
     <p>On a scale of 1 to 5, where 1 is poor and 5 is excellent please score the following</p>
@@ -31,6 +37,9 @@
     <hod-radio name="satisfactionClarityI" config="conf.satisfactionClarityI" label="Clarity of information returned" field="feedback.satisfaction.clarityI" options="scoreOptions"></hod-radio>
     <hod-radio name="satisfactionFuncionality" config="conf.satisfactionFuncionality" label="Functionality" field="feedback.satisfaction.Funcionality" options="scoreOptions"></hod-radio>
 
+    <div class="form-group form-group--topspace">
+      <hod-textarea name="anyOtherFeedback" config="conf.anyOtherFeedback" label="Any other feedback" field="feedback.anyOtherFeedback"></hod-textarea>
+    </div>
 
     <hod-submit value="Submit" disabled="{{ submitButton.disabled }}"></hod-submit>
   </hod-form>

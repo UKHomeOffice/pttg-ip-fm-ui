@@ -23,12 +23,23 @@ feedbackModule.controller('FeedbackCtrl',
   [
     '$scope',
     '$state',
+    '$stateParams',
     'FamilymigrationService',
+    'IOService',
     function (
       $scope,
       $state,
-      FamilymigrationService
+      $stateParams,
+      FamilymigrationService,
+      IOService
     ) {
+
+      ga('set', 'page', $state.href($state.current.name, $stateParams))
+      ga('send', 'pageview')
+
+      var lastCheckDetails = FamilymigrationService.getFamilyDetails()
+
+      $scope.showForm = true
       $scope.feedback = {documents: {}}
       $scope.yesNoOptions = [{ value: 'yes', label: 'Yes' }, { value: 'no', label: 'No' }]
       $scope.scoreOptions = [
@@ -39,10 +50,14 @@ feedbackModule.controller('FeedbackCtrl',
         { value: 5, label: 5 }
       ]
       $scope.conf = {
-        match: {
+        correctIndividual: {
           inline: true
         },
-        correctIndividual: {
+        correctIndividualComment: {
+          classes: {'form-control-1-4': false},
+          required: false
+        },
+        match: {
           inline: true
         },
         matchComment: {
@@ -76,6 +91,27 @@ feedbackModule.controller('FeedbackCtrl',
         },
         satisfactionFuncionality: {
           inline: true
+        },
+        anyOtherFeedback: {
+          classes: {'form-control-1-4': false},
+          required: false
+        }
+      }
+
+      $scope.feedbackSubmit = function (valid) {
+        if (valid) {
+          
+          var details = angular.copy($scope.feedback)
+          details.nino = lastCheckDetails.nino
+          console.log(details)
+          IOService.post('feedback', details).then(function (res) {
+            console.log(res)
+            $scope.showForm = false
+
+          }, function (err) {
+            console.log(err)
+            $scope.showForm = false
+          })
         }
       }
     }

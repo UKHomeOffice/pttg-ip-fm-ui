@@ -9,13 +9,16 @@ var port = process.env.SERVER_PORT || '8000'
 var moment = require('moment')
 var uuid = require('uuid/v4')
 var fs = require('fs')
+var _ = require('underscore')
+var bodyParser = require('body-parser')
+app.use(bodyParser.json())
 
 // required when running BDDs to force to root directory
 var path = require('path')
 process.chdir(path.resolve(__dirname))
 
 
-var stdRelay = function (req, res, uri, qs) {
+var stdRelay = function (req, res, uri, qs, postdata) {
   var headers = {}
   if (req.headers['x-auth-userid']) {
     headers['x-auth-userid'] = req.headers['x-auth-userid']
@@ -25,7 +28,6 @@ var stdRelay = function (req, res, uri, qs) {
     headers['kc-access'] = req.headers['kc-access']
   }
 
-
   headers['x-correlation-id'] = uuid()
   var opts = {
     uri: uri, 
@@ -34,7 +36,14 @@ var stdRelay = function (req, res, uri, qs) {
     followRedirect: false
   }
   opts = addCaCertsForHttps(opts, headers)
-  // console.log(opts)
+  
+  if (postdata) {
+    opts.method = "POST"
+    opts.json = true
+    opts.headers['content-type'] = 'application/json'
+    opts.body = JSON.stringify(postdata)
+    console.log(opts)
+  }
 
   request(opts, function (error, response, body) {
     var status = (response && response.statusCode) ? response.statusCode : 500
@@ -84,6 +93,19 @@ app.get(uiBaseUrl + 'availability', function (req, res) {
 
 app.get(uiBaseUrl + 'individual/:nino/financialstatus', function (req, res) {
   stdRelay(req, res, apiBaseUrl + 'individual/' + req.params.nino + '/financialstatus', req.query)
+})
+
+app.post(uiBaseUrl + 'feedback', function (req, res) {
+  /*
+    ################# FEEDBACK #########################
+    To enable sending of the feedback form to the api...
+    1. uncomment the line:    stdRelay(req...
+    2. remove the line:       res.send({success: true})
+    3. remove this comment block :-)
+    ####################################################
+  */
+  // stdRelay(req, res, apiRoot + '/feedback', '', req.body)
+  res.send({success: true})
 })
 
 function addCaCertsForHttps (opts, headers) {
