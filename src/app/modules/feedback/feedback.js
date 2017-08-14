@@ -98,6 +98,11 @@ feedbackModule.controller('FeedbackCtrl',
         }
       }
 
+      $scope.newSearch = function () {
+        FamilymigrationService.reset()
+        $state.go('familymigration')
+      }
+
       $scope.feedbackSubmit = function (valid) {
         if (valid) {
           
