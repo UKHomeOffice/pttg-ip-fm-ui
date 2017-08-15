@@ -347,6 +347,7 @@ formsModule.directive('hodForm', ['$anchorScroll', 'FormsService', function ($an
             obj.displayError = obj.error.msg
             var a
             switch (obj.type) {
+              case 'textarea':
               case 'text':
               case 'number':
                 a = obj.config.id

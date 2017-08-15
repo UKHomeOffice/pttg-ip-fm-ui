@@ -123,13 +123,13 @@ Feature: Category A Financial Requirement
       | Your Search National Insurance Number | RK123456C                                                                                      |
       | Your Search Application Raised Date   | 03/07/2015                                                                                     |
 
-  Scenario: Caseworker clicks on the start a new search button in query result page
-    Given the account data for BS123456B
-    And the income check is performed
-    When the new search button is clicked
-    Then the service displays the following result
-      | Page sub heading | Family Migration     |
-      | Page sub title   | Individual's details |
+#  Scenario: Caseworker clicks on the start a new search button in query result page
+#    Given the account data for BS123456B
+#    And the income check is performed
+#    When the new search button is clicked
+#    Then the service displays the following result
+#      | Page sub heading | Family Migration     |
+#      | Page sub title   | Individual's details |
 
   Scenario: edit search button is clicked
     Given the account data for BS123456B

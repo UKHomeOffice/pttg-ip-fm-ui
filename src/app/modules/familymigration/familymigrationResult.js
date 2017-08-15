@@ -52,6 +52,7 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
   var state = 'error'
   var res = FamilymigrationService.getLastAPIresponse()
   $scope.familyDetails = FamilymigrationService.getFamilyDetails()
+  $scope.showNewSearchButton = false
 
   var displayDate = function (d) {
     return moment(d).format('DD/MM/YYYY')
