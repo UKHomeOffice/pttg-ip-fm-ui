@@ -123,6 +123,13 @@ Feature: Category A Financial Requirement
       | Your Search National Insurance Number | RK123456C                                                                                      |
       | Your Search Application Raised Date   | 03/07/2015                                                                                     |
 
+  Scenario: Caseworker clicks on the feedback button in query result page
+    Given the account data for BS123456B
+    And the income check is performed
+    When the feedback button is clicked
+    Then the service displays the following result
+      | Page title | Feedback     |
+
 #  Scenario: Caseworker clicks on the start a new search button in query result page
 #    Given the account data for BS123456B
 #    And the income check is performed
@@ -148,3 +155,15 @@ Feature: Category A Financial Requirement
       | NINO                    | BS123456B  |
       | Application Raised Date | 10/02/2015 |
       | Dependants              | 2          |
+
+  Scenario: Caseworker clicks on the feedback button then the start a new search button
+    Given the account data for BS123456B
+    And the income check is performed
+    And the feedback button is clicked
+    And the feedback form is completed
+      | Correct Individual | Yes |
+      | Match              | Yes |
+    When the new search button is clicked
+    Then the service displays the following result
+      | Page sub heading | Family Migration     |
+      | Page sub title   | Individual's details |

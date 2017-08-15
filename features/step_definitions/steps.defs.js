@@ -16,7 +16,22 @@ const urls = {
 }
 
 const radioElements = {
-  
+  correctIndividual: [{
+    key: 'yes',
+    value: 'Yes'
+  },
+  {
+    key: 'no',
+    value: 'No'
+  }],
+  match: [{
+    key: 'yes',
+    value: 'Yes'
+  },
+  {
+    key: 'no',
+    value: 'No'
+  }],
 }
 
 const getHttp = function (uri) {
@@ -284,6 +299,14 @@ defineSupportCode(function ({Given, When, Then}) {
   Given(/^the income check is performed$/, {timeout: 10 * 1000}, function () {
     const d = this.driver
     const data = expandFields(this.defaults)
+    return completeInputs(d, data).then(function () {
+      return submitAction(d)
+    })
+  })
+
+  Given(/^the feedback form is completed$/, {timeout: 10 * 1000}, function (table) {
+    const d = this.driver
+    const data = toCamelCaseKeys(_.object(table.rawTable))
     return completeInputs(d, data).then(function () {
       return submitAction(d)
     })
