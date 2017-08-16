@@ -46,6 +46,10 @@ var lcFirst = function (str) {
   return str.substr(0, 1).toLowerCase() + str.substr(1)
 }
 
+var inQ = function (str) {
+  return '"' + str + '"'
+}
+
 formsModule.factory('FormValidatorsService', [function () {
   var me = this
   var defs = {}
@@ -105,8 +109,8 @@ formsModule.factory('FormsService', ['$rootScope', 'FormValidatorsService', func
     // default errors
     var errorObj = {
       err: err,
-      summary: 'The "' + scope.label + '" is invalid',
-      msg: 'Enter a valid ' + lcFirst(scope.label)
+      summary: 'The ' + inQ(scope.label) + ' is invalid',
+      msg: 'Enter a valid ' + inQ(scope.label)
     }
 
     if (scope.config && scope.config.errors && scope.config.errors[err]) {
@@ -223,8 +227,11 @@ formsModule.factory('FormsService', ['$rootScope', 'FormValidatorsService', func
 
               if (scope.config.validate) {
                 var custom = scope.config.validate(val, scope)
-                if (custom !== true) {
+                if (_.isObject(custom)) {
                   return custom
+                }
+                if (custom === false) {
+                  return me.getError('invalid', scope)
                 }
               }
 
@@ -463,7 +470,7 @@ formsModule.directive('hodRadio', ['FormsService', function (FormsService) {
           // options: [{label: 'Please select', value: 0}],
           errors: {
             required: {
-              summary: 'The "' + scope.label + '" option is invalid',
+              summary: 'The ' + inQ(scope.label) + ' option is invalid',
               msg: 'Select an option'
             }
           }
@@ -557,11 +564,11 @@ formsModule.directive('hodDate', ['FormsService', function (FormsService) {
           errors: {
             max: {
               msg: 'Date is after the max date',
-              summary: attrs.label + ' is invalid'
+              summary: inQ(attrs.label) + ' is invalid'
             },
             min: {
               msg: 'Date is before the min date',
-              summary: attrs.label + ' is invalid'
+              summary: inQ(attrs.label) + ' is invalid'
             }
           }
         }, scope.config)
@@ -631,8 +638,11 @@ formsModule.directive('hodDate', ['FormsService', function (FormsService) {
           var validate = function () {
             if (scope.config.validate) {
               var custom = scope.config.validate(scope.field, scope)
-              if (custom !== true) {
+              if (_.isObject(custom)) {
                 return custom
+              }
+              if (custom === false) {
+                return FormsService.getError('invalid', scope)
               }
             }
 

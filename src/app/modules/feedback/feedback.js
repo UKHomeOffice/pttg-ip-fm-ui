@@ -87,7 +87,7 @@ feedbackModule.controller('FeedbackCtrl',
           classes: {'form-control-1-4': false},
           required: false,
           validate: function (v, sc) {
-            return conditionalIfNo('correctIndividual', v, { summary: 'Comment on what went wrong is blank', msg: 'What went wrong is blank' })
+            return conditionalIfNo('correctIndividual', v, { summary: 'The "Why do you think that the correct individual was not retrieved?" is blank', msg: 'Please provide comments' })
           }
         },
         match: {
@@ -97,7 +97,7 @@ feedbackModule.controller('FeedbackCtrl',
           classes: {'form-control-1-4': false},
           required: false,
           validate: function (v, sc) {
-            return conditionalIfNo('match', v, { summary: 'Comment on why IPS did not match paper assessment', msg: 'What did not match?' })
+            return conditionalIfNo('match', v, { summary: 'The "Why do you think that the paper assessment did not match the IPS result?" is blank', msg: 'Please provide comments' })
           }
         },
         satisfactionEase: {

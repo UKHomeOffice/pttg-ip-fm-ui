@@ -96,8 +96,8 @@ familymigrationModule.controller(
     $scope.familyDetails = FamilymigrationService.getFamilyDetails()
 
     var appRaisedDateMsg = {
-      summary: 'The application raised date is invalid',
-      msg: 'Enter a valid application raised date'
+      summary: 'The "Application raised date" is invalid',
+      msg: 'Enter a valid "Application raised date"'
     }
 
     $scope.conf = {
@@ -115,7 +115,7 @@ familymigrationModule.controller(
               return true
             }
           }
-          return { summary: 'The National Insurance number is invalid', msg: 'Enter a valid National Insurance number' }
+          return false
         }
       },
       dependants: {
@@ -141,11 +141,7 @@ familymigrationModule.controller(
           if (ok) {
             return true
           }
-
-          return {
-            summary: 'The number of dependants is invalid',
-            msg: 'Enter a valid number of dependants'
-          }
+          return false
         }
       },
       applicationRaisedDate: {
@@ -160,7 +156,7 @@ familymigrationModule.controller(
         max: moment().subtract(10, 'years').format('YYYY-MM-DD'),
         errors: {
           max: {
-            msg: 'Enter a valid date of birth'
+            msg: 'Enter a valid "Date of birth"'
           }
         }
       },

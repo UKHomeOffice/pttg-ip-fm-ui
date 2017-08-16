@@ -13,12 +13,12 @@
   <hod-form name="feedback" config="conf.feedback" submit="feedbackSubmit" ng-if="showForm">
     <hod-radio name="correctIndividual" config="conf.correctIndividual" label="Was the correct individual retrieved?" field="feedback.correctIndividual" options="yesNoOptions"></hod-radio>
     <div class="panel panel-border-wide text" ng-show="feedback.correctIndividual==='no'">
-      <hod-textarea name="correctIndividualComment" config="conf.correctIndividualComment" label="Comment" field="feedback.correctIndividualComment"></hod-textarea>
+      <hod-textarea name="correctIndividualComment" config="conf.correctIndividualComment" label="Why do you think that the correct individual was not retrieved?" field="feedback.correctIndividualComment"></hod-textarea>
     </div>
 
     <hod-radio name="match" config="conf.match" label="Did IPS match the paper assessment?" field="feedback.match" options="yesNoOptions"></hod-radio>
     <div class="panel panel-border-wide text" ng-show="feedback.match==='no'">
-      <hod-textarea name="matchComment" config="conf.matchComment" label="Comment" field="feedback.matchComment"></hod-textarea>
+      <hod-textarea name="matchComment" config="conf.matchComment" label="Why do you think that the paper assessment did not match the IPS result?" field="feedback.matchComment"></hod-textarea>
     </div>
     
     <div ng-if="showSatisfaction">
