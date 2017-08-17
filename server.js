@@ -20,6 +20,7 @@ process.chdir(path.resolve(__dirname))
 
 var stdRelay = function (req, res, uri, qs, postdata) {
   var headers = {}
+  console.log(req.headers)
   if (req.headers['x-auth-userid']) {
     headers['x-auth-userid'] = req.headers['x-auth-userid']
   }
