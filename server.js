@@ -104,7 +104,7 @@ app.post(uiBaseUrl + 'feedback', function (req, res) {
     3. remove this comment block :-)
     ####################################################
   */
-  stdRelay(req, res, apiBaseUrl + '/feedback', '', req.body)
+  stdRelay(req, res, apiBaseUrl + 'feedback', '', req.body)
   // res.send({success: true})
 })
 
