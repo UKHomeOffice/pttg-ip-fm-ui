@@ -104,8 +104,8 @@ app.post(uiBaseUrl + 'feedback', function (req, res) {
     3. remove this comment block :-)
     ####################################################
   */
-  // stdRelay(req, res, apiRoot + '/feedback', '', req.body)
-  res.send({success: true})
+  stdRelay(req, res, apiRoot + '/feedback', '', req.body)
+  // res.send({success: true})
 })
 
 function addCaCertsForHttps (opts, headers) {
