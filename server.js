@@ -20,7 +20,6 @@ process.chdir(path.resolve(__dirname))
 
 var stdRelay = function (req, res, uri, qs, postdata) {
   var headers = {}
-  console.log(req.headers)
   if (req.headers['x-auth-userid']) {
     headers['x-auth-userid'] = req.headers['x-auth-userid']
   }
@@ -43,7 +42,6 @@ var stdRelay = function (req, res, uri, qs, postdata) {
     opts.json = true
     opts.headers['content-type'] = 'application/json'
     opts.body = JSON.stringify(postdata)
-    console.log(opts)
   }
 
   request(opts, function (error, response, body) {
@@ -51,13 +49,6 @@ var stdRelay = function (req, res, uri, qs, postdata) {
     if ((body === '' || body === '""') && status === 200) {
       status = 500
     }
-
-    // console.log('\n\n######')
-    // console.log(uri)
-    // console.log(qs)
-    // console.log(response.statusCode.status, status)
-    // console.log(body)
-    // console.log('######\n\n')
 
     res.setHeader('Content-Type', 'application/json')
     res.status(status)
