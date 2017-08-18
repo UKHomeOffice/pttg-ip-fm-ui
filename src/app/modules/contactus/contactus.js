@@ -30,9 +30,9 @@ contactusModule.controller('ContactUsCtrl',['$scope', function ($scope) {
   $scope.contactDetails = {}
   $scope.whatToShow = ''
   $scope.issueOptions = [
-    { value: 'security', label: 'Security' },
-    { value: 'functionality', label: 'Functionality' },
-    { value: 'performance', label: 'Performance' },
+    { value: 'security', label: 'Security - example: report suspected misuse of the service' },
+    { value: 'functionality', label: 'Functionality - example: unable to fill in sections of the form' },
+    { value: 'performance', label: 'Performance - example: web pages are slow to load' },
     { value: 'other', label: 'Other' },
   ]
 
