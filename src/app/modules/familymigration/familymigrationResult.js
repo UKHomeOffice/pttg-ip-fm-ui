@@ -166,8 +166,8 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
 
   copyText += 'RESULTS\n'
   copyText += lineLength('Individual: ', 36) + $scope.outcomeBoxIndividualName + '\n'
-  copyText += lineLength('Threshold: ', 36) + $scope.threshold + '\n'
-  copyText += lineLength('Income within date range: ', 36) + $scope.outcomeFromDate + ' - ' + $scope.outcomeFromDate + '\n'
+  copyText += lineLength('Threshold: ', 36) + $filter('currency')($scope.threshold, '£') + '\n'
+  copyText += lineLength('Income within date range: ', 36) + $scope.outcomeFromDate + ' - ' + $scope.outcomeToDate + '\n'
   _.each($scope.employers, function (e, i) {
     if (i === 0) {
       copyText += lineLength('Employers: ', 36) + e + '\n'
@@ -178,6 +178,9 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
 
   // add the your search to it
   copyText += '\n\nSEARCH CRITERIA\n'
+  copyText += lineLength('First name: ', 36) + $scope.familyDetails.forename + '\n'
+  copyText += lineLength('Surname: ', 36) + $scope.familyDetails.surname + '\n'
+  copyText += lineLength('Date of birth: ', 36) + $scope.familyDetails.dateOfBirth + '\n'
   copyText += lineLength('Dependants: ', 36) + $scope.familyDetails.dependants + '\n'
   copyText += lineLength('NINO: ', 36) + $scope.familyDetails.nino + '\n'
   copyText += lineLength('Application raised: ', 36) + $scope.familyDetails.displayDate + '\n'
