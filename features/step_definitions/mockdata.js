@@ -2,7 +2,7 @@ var jswiremocklib = require('../support/jswiremock')
 var Jswiremock = jswiremocklib.jswiremock
 var stubFor = jswiremocklib.stubFor
 var get = jswiremocklib.get
-// var post = jswiremocklib.post
+var post = jswiremocklib.post
 var urlEqualTo = jswiremocklib.urlEqualTo
 var aResponse = jswiremocklib.a_response
 var fs = require('fs')
@@ -18,12 +18,16 @@ exports = module.exports = {
   },
 
   stubIt: function (u, data, status, delay) {
+    
     var res = aResponse()
     res.withDelay(delay || 0)
     res.withStatus(status || 200)
     res.withHeader({'Content-Type': 'application/json'})
-    res.withBody(JSON.stringify(data))
-    stubFor(this.jswm, get(urlEqualTo(u)).willReturn(res))
+    res.withBody(data)
+
+    console.log('stubIt', u, data, status)
+    // stubFor(this.jswm, get(urlEqualTo(u)).willReturn(res))
+    stubFor(this.jswm, post(urlEqualTo(u)).willReturn(res))
   },
 
   stubItFile: function (u, file, status, delay) {
@@ -35,7 +39,8 @@ exports = module.exports = {
     if (file) {
       res.withBody(fs.readFileSync('features/test-data/' + file, 'utf8'))
     }
-    stubFor(this.jswm, get(urlEqualTo(u)).willReturn(res))
+    // stubFor(this.jswm, get(urlEqualTo(u)).willReturn(res))
+    stubFor(this.jswm, post(urlEqualTo(u)).willReturn(res))
   },
 
   clearAll: function () {

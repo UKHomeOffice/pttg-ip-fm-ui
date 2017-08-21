@@ -41,7 +41,8 @@ var stdRelay = function (req, res, uri, qs, postdata) {
     opts.method = "POST"
     opts.json = true
     opts.headers['content-type'] = 'application/json'
-    opts.body = JSON.stringify(postdata)
+    opts.body = postdata
+    // console.log(opts.body)
   }
 
   request(opts, function (error, response, body) {
@@ -83,8 +84,8 @@ app.get(uiBaseUrl + 'availability', function (req, res) {
   stdRelay(req, res, apiRoot + '/healthz', '')
 })
 
-app.get(uiBaseUrl + 'individual/:nino/financialstatus', function (req, res) {
-  stdRelay(req, res, apiBaseUrl + 'individual/' + req.params.nino + '/financialstatus', req.query)
+app.post(uiBaseUrl + 'individual/financialstatus', function (req, res) {
+  stdRelay(req, res, apiBaseUrl + 'individual/financialstatus', '', req.body)
 })
 
 app.post(uiBaseUrl + 'feedback', function (req, res) {

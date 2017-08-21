@@ -12,7 +12,7 @@ const request = require('request')
 chai.use(chaiAsPromised)
 
 const urls = {
-  financialstatus: 'incomeproving/v2/individual/:nino/financialstatus'
+  financialstatus: 'incomeproving/v2/individual/financialstatus'
 }
 
 const radioElements = {
@@ -265,8 +265,9 @@ defineSupportCode(function ({Given, When, Then}) {
   })
 
   Given(/the api response is garbage/, function (callback) {
+    console.log('stubHealthz 503')
     mockdata.stubHealthz(503)
-    mockdata.stubIt(urls.financialstatus, 'dsadsadasda', 500)
+    mockdata.stubIt(urls.financialstatus, '', 500)
     callback()
   })
 
