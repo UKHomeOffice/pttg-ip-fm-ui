@@ -18,15 +18,15 @@ familymigrationModule.factory('FamilymigrationService', ['IOService', '$state', 
   }
 
   this.submit = function (fam) {
-    var nino = fam.nino
     fam = angular.copy(fam)
-    delete fam.nino
 
-    IOService.get('individual/' + nino + '/financialstatus', fam, {timeout: 30000}).then(function (res) {
+    IOService.post('individual/financialstatus', fam, {timeout: 30000}).then(function (res) {
+      console.log('ok', res)
       lastAPIresponse = res
       $state.go('familymigrationResults')
-    }, function (res) {
-      lastAPIresponse = res
+    }, function (err) {
+      console.log('error', err)
+      lastAPIresponse = err
       $state.go('familymigrationResults')
     })
   }
