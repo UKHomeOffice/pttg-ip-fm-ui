@@ -45,7 +45,9 @@ var stdRelay = function (req, res, uri, qs, postdata) {
     // console.log(opts.body)
   }
 
+  console.log(headers['x-correlation-id'], opts.method, opts.uri)
   request(opts, function (error, response, body) {
+
     var status = (response && response.statusCode) ? response.statusCode : 500
     if ((body === '' || body === '""') && status === 200) {
       status = 500
@@ -55,11 +57,15 @@ var stdRelay = function (req, res, uri, qs, postdata) {
     res.status(status)
     res.send(body)
 
+    console.log(headers['x-correlation-id'], opts.method, opts.uri, response.statusCode, error)
+
     if (error) {
+      console.log(headers['x-correlation-id'], body)
       if (error.code === 'ECONNREFUSED') {
         console.log('ERROR: Connection refused', uri)
       } else {
         console.log('ERROR', error)
+
       }
     }
   })
@@ -102,9 +108,9 @@ app.post(uiBaseUrl + 'feedback', function (req, res) {
 })
 
 function addCaCertsForHttps (opts, headers) {
-  log("About to call " + opts.uri, headers)
+  // log("About to call " + opts.uri, headers)
   if (opts.uri && opts.uri.toLowerCase().startsWith('https')) {
-    log("Loading certs from  " + process.env.CA_CERTS_PATH, headers)
+    // log("Loading certs from  " + process.env.CA_CERTS_PATH, headers)
     opts.ca = fs.readFileSync(process.env.CA_CERTS_PATH, 'utf8')
     // DSP certs do not include root ca - so we can not validate entire chain that OpenSSL requires
     // so until we have entire chain in bundle lets not be strict
@@ -120,5 +126,5 @@ function log(message, headers) {
     'x-auth-userid': headers['x-auth-userid']
   }
 
-  // console.log(JSON.stringify(logMessage))
+  console.log(JSON.stringify(logMessage))
 }
