@@ -100,8 +100,14 @@ app.post(uiBaseUrl + 'feedback', function (req, res) {
 
 app.all('*', function (req, res, next) {
   // ### 404 ###
-  console.log(404, req.method, req.url)
-  res.status(404)
+  
+  if (req.url.toLowerCase().startsWith('/oauth')) {
+    console.log('404 -> 307' , req.method, req.url)
+    res.status(307)
+  } else {
+    console.log(404, req.method, req.url)
+    res.status(404)
+  }
   res.send('')
 })
 
