@@ -95,16 +95,14 @@ app.post(uiBaseUrl + 'individual/financialstatus', function (req, res) {
 })
 
 app.post(uiBaseUrl + 'feedback', function (req, res) {
-  /*
-    ################# FEEDBACK #########################
-    To enable sending of the feedback form to the api...
-    1. uncomment the line:    stdRelay(req...
-    2. remove the line:       res.send({success: true})
-    3. remove this comment block :-)
-    ####################################################
-  */
   stdRelay(req, res, apiBaseUrl + 'feedback', '', req.body)
-  // res.send({success: true})
+})
+
+app.all('*', function (req, res, next) {
+  // ### 404 ###
+  console.log(req.method, req.url)
+  res.status(404)
+  res.send('')
 })
 
 function addCaCertsForHttps (opts, headers) {
