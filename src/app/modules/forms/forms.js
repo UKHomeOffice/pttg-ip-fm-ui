@@ -527,6 +527,68 @@ formsModule.directive('hodRadio', ['FormsService', function (FormsService) {
   }
 }])
 
+formsModule.directive('hodCheckbox', ['FormsService', function (FormsService) {
+  return {
+    restrict: 'E',
+    require: '^^hodForm',
+    scope: {
+      field: '=',
+      hint: '@hint',
+      name: '@name',
+      label: '@label',
+      config: '=?',
+      options: '=?'
+    },
+    // transclude: true,
+    templateUrl: 'modules/forms/forms-checkbox.html',
+    compile: function (element, attrs) {
+      defaultAttrs(attrs, {hint: '', label: '', inline: false})
+      return function (scope, element, attrs, formCtrl, transclude) {
+
+      }
+    }
+  }
+}])
+
+
+formsModule.directive('hodCheckboxes', ['FormsService', function (FormsService) {
+  return {
+    restrict: 'E',
+    require: '^^hodForm',
+    scope: {
+      field: '=',
+      hint: '@hint',
+      name: '@name',
+      label: '@label',
+      config: '=?',
+      options: '=?'
+    },
+    // transclude: true,
+    templateUrl: 'modules/forms/forms-checkboxes.html',
+    compile: function (element, attrs) {
+      defaultAttrs(attrs, {hint: '', label: '', inline: false})
+      return function (scope, element, attrs, formCtrl, transclude) {
+        if (!_.isObject(scope.field)) {
+          scope.field = {}
+        }
+
+        _.each(scope.options, function (opt) {
+          if (!_.has(scope.field, opt.value)) {
+            scope.field[opt.value] = false
+          }
+        })
+        console.log(scope.field)
+
+        scope.checkboxClick = function (opt) {
+          scope.field[opt.value] = !scope.field[opt.value]
+          console.log(scope.field)
+          scope.$applyAsync()
+        }
+      }
+    }
+  }
+}])
+
 formsModule.directive('hodDate', ['FormsService', function (FormsService) {
   return {
     restrict: 'E',

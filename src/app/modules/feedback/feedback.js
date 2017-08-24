@@ -66,7 +66,6 @@ feedbackModule.controller('FeedbackCtrl',
       ]
 
       var conditionalIfNo = function (fieldName, v, err) {
-        console.log(fieldName, $scope.feedback[fieldName])
         if ($scope.feedback[fieldName] !== 'no') {
           // not relevant as everything was OK
           return true
@@ -92,6 +91,9 @@ feedbackModule.controller('FeedbackCtrl',
         },
         match: {
           inline: true
+        },
+        caseRef: {
+          classes: {'form-control-1-4': false},
         },
         matchComment: {
           classes: {'form-control-1-4': false},

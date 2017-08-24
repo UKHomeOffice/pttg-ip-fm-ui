@@ -1,10 +1,13 @@
 /* global angular Clipboard moment _ ga */
 
-/* jshint node: true */
-
-'use strict'
-
 var familymigrationModule = angular.module('hod.familymigration')
+
+familymigrationModule.constant('RESULTCODES', {
+  PAY_FREQUENCY_CHANGE: 'PAY_FREQUENCY_CHANGE',
+  MULTIPLE_EMPLOYERS: 'MULTIPLE_EMPLOYERS',
+  UNKNOWN_PAY_FREQUENCY: 'UNKNOWN_PAY_FREQUENCY',
+  NOT_ENOUGH_RECORDS: 'NOT_ENOUGH_RECORDS'
+});
 
 // #### ROUTES #### //
 familymigrationModule.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
@@ -39,6 +42,7 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
     'RESULT_TEXT', 
     '$timeout',
     '$window',
+    'RESULTCODES',
   function (
     $scope, 
     $state, 
@@ -47,23 +51,27 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
     FamilymigrationService, 
     RESULT_TEXT, 
     $timeout,
-    $window
+    $window,
+    RESULTCODES
   ) {
   var state = 'error'
   var res = FamilymigrationService.getLastAPIresponse()
   $scope.familyDetails = FamilymigrationService.getFamilyDetails()
   $scope.showNewSearchButton = false
+  $scope.feedback = {}
+  $scope.yesNoOptions = [{ value: 'yes', label: 'Yes' }, { value: 'no', label: 'No' }]
+  $scope.failOptions = [
+    { value: 'yes', label: 'Combined income (applicant and sponsor)' }, 
+    { value: RESULTCODES.MULTIPLE_EMPLOYERS, label: 'Multiple employers' },
+    { value: RESULTCODES.PAY_FREQUENCY_CHANGE, label: 'Payment frequency changes' }
+  ]
 
-  var displayDate = function (d) {
-    return moment(d).format('DD/MM/YYYY')
-  }
+  $scope.dFormat = 'dd/MM/yyyy'
 
   if (!res.status) {
     $state.go('familymigration')
     return
   }
-
-  $scope.familyDetails.displayDate = displayDate($scope.familyDetails.applicationRaisedDate)
 
   $scope.haveResult = (res.data && res.data.categoryCheck)
   if ($scope.haveResult) {
@@ -72,8 +80,8 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
     $scope.threshold = res.data.categoryCheck.threshold
     $scope.individual = res.data.individual
     $scope.outcomeBoxIndividualName = res.data.individual.forename + ' ' + res.data.individual.surname
-    $scope.outcomeFromDate = displayDate(res.data.categoryCheck.assessmentStartDate)
-    $scope.outcomeToDate = displayDate(res.data.categoryCheck.applicationRaisedDate)
+    $scope.outcomeFromDate = res.data.categoryCheck.assessmentStartDate
+    $scope.outcomeToDate = res.data.categoryCheck.applicationRaisedDate
 
     if (res.data.categoryCheck.passed) {
       state = 'passed'
@@ -84,22 +92,22 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
       $scope.success = false
       // $scope.heading = res.data.individual.forename + ' ' + res.data.individual.surname + ' doesn\'t meet the Category A requirement';
       switch (res.data.categoryCheck.failureReason) {
-        case 'PAY_FREQUENCY_CHANGE':
+        case RESULTCODES.PAY_FREQUENCY_CHANGE:
           state = 'notpassed/paymentfrequencychange'
           $scope.reason = 'Change in payment frequency.'
           break
 
-        case 'MULTIPLE_EMPLOYERS':
+        case RESULTCODES.MULTIPLE_EMPLOYERS:
           state = 'notpassed/multipleemployers'
           $scope.reason = 'Payments from multiple employers.'
           break
 
-        case 'UNKNOWN_PAY_FREQUENCY':
+        case RESULTCODES.UNKNOWN_PAY_FREQUENCY:
           state = 'notpassed/unknownfrequency'
           $scope.reason = 'Unable to calculate a payment frequency.'
           break
 
-        case 'NOT_ENOUGH_RECORDS':
+        case RESULTCODES.NOT_ENOUGH_RECORDS:
           state = 'notpassed/recordcount'
           $scope.reason = 'They haven\'t been with their current employer for 6 months.'
           break
@@ -135,6 +143,37 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
       state = 'failure'
     }
   };
+
+  var conditionalIfNo = function (fieldName, v, err) {
+    if ($scope.feedback[fieldName] !== 'no') {
+      // not relevant as everything was OK
+      return true
+    }
+
+    if (_.isString(v) && v.length) {
+      return true
+    }
+
+    return err
+  }
+  $scope.conf = {
+    match: {
+      inline: true
+    },
+    caseref: {
+      classes: {'form-control-1-4': false},
+    },
+    matchComment: {
+      classes: {'form-control-1-4': false},
+      required: false,
+      validate: function (v, sc) {
+        return conditionalIfNo('match', v, { summary: 'The "Why do you think that the paper assessment did not match the IPS result?" is blank', msg: 'Please provide comments' })
+      }
+    },
+    something: {
+      
+    }
+  }
 
   $scope.newSearch = function () {
     FamilymigrationService.reset()
