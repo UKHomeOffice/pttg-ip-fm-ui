@@ -101,22 +101,18 @@
   <hod-form name="feedback" config="conf.feedback" submit="feedbackSubmit">
     
     <hod-radio name="match" config="conf.match" label="Did IPS match the paper assessment?" field="feedback.match" options="yesNoOptions"></hod-radio>
-    <div class="panel panel-border-wide text" ng-show="feedback.match==='no'">
+    <div class="panel panel-border-wide text" xng-show="feedback.match==='no'">
       <hod-text name="caseref" label="Case reference" field="feedback.caseref" config="conf.caseref"></hod-text>
 
       <hod-textarea name="matchComment" config="conf.matchComment" label="Why do you think that the paper assessment did not match the IPS result?" field="feedback.matchComment"></hod-textarea>
-
       
-
-      <hod-checkbox name="something" config="conf.something" label="Something" field="feedback.something"></hod-checkbox>
+      <hod-checkboxes label="Why do you think that the paper assessment did not match the IPS result?" field="feedback.whynot" options="whynotOptions"></hod-checkboxes>
 
       <hod-textarea name="matchOther" config="conf.matchOther" label="Other" field="feedback.matchOther"></hod-textarea>
     </div>
 
     <hod-submit value="Submit and start a new search"></hod-submit>
   </hod-form>
-
-  
 
   <div class="form-group form-group--topspace" ng-if="showNewSearchButton">
       <input id="newSearchBtn" type="submit" class="button button--newSearch" value="Begin a new check" ng-click="newSearch()">

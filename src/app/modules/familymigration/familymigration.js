@@ -94,6 +94,7 @@ familymigrationModule.controller(
     ga('send', 'pageview')
 
     $scope.familyDetails = FamilymigrationService.getFamilyDetails()
+    console.log($scope.familyDetails)
 
     var appRaisedDateMsg = {
       summary: 'The "Application raised date" is invalid',
@@ -159,7 +160,7 @@ familymigrationModule.controller(
             msg: 'Enter a valid "Date of birth"'
           }
         }
-      },
+      }
     }
 
     $scope.submitButton = {

@@ -60,11 +60,12 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
   $scope.showNewSearchButton = false
   $scope.feedback = {}
   $scope.yesNoOptions = [{ value: 'yes', label: 'Yes' }, { value: 'no', label: 'No' }]
-  $scope.failOptions = [
-    { value: 'yes', label: 'Combined income (applicant and sponsor)' }, 
-    { value: RESULTCODES.MULTIPLE_EMPLOYERS, label: 'Multiple employers' },
-    { value: RESULTCODES.PAY_FREQUENCY_CHANGE, label: 'Payment frequency changes' }
-  ]
+  $scope.whynotOptions = {}
+  $scope.whynotOptions['combinedincome'] = 'Combined income (applicant and sponsor)'
+  $scope.whynotOptions[RESULTCODES.MULTIPLE_EMPLOYERS] = 'Multiple employers'
+  $scope.whynotOptions[RESULTCODES.PAY_FREQUENCY_CHANGE] = 'Payment frequency changes'
+
+  $scope.feedback = { whynot: {} }
 
   $scope.dFormat = 'dd/MM/yyyy'
 

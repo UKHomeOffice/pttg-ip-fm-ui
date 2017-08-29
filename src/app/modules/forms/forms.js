@@ -544,7 +544,13 @@ formsModule.directive('hodCheckbox', ['FormsService', function (FormsService) {
     compile: function (element, attrs) {
       defaultAttrs(attrs, {hint: '', label: '', inline: false})
       return function (scope, element, attrs, formCtrl, transclude) {
-
+        scope.checked = (scope.field === true)
+        scope.field = scope.checked
+        scope.checkboxClick = function () {
+          scope.checked = !scope.checked
+          scope.field = scope.checked
+          scope.$applyAsync()
+        }
       }
     }
   }
@@ -568,22 +574,7 @@ formsModule.directive('hodCheckboxes', ['FormsService', function (FormsService) 
     compile: function (element, attrs) {
       defaultAttrs(attrs, {hint: '', label: '', inline: false})
       return function (scope, element, attrs, formCtrl, transclude) {
-        if (!_.isObject(scope.field)) {
-          scope.field = {}
-        }
-
-        _.each(scope.options, function (opt) {
-          if (!_.has(scope.field, opt.value)) {
-            scope.field[opt.value] = false
-          }
-        })
-        console.log(scope.field)
-
-        scope.checkboxClick = function (opt) {
-          scope.field[opt.value] = !scope.field[opt.value]
-          console.log(scope.field)
-          scope.$applyAsync()
-        }
+        
       }
     }
   }

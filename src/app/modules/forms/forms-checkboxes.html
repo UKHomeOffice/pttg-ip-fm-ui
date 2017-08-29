@@ -5,10 +5,7 @@
     <div ng-if="displayError" id="{{ config.id }}-error" class="form-error validation-message">{{ displayError }}</div>
 
     <div class="checkbox-group">
-      <label class="block-label selection-button-checkbox" for="{{ config.id }}-{{ opt.value }}" id="{{ config.id }}-{{ opt.value }}-label" ng-class="{focused: focused, selected: isSelected(opt)}" ng-repeat="(i, opt) in options">
-        <input id="{{ config.id }}-{{ opt.value }}" type="checkbox" ng-model="field[opt.value]" value="{{ opt.value }}" ng-click="checkboxClick(opt)" ng-required="config.required" ui-validate="'validfunc($value)'" ng-focus="focused=true" ng-blur="focused=false" />
-        {{ opt.label }}
-      </label>
+      <hod-checkbox ng-repeat="(i, opt) in options" name="{{ config.id }}-{{ i }}" label="{{ opt }}" field="field[i]"></hod-checkbox>
     </div>
   </fieldset>
 </div>
