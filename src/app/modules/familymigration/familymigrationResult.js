@@ -157,9 +157,15 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
 
     return err
   }
+
+
+
   $scope.conf = {
     match: {
-      inline: true
+      inline: true,
+      onClick: function (opt, scope) {
+        setFeedbackVisibility(opt.value)
+      }
     },
     caseref: {
       classes: {'form-control-1-4': false},
@@ -171,10 +177,32 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
         return conditionalIfNo('match', v, { summary: 'The "Why do you think that the paper assessment did not match the IPS result?" is blank', msg: 'Please provide comments' })
       }
     },
-    something: {
+    whynot: {
+
+    },
+    matchOther: {
       
     }
   }
+
+  var setFeedbackVisibility = function (v) {
+    $scope.conf.caseref.hidden = true
+    $scope.conf.matchComment.hidden = true
+    $scope.conf.whynot.hidden = true
+    $scope.conf.matchOther.hidden = true
+    if (v === 'no') {
+      if (state === 'passed') {
+        $scope.conf.caseref.hidden = false
+        $scope.conf.matchComment.hidden = false
+      } else {
+        $scope.conf.caseref.hidden = false
+        $scope.conf.whynot.hidden = false
+        $scope.conf.matchOther.hidden = false
+      }
+    }
+  }
+
+  setFeedbackVisibility()
 
   $scope.newSearch = function () {
     FamilymigrationService.reset()
