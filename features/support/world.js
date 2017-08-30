@@ -16,7 +16,7 @@ var reportPath = path.resolve('report/')
 // config
 var shareBrowserInstances = true
 var browserName = 'chrome'// usePhantomJS ? 'phantomjs' : 'chrome'
-var headless = true
+var headless = false
 var showReport = false
 //
 

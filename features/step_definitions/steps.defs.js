@@ -104,15 +104,47 @@ const shouldSee = function (text) {
 }
 
 const confirmContentById = function (d, data, timeoutLength) {
+  var e
   const promises = []
   _.each(data, function (val, key) {
     const expectation = new Promise(function (resolve, reject) {
       d.wait(until.elementLocated({id: key}), timeoutLength || 5 * 1000, 'TIMEOUT: Waiting for element #' + key).then(function (el) {
-                // wait until driver has located the element
-        return expect(el.getText()).to.eventually.equal(val)
+        e = el
+        return el.getTagName()
+      }).then(function (name) {
+        if (name === 'input') {
+          return expect(e.getAttribute('value')).to.eventually.equal(val)  
+        } else {
+          return expect(e.getText()).to.eventually.equal(val)  
+        }
+        
       }).then(function (result) {
                 // test OK
         return resolve(result)
+      }, function (err) {
+                // test failed
+        return reject(err)
+      })
+    })
+    promises.push(expectation)
+  })
+  return whenAllDone(promises)
+}
+
+const confirmVisible = function (d, data, timeoutLength) {
+  const promises = []
+  _.each(data, function (val, key) {
+    const expectation = new Promise(function (resolve, reject) {
+      d.wait(until.elementLocated({id: key}), timeoutLength || 5 * 1000, 'TIMEOUT: Waiting for element #' + key).then(function (el) {
+        return el.isDisplayed()
+      }).then(function (result) {
+        console.log(result)
+        if (result) {
+          return resolve(result)  
+        } else {
+          return reject()
+        }
+        
       }, function (err) {
                 // test failed
         return reject(err)
@@ -371,5 +403,10 @@ defineSupportCode(function ({Given, When, Then}) {
   Then(/^the service displays the following page content$/, function (table) {
     const data = toCamelCaseKeys(_.object(table.rawTable))
     return confirmContentById(this.driver, data)
+  })
+
+  Then (/^the following are visible$/, function (table) {
+    const data = toCamelCaseKeys(_.object(table.rawTable))
+    return confirmVisible(this.driver, data)
   })
 })
