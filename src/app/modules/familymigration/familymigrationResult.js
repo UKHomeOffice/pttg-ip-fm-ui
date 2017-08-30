@@ -181,7 +181,7 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
 
     },
     matchOther: {
-      
+      classes: {'form-control-1-4': false},
     }
   }
 
