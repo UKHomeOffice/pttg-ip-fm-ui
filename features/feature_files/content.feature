@@ -54,18 +54,18 @@ Feature: Page content
     When the income check is performed
     Then the service displays the following result
       | Page dynamic detail | Percy Frank-Carter doesn't meet the Category A requirement |
-      | Page dynamic reason | Change in payment frequency.                            |
+      | Page dynamic reason | Change in payment frequency.                               |
 
   Scenario: Show failure message when payments from multiple employers is seen
     Given the account data for MULTIPLE_EMPLOYERS
     When the income check is performed
     Then the service displays the following result
       | Page dynamic detail | Martin Elton doesn't meet the Category A requirement |
-      | Page dynamic reason | Payments from multiple employers.                       |
+      | Page dynamic reason | Payments from multiple employers.                    |
 
   Scenario: Show failure message when a payment frequency cannot be determined
     Given the account data for UNKNOWN_PAY_FREQUENCY
     When the income check is performed
     Then the service displays the following result
       | Page dynamic detail | Unwin Pat-Frank doesn't meet the Category A requirement |
-      | Page dynamic reason | Unable to calculate a payment frequency.               |
+      | Page dynamic reason | Unable to calculate a payment frequency.                |

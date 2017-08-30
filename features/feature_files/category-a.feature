@@ -6,9 +6,9 @@ Feature: Category A Financial Requirement
     And the default details are
       | NINO                    | KS123456C  |
       | Application Raised Date | 03/07/2015 |
-      | Forename              | Kumar      |
+      | Forename                | Kumar      |
       | Surname                 | Sangakkara |
-      | Date Of Birth                     | 01/01/1978 |
+      | Date Of Birth           | 01/01/1978 |
       | Dependants              | 0          |
 
   Scenario: Does not meet the Category A employment duration Requirement (with current employer for only 3 months)
@@ -31,9 +31,9 @@ Feature: Category A Financial Requirement
     Given the account data for BS123456B
     When caseworker submits a query
       | NINO                    | BS123456B  |
-      | Forename              | Brian      |
+      | Forename                | Brian      |
       | Surname                 | Sinclair   |
-      | Date Of Birth                     | 06/06/1970 |
+      | Date Of Birth           | 06/06/1970 |
       | Application Raised Date | 10/02/2015 |
       | Dependants              | 2          |
     Then the service displays the following result
@@ -52,9 +52,9 @@ Feature: Category A Financial Requirement
     Given the account data for TL123456A
     When caseworker submits a query
       | NINO                    | TL123456A  |
-      | Forename              | Tony       |
+      | Forename                | Tony       |
       | Surname                 | Ledo       |
-      | Date Of Birth                     | 04/05/1980 |
+      | Date Of Birth           | 04/05/1980 |
       | Application Raised Date | 03/01/2015 |
       | Dependants              | 1          |
     Then the service displays the following result
@@ -73,9 +73,9 @@ Feature: Category A Financial Requirement
     Given the account data for TL123456A
     When Robert submits a query
       | NINO                    | TL 12 34 56 A |
-      | Forename              | Tony          |
+      | Forename                | Tony          |
       | Surname                 | Ledo          |
-      | Date Of Birth                     | 04/05/1980    |
+      | Date Of Birth           | 04/05/1980    |
       | Application Raised Date | 03/01/2015    |
       | Dependants              | 1             |
     Then the service displays the following result
@@ -94,9 +94,9 @@ Feature: Category A Financial Requirement
     Given the account data for TL123456A
     When Robert submits a query
       | NINO                    | TL123456A  |
-      | Forename              | Tony       |
+      | Forename                | Tony       |
       | Surname                 | Ledo       |
-      | Date Of Birth                     | 04/05/1980 |
+      | Date Of Birth           | 04/05/1980 |
       | Application Raised Date | 3/1/2015   |
       | Dependants              | 1          |
     Then the service displays the following result
@@ -128,7 +128,7 @@ Feature: Category A Financial Requirement
     And the income check is performed
     When the feedback button is clicked
     Then the service displays the following result
-      | Page title | Feedback     |
+      | Page title | Feedback |
 
 #  Scenario: Caseworker clicks on the start a new search button in query result page
 #    Given the account data for BS123456B
@@ -142,16 +142,16 @@ Feature: Category A Financial Requirement
     Given the account data for BS123456B
     When Caseworker submits a query
       | NINO                    | BS123456B  |
-      | Forename              | Brian      |
+      | Forename                | Brian      |
       | Surname                 | Sinclair   |
-      | Date Of Birth                     | 01/01/1969 |
+      | Date Of Birth           | 01/01/1969 |
       | Application Raised Date | 10/02/2015 |
       | Dependants              | 2          |
     And the edit search button is clicked
     Then the inputs will be populated with
-      | Forename              | Brian      |
+      | Forename                | Brian      |
       | Surname                 | Sinclair   |
-      | Date Of Birth                     | 01/01/1969 |
+      | Date Of Birth           | 01/01/1969 |
       | NINO                    | BS123456B  |
       | Application Raised Date | 10/02/2015 |
       | Dependants              | 2          |

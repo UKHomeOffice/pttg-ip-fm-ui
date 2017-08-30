@@ -7,9 +7,9 @@ Feature: Copy results to paste buffer
     And Caseworker is using the Income Proving Service Case Worker Tool
     And the default details are
       | NINO                    | TL123456A  |
-      | Forename              | Ton        |
+      | Forename                | Ton        |
       | Surname                 | Led        |
-      | Date Of Birth                     | 04/05/1980 |
+      | Date Of Birth           | 04/05/1980 |
       | Application Raised Date | 01/01/2015 |
       | Dependants              | 1          |
 
@@ -26,9 +26,9 @@ Feature: Copy results to paste buffer
     Given the account data for BS123456B
     When Caseworker submits a query
       | NINO                    | BS123456B  |
-      | Forename              | Bri        |
+      | Forename                | Bri        |
       | Last name               | Sin        |
-      | Date Of Birth                     | 06/06/1970 |
+      | Date Of Birth           | 06/06/1970 |
       | Application Raised Date | 01/02/2015 |
     Then the service displays the following result
       | Copy summary | Brian Sinclair does not meet the Category A requirement |
