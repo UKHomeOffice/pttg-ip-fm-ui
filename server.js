@@ -1,3 +1,5 @@
+const maintenanceMode = !!process.env.MAINTENANCE
+
 var express = require('express')
 var serveStatic = require('serve-static')
 var app = express()
@@ -71,7 +73,14 @@ var stdRelay = function (req, res, uri, qs, postdata) {
   })
 }
 
-app.use(serveStatic('public/', { 'index': ['index.html'] }))
+if (maintenanceMode) {
+  app.use(serveStatic('public/', { 'index': ['maintenance.html'] }))
+} else {
+  app.use(serveStatic('public/', { 'index': ['index.html'] }))
+}
+
+
+
 
 app.listen(port, function () {
   console.log('ui on:' + port)
@@ -108,7 +117,7 @@ app.all('*', function (req, res, next) {
     console.log(404, req.method, req.url)
     res.status(404)
   }
-  res.send('')
+  res.send('404')
 })
 
 function addCaCertsForHttps (opts, headers) {
