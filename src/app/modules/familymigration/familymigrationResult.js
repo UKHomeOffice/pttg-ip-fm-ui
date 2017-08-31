@@ -60,10 +60,8 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
   $scope.showNewSearchButton = false
   $scope.feedback = {}
   $scope.yesNoOptions = [{ value: 'yes', label: 'Yes' }, { value: 'no', label: 'No' }]
-  $scope.whynotOptions = {}
-  $scope.whynotOptions['combinedincome'] = 'Combined income (applicant and sponsor)'
-  $scope.whynotOptions[RESULTCODES.MULTIPLE_EMPLOYERS] = 'Multiple employers'
-  $scope.whynotOptions[RESULTCODES.PAY_FREQUENCY_CHANGE] = 'Payment frequency changes'
+
+  
 
   $scope.feedback = { whynot: {} }
 
@@ -178,10 +176,21 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
       }
     },
     whynot: {
-
+      options: [
+        {id: 'combinedincome', label: 'Combined income (applicant and sponsor)'},
+        {id: RESULTCODES.MULTIPLE_EMPLOYERS.toLowerCase(), label: 'Multiple employers'},
+        {id: RESULTCODES.PAY_FREQUENCY_CHANGE.toLowerCase(), label: 'Payment frequency changes'}
+      ]
     },
     matchOther: {
       classes: {'form-control-1-4': false},
+      required: false,
+      validate: function (v, sc) {
+        var n = _.reduce($scope.feedback.whynot, function(memo, bool){ return (bool) ? memo + 1 : memo }, 0)
+        console.log(n, $scope.feedback)
+        if (n) return true
+        if (!v) return { summary: 'The "Why do you think that the paper assessment did not match the IPS result?" is blank', msg: 'Enter a valid "Other"' }
+      }
     }
   }
 
@@ -204,9 +213,18 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
 
   setFeedbackVisibility()
 
-  $scope.newSearch = function () {
-    FamilymigrationService.reset()
-    $state.go('familymigration')
+  $scope.feedbackSubmit = function (valid) {
+    if (!valid) return
+    var data = angular.copy($scope.feedback)
+    _.each($scope.conf, function (conf, ref) {
+      if (conf.hidden) {
+        delete data[ref]
+      }
+    })
+    console.log(data)
+
+    // FamilymigrationService.reset()
+    // $state.go('familymigration')
   }
 
   // edit search button
@@ -280,6 +298,7 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
     e.clearSelection()
     timeoutResetButtonText()
   })
+
   clipboard.on('error', function (e) {
     console.log('ClipBoard error', e)
     $scope.copysummary = e.action + ' ' + e.trigger

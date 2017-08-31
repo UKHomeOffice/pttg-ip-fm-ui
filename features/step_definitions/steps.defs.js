@@ -131,15 +131,14 @@ const confirmContentById = function (d, data, timeoutLength) {
   return whenAllDone(promises)
 }
 
-const confirmVisible = function (d, data, timeoutLength) {
+const confirmVisible = function (d, data, visibility, timeoutLength) {
   const promises = []
   _.each(data, function (val, key) {
     const expectation = new Promise(function (resolve, reject) {
       d.wait(until.elementLocated({id: key}), timeoutLength || 5 * 1000, 'TIMEOUT: Waiting for element #' + key).then(function (el) {
         return el.isDisplayed()
       }).then(function (result) {
-        console.log(result)
-        if (result) {
+        if (result === !!visibility) {
           return resolve(result)  
         } else {
           return reject()
@@ -405,8 +404,8 @@ defineSupportCode(function ({Given, When, Then}) {
     return confirmContentById(this.driver, data)
   })
 
-  Then (/^the following are visible$/, function (table) {
+  Then (/^the following are (visible|hidden)$/, function (showOrHide, table) {
     const data = toCamelCaseKeys(_.object(table.rawTable))
-    return confirmVisible(this.driver, data)
+    return confirmVisible(this.driver, data, (showOrHide === 'visible'))
   })
 })

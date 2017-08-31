@@ -348,7 +348,10 @@ formsModule.directive('hodForm', ['$anchorScroll', 'FormsService', function ($an
             obj.displayError = ''
           } else if (obj.error.msg === '') {
             // NO ERROR MESSAGE?
-
+            console.log('NO ERROR MESSAGE?')
+            console.log(obj)
+            console.log(inp)
+            obj.displayError = ''
           } else {
             // show the message within the component
             obj.displayError = obj.error.msg
@@ -395,6 +398,7 @@ formsModule.directive('hodForm', ['$anchorScroll', 'FormsService', function ($an
 
       $scope.submitForm = function () {
         var isValid = (me.validateForm() === 0)
+        $scope.$applyAsync()
         FormsService.trackFormSubmission($scope)
 
         if (isValid) {
@@ -536,8 +540,7 @@ formsModule.directive('hodCheckbox', ['FormsService', function (FormsService) {
       hint: '@hint',
       name: '@name',
       label: '@label',
-      config: '=?',
-      options: '=?'
+      config: '=?'
     },
     // transclude: true,
     templateUrl: 'modules/forms/forms-checkbox.html',
@@ -546,7 +549,10 @@ formsModule.directive('hodCheckbox', ['FormsService', function (FormsService) {
       return function (scope, element, attrs, formCtrl, transclude) {
         scope.checked = (scope.field === true)
         scope.field = scope.checked
+        console.log(attrs)
+        console.log('Checkbox config:', scope.config)
         scope.checkboxClick = function () {
+          
           scope.checked = !scope.checked
           scope.field = scope.checked
           scope.$applyAsync()
@@ -566,15 +572,24 @@ formsModule.directive('hodCheckboxes', ['FormsService', function (FormsService) 
       hint: '@hint',
       name: '@name',
       label: '@label',
-      config: '=?',
-      options: '=?'
+      config: '=?'
     },
     // transclude: true,
     templateUrl: 'modules/forms/forms-checkboxes.html',
     compile: function (element, attrs) {
       defaultAttrs(attrs, {hint: '', label: '', inline: false})
       return function (scope, element, attrs, formCtrl, transclude) {
-        
+        _.each(scope.config.options, function (opt) {
+          opt.checked = !!opt.checked
+          scope.field[opt.id] = !!scope.field[opt.id]
+        })
+        console.log(attrs)
+        console.log(scope.config)
+        scope.checkBoxChange = function (opt) {
+          console.log('checkBoxChange', opt)
+          scope.field[opt.id] = opt.checked
+          scope.$applyAsync()
+        }
       }
     }
   }
