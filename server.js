@@ -1,4 +1,4 @@
-const maintenanceMode = !!process.env.MAINTENANCE
+const maintenanceMode = (process.env.MAINTENANCE === 'true')
 
 var express = require('express')
 var serveStatic = require('serve-static')
