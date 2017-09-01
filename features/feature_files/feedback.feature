@@ -34,9 +34,18 @@ Feature: Feedback form
       | multiple_employers-label   |
       | pay_frequency_change-label |
 
+    Scenario: Yes selected on the feedback form
+      Given case worker performed and income proving test
+      When case worker selects "yes" on the feedback form
+          |match-yes-label|Yes|
+      And clicks submit
+          |submit btn|
+      Then the service displays the follwing
+        | Page sub title | Individual's details|
+
     #### PASSED ####
 
-  Scenario: When No is selected and result is Passed then case reference and textarea should be displayed
+  Scenario: When No is selected and result is Passed then case reference and text area should be displayed
     Given the account data for TL123456A
     And the income check is performed
     When the feedback form is completed
@@ -67,13 +76,12 @@ Feature: Feedback form
 
     #### NOT PASSED ####
 
-  Scenario: When No is selected and result is NOT Passed then case reference, checkboxes and textarea should be displayed
+  Scenario: When No is selected and result is NOT Passed then case reference, checkboxes and text area should be displayed
     Given the account data for BS123456B
     And the income check is performed
     When the feedback form is completed
       | match | No |
     Then the following are visible
-      | caseref                    |
       | match other                |
       | combinedincome-label       |
       | multiple_employers-label   |
@@ -90,8 +98,20 @@ Feature: Feedback form
       | match          | No      |
       | combinedincome | checked |
     And the submit button is clicked
-    Then the following are hidden
+    Then the following are disregarded
       | match other-error |
 
 
 
+  Scenario: Validate that a case ref and comment are left
+    Given the account data for TL123456A
+    And the income check is performed
+    And the feedback form is completed
+      | match | No |
+    When the submit button is clicked
+    Then the service displays the following result
+      |page subtitle                     |Select one or more from below|
+      | match comment-error              |Please provide comments  |
+      | combinedincome-label             |  |
+      | multiple_employers-label         |  |
+      | pay_frequency_change-label       |  |
