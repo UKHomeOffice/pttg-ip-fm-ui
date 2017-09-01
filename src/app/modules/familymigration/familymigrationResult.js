@@ -43,6 +43,7 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
     '$timeout',
     '$window',
     'RESULTCODES',
+    'IOService',
   function (
     $scope, 
     $state, 
@@ -52,7 +53,8 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
     RESULT_TEXT, 
     $timeout,
     $window,
-    RESULTCODES
+    RESULTCODES,
+    IOService
   ) {
   var state = 'error'
   var res = FamilymigrationService.getLastAPIresponse()
@@ -180,16 +182,20 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
         {id: 'combinedincome', label: 'Combined income (applicant and sponsor)'},
         {id: RESULTCODES.MULTIPLE_EMPLOYERS.toLowerCase(), label: 'Multiple employers'},
         {id: RESULTCODES.PAY_FREQUENCY_CHANGE.toLowerCase(), label: 'Payment frequency changes'}
-      ]
+      ],
+      validate: function (v, sc) {
+        var n = _.reduce($scope.feedback.whynot, function(memo, bool){ return (bool) ? memo + 1 : memo }, 0)
+        
+        if (n || $scope.feedback.matchOther) return true
+        return { summary: 'The "Why do you think that the paper assessment did not match the IPS result?" is blank', msg: 'Answer the question' }
+      }
     },
     matchOther: {
       classes: {'form-control-1-4': false},
       required: false,
       validate: function (v, sc) {
         var n = _.reduce($scope.feedback.whynot, function(memo, bool){ return (bool) ? memo + 1 : memo }, 0)
-        console.log(n, $scope.feedback)
-        if (n) return true
-        if (!v) return { summary: 'The "Why do you think that the paper assessment did not match the IPS result?" is blank', msg: 'Enter a valid "Other"' }
+        return (n || v) ? true : { summary: '', msg: 'Enter a valid "Other"' }
       }
     }
   }
@@ -215,16 +221,32 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
 
   $scope.feedbackSubmit = function (valid) {
     if (!valid) return
-    var data = angular.copy($scope.feedback)
+    var details = angular.copy($scope.feedback)
     _.each($scope.conf, function (conf, ref) {
       if (conf.hidden) {
-        delete data[ref]
+        delete details[ref]
       }
     })
-    console.log(data)
 
-    // FamilymigrationService.reset()
-    // $state.go('familymigration')
+    var lastCheckDetails = FamilymigrationService.getFamilyDetails()
+    details.nino = lastCheckDetails.nino
+
+    var reload = function () {
+      // track
+      ga('set', 'page', $state.href($state.current.name, $stateParams) + '/' + state + '/feedback/' + details.match)
+      ga('send', 'pageview')
+
+      FamilymigrationService.reset()
+      $state.go('familymigration')
+    }
+
+    console.log('FEEDBACK', details)
+    IOService.post('feedback', details).then(function (res) {
+      reload()
+    }, function (err) {
+      console.log('ERROR', err)
+      reload()
+    })
   }
 
   // edit search button

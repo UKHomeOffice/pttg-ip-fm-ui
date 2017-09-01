@@ -32,6 +32,7 @@ const radioElements = {
     key: 'no',
     value: 'No'
   }],
+
 }
 
 const getHttp = function (uri) {
@@ -135,7 +136,7 @@ const confirmVisible = function (d, data, visibility, timeoutLength) {
   const promises = []
   _.each(data, function (val, key) {
     const expectation = new Promise(function (resolve, reject) {
-      d.wait(until.elementLocated({id: key}), timeoutLength || 5 * 1000, 'TIMEOUT: Waiting for element #' + key).then(function (el) {
+      d.wait(until.elementLocated({id: key}), timeoutLength || 1 * 1000, 'TIMEOUT: Waiting for element #' + key).then(function (el) {
         return el.isDisplayed()
       }).then(function (result) {
         if (result === !!visibility) {
@@ -145,8 +146,12 @@ const confirmVisible = function (d, data, visibility, timeoutLength) {
         }
         
       }, function (err) {
-                // test failed
-        return reject(err)
+        // test failed
+        if (visibility === false) {
+          return resolve(true)
+        } else {      
+          return reject(err)
+        }
       })
     })
     promises.push(expectation)
@@ -222,9 +227,29 @@ const selectRadio = function (d, key, val) {
   })
 }
 
+const clickCheckbox = function (d, key) {
+  const rID = key + '-label'
+  let elem
+  return d.findElement({id: rID}).then(function (el) {
+    elem = el
+    return el.click()
+  }).then(function (result) {
+    return true
+  }, function (err) {
+    return false
+  })
+}
+
 const inputEnterText = function (d, key, val) {
-  return d.findElement({id: key}).then(function (el) {
-    return el.sendKeys(val)
+  var el
+  return d.findElement({id: key}).then(function (e) {
+    el = e
+    return e.getAttribute('type')
+  }).then(function (t) {
+    if (t === 'checkbox') {
+      return clickCheckbox(d, key)
+    } 
+    return el.sendKeys(val)  
   }).then(function (result) {
     return true
   }, function () {
@@ -236,6 +261,7 @@ const completeInput = function (d, key, val) {
   if (isRadio(key)) {
     return selectRadio(d, key, val)
   }
+
   return inputEnterText(d, key, val)
 }
 

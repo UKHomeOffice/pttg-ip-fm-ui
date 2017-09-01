@@ -375,6 +375,12 @@ formsModule.directive('hodForm', ['$anchorScroll', 'FormsService', function ($an
                 a = obj.config.id + '-' + obj.options[0].value + '-label'
                 break
 
+              case 'checkboxes':
+                
+                a = obj.config.options[0].id + '-label'
+                console.log('checkboxes', a)
+                break
+
               default:
                 a = obj.config.id + '0'
             }
@@ -391,6 +397,7 @@ formsModule.directive('hodForm', ['$anchorScroll', 'FormsService', function ($an
 
       $scope.errorClicked = function (anchor) {
         var e = angular.element(document.getElementById(anchor))
+        console.log('errorClicked', anchor, e[0])
         if (e[0]) {
           e[0].focus()
         }
@@ -549,6 +556,8 @@ formsModule.directive('hodCheckbox', ['FormsService', function (FormsService) {
       return function (scope, element, attrs, formCtrl, transclude) {
         scope.checked = (scope.field === true)
         scope.field = scope.checked
+        
+
         console.log(attrs)
         console.log('Checkbox config:', scope.config)
         scope.checkboxClick = function () {
@@ -585,6 +594,32 @@ formsModule.directive('hodCheckboxes', ['FormsService', function (FormsService) 
         })
         console.log(attrs)
         console.log(scope.config)
+        formCtrl.addObj(scope)
+        scope.type = 'checkboxes'
+
+        scope.getInput = function () {
+          return formCtrl.getForm()[scope.config.options[0].id]
+        }
+
+        scope.validfunc = function () {
+          var result
+          if (_.isObject(scope.config.validate)) {
+            result = scope.config.validate(scope.config.options, scope)
+          } else {
+            result = true
+          }
+
+          if (result === true) {
+            scope.error = {code: '', summary: '', msg: ''}
+            scope.getInput().$setValidity('text', true)
+            return true
+          }
+
+          scope.error = result
+          scope.getInput().$setValidity('checkboxes', false)
+          return false
+        }
+
         scope.checkBoxChange = function (opt) {
           console.log('checkBoxChange', opt)
           scope.field[opt.id] = opt.checked

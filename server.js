@@ -19,7 +19,6 @@ app.use(bodyParser.json())
 var path = require('path')
 process.chdir(path.resolve(__dirname))
 
-
 var stdRelay = function (req, res, uri, qs, postdata) {
   var headers = {}
   if (req.headers['x-auth-userid']) {
@@ -32,15 +31,15 @@ var stdRelay = function (req, res, uri, qs, postdata) {
 
   headers['x-correlation-id'] = uuid()
   var opts = {
-    uri: uri, 
-    qs: qs, 
+    uri: uri,
+    qs: qs,
     headers: headers,
     followRedirect: false
   }
   opts = addCaCertsForHttps(opts, headers)
-  
+
   if (postdata) {
-    opts.method = "POST"
+    opts.method = 'POST'
     opts.json = true
     opts.headers['content-type'] = 'application/json'
     opts.body = postdata
@@ -49,7 +48,6 @@ var stdRelay = function (req, res, uri, qs, postdata) {
 
   console.log(headers['x-correlation-id'], opts.method, opts.uri)
   request(opts, function (error, response, body) {
-
     var status = (response && response.statusCode) ? response.statusCode : 500
     if ((body === '' || body === '""') && status === 200) {
       status = 500
@@ -67,7 +65,6 @@ var stdRelay = function (req, res, uri, qs, postdata) {
         console.log('ERROR: Connection refused', uri)
       } else {
         console.log('ERROR', error)
-
       }
     }
   })
@@ -78,9 +75,6 @@ if (maintenanceMode) {
 } else {
   app.use(serveStatic('public/', { 'index': ['index.html'] }))
 }
-
-
-
 
 app.listen(port, function () {
   console.log('ui on:' + port)
@@ -109,9 +103,9 @@ app.post(uiBaseUrl + 'feedback', function (req, res) {
 
 app.all('*', function (req, res, next) {
   // ### 404 ###
-  
+
   if (req.url.toLowerCase().startsWith('/oauth')) {
-    console.log('404 -> 307' , req.method, req.url)
+    console.log('404 -> 307', req.method, req.url)
     res.status(307)
   } else {
     console.log(404, req.method, req.url)
@@ -132,7 +126,7 @@ function addCaCertsForHttps (opts, headers) {
   return opts
 }
 
-function log(message, headers) {
+function log (message, headers) {
   var logMessage = {
     message: message,
     'x-correlation-id': headers['x-correlation-id'],

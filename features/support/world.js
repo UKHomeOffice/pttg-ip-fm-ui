@@ -61,7 +61,6 @@ defineSupportCode(function ({setWorldConstructor}) {
 })
 
 defineSupportCode(function ({registerHandler}) {
-  
   registerHandler('AfterFeatures', function (features, callback) {
     // globalDriver.close()
     var options = {
@@ -85,6 +84,6 @@ defineSupportCode(function ({registerHandler}) {
   })
 })
 
-defineSupportCode(function({setDefaultTimeout}) {
-  setDefaultTimeout(60 * 1000);
-});
+defineSupportCode(function ({setDefaultTimeout}) {
+  setDefaultTimeout(60 * 1000)
+})

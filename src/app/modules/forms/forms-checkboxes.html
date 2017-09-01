@@ -6,7 +6,7 @@
 
     <div class="checkbox-group">
       <label ng-repeat="(i, opt) in config.options" class="block-label selection-button-checkbox" for="{{ opt.id }}" id="{{ opt.id }}-label" ng-class="{focused: focused, selected: opt.checked}">
-        <input id="{{ opt.id }}" name="{{ opt.id }}" type="checkbox" ng-model="opt.checked" ng-change="checkBoxChange(opt)" />{{ opt.label }}
+        <input id="{{ opt.id }}" name="{{ opt.id }}" type="checkbox" ng-model="opt.checked" ng-change="checkBoxChange(opt)" ng-focus="focused=true" ng-blur="focused=false" />{{ opt.label }}
       </label>
     </div>
   </fieldset>
