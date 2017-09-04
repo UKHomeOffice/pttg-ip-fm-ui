@@ -1,5 +1,3 @@
-const maintenanceMode = (process.env.MAINTENANCE === 'true')
-
 var express = require('express')
 var serveStatic = require('serve-static')
 var app = express()
@@ -70,11 +68,7 @@ var stdRelay = function (req, res, uri, qs, postdata) {
   })
 }
 
-if (maintenanceMode) {
-  app.use(serveStatic('public/', { 'index': ['maintenance.html'] }))
-} else {
-  app.use(serveStatic('public/', { 'index': ['index.html'] }))
-}
+app.use(serveStatic('public/', { 'index': ['index.html'] }))
 
 app.listen(port, function () {
   console.log('ui on:' + port)
