@@ -76,7 +76,6 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
 
   $scope.haveResult = (res.data && res.data.categoryCheck)
   if ($scope.haveResult) {
-    console.log('RESULT', res.data.categoryCheck.passed)
     $scope.employers = res.data.categoryCheck.employers || []
     $scope.threshold = res.data.categoryCheck.threshold
     $scope.individual = res.data.individual
@@ -241,7 +240,6 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
       $state.go('familymigration')
     }
 
-    console.log('FEEDBACK', details)
     IOService.post('feedback', details).then(function (res) {
       reload()
     }, function (err) {

@@ -21,11 +21,9 @@ familymigrationModule.factory('FamilymigrationService', ['IOService', '$state', 
     fam = angular.copy(fam)
 
     IOService.post('individual/financialstatus', fam, {timeout: 30000}).then(function (res) {
-      console.log('ok', res)
       lastAPIresponse = res
       $state.go('familymigrationResults')
     }, function (err) {
-      console.log('error', err)
       lastAPIresponse = err
       $state.go('familymigrationResults')
     })
@@ -94,7 +92,6 @@ familymigrationModule.controller(
     ga('send', 'pageview')
 
     $scope.familyDetails = FamilymigrationService.getFamilyDetails()
-    console.log($scope.familyDetails)
 
     var appRaisedDateMsg = {
       summary: 'The "Application raised date" is invalid',

@@ -348,9 +348,6 @@ formsModule.directive('hodForm', ['$anchorScroll', 'FormsService', function ($an
             obj.displayError = ''
           } else if (obj.error.msg === '') {
             // NO ERROR MESSAGE?
-            console.log('NO ERROR MESSAGE?')
-            console.log(obj)
-            console.log(inp)
             obj.displayError = ''
           } else {
             // show the message within the component
@@ -376,9 +373,7 @@ formsModule.directive('hodForm', ['$anchorScroll', 'FormsService', function ($an
                 break
 
               case 'checkboxes':
-                
                 a = obj.config.options[0].id + '-label'
-                console.log('checkboxes', a)
                 break
 
               default:
@@ -397,7 +392,6 @@ formsModule.directive('hodForm', ['$anchorScroll', 'FormsService', function ($an
 
       $scope.errorClicked = function (anchor) {
         var e = angular.element(document.getElementById(anchor))
-        console.log('errorClicked', anchor, e[0])
         if (e[0]) {
           e[0].focus()
         }
@@ -556,12 +550,7 @@ formsModule.directive('hodCheckbox', ['FormsService', function (FormsService) {
       return function (scope, element, attrs, formCtrl, transclude) {
         scope.checked = (scope.field === true)
         scope.field = scope.checked
-        
-
-        console.log(attrs)
-        console.log('Checkbox config:', scope.config)
         scope.checkboxClick = function () {
-          
           scope.checked = !scope.checked
           scope.field = scope.checked
           scope.$applyAsync()
@@ -592,8 +581,7 @@ formsModule.directive('hodCheckboxes', ['FormsService', function (FormsService) 
           opt.checked = !!opt.checked
           scope.field[opt.id] = !!scope.field[opt.id]
         })
-        console.log(attrs)
-        console.log(scope.config)
+
         formCtrl.addObj(scope)
         scope.type = 'checkboxes'
 
@@ -621,7 +609,6 @@ formsModule.directive('hodCheckboxes', ['FormsService', function (FormsService) 
         }
 
         scope.checkBoxChange = function (opt) {
-          console.log('checkBoxChange', opt)
           scope.field[opt.id] = opt.checked
           scope.$applyAsync()
         }
