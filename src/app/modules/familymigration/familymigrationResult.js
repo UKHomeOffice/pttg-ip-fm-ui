@@ -178,6 +178,7 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
       }
     },
     whynot: {
+      id: 'whynot',
       options: [
         {id: 'combinedincome', label: 'Combined income (applicant and sponsor)'},
         {id: RESULTCODES.MULTIPLE_EMPLOYERS.toLowerCase(), label: 'Multiple employers'},
@@ -187,7 +188,7 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
         var n = _.reduce($scope.feedback.whynot, function(memo, bool){ return (bool) ? memo + 1 : memo }, 0)
         
         if (n || $scope.feedback.matchOther) return true
-        return { summary: 'The "Why do you think that the paper assessment did not match the IPS result?" is blank', msg: 'Answer the question' }
+        return { summary: 'The "Why do you think that the paper assessment did not match the IPS result?" is blank', msg: 'Select one or more from below' }
       }
     },
     matchOther: {
@@ -195,7 +196,7 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
       required: false,
       validate: function (v, sc) {
         var n = _.reduce($scope.feedback.whynot, function(memo, bool){ return (bool) ? memo + 1 : memo }, 0)
-        return (n || v) ? true : { summary: '', msg: 'Enter a valid "Other"' }
+        return (n || v) ? true : { summary: '', msg: 'Please provide comments' }
       }
     }
   }
