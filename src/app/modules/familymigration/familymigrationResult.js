@@ -111,10 +111,17 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
     }
   } else {
     console.log('ERROR', res)
-    if (res.status === 404) {
+    if (res.status === 404 && res.data && res.data.status && res.data.status.code === '0009') {
       state = 'failure/norecord'
       $scope.heading = 'There is no record for ' + $scope.familyDetails.nino + ' with HMRC'
       $scope.reason = 'We couldn\'t perform the financial requirement check as no income information exists with HMRC.'
+    } else if (res.status === 404) {
+      $scope.heading = 'Incoming Proving Service Currently Unavailable'
+      $scope.reason = 'The page will now reload.'
+      state = 'failure'
+      $timeout(function () {
+        $window.location.reload();
+      }, 2000)
     } else if (res.status === 307 || res.status === -1) {
       $scope.heading = 'Your Keycloak session has timed out'
       $scope.reason = 'The page will now reload.'

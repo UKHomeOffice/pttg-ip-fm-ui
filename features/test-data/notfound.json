@@ -1,6 +1,6 @@
 {
   "status" : {
-    "code" : "404",
-    "message" : "Not Found"
+    "code" : "0009",
+    "message" : "Resource not found"
   }
 }
