@@ -348,7 +348,7 @@ formsModule.directive('hodForm', ['$anchorScroll', 'FormsService', function ($an
             obj.displayError = ''
           } else if (obj.error.msg === '') {
             // NO ERROR MESSAGE?
-
+            obj.displayError = ''
           } else {
             // show the message within the component
             obj.displayError = obj.error.msg
@@ -370,6 +370,10 @@ formsModule.directive('hodForm', ['$anchorScroll', 'FormsService', function ($an
 
               case 'radio':
                 a = obj.config.id + '-' + obj.options[0].value + '-label'
+                break
+
+              case 'checkboxes':
+                a = obj.config.options[0].id + '-label'
                 break
 
               default:
@@ -395,6 +399,7 @@ formsModule.directive('hodForm', ['$anchorScroll', 'FormsService', function ($an
 
       $scope.submitForm = function () {
         var isValid = (me.validateForm() === 0)
+        $scope.$applyAsync()
         FormsService.trackFormSubmission($scope)
 
         if (isValid) {
@@ -521,6 +526,91 @@ formsModule.directive('hodRadio', ['FormsService', function (FormsService) {
           if (scope.config.onClick) {
             scope.config.onClick(opt, scope)
           }
+        }
+      }
+    }
+  }
+}])
+
+formsModule.directive('hodCheckbox', ['FormsService', function (FormsService) {
+  return {
+    restrict: 'E',
+    require: '^^hodForm',
+    scope: {
+      field: '=',
+      hint: '@hint',
+      name: '@name',
+      label: '@label',
+      config: '=?'
+    },
+    // transclude: true,
+    templateUrl: 'modules/forms/forms-checkbox.html',
+    compile: function (element, attrs) {
+      defaultAttrs(attrs, {hint: '', label: '', inline: false})
+      return function (scope, element, attrs, formCtrl, transclude) {
+        scope.checked = (scope.field === true)
+        scope.field = scope.checked
+        scope.checkboxClick = function () {
+          scope.checked = !scope.checked
+          scope.field = scope.checked
+          scope.$applyAsync()
+        }
+      }
+    }
+  }
+}])
+
+
+formsModule.directive('hodCheckboxes', ['FormsService', function (FormsService) {
+  return {
+    restrict: 'E',
+    require: '^^hodForm',
+    scope: {
+      field: '=',
+      hint: '@hint',
+      name: '@name',
+      label: '@label',
+      config: '=?'
+    },
+    // transclude: true,
+    templateUrl: 'modules/forms/forms-checkboxes.html',
+    compile: function (element, attrs) {
+      defaultAttrs(attrs, {hint: '', label: '', inline: false})
+      return function (scope, element, attrs, formCtrl, transclude) {
+        _.each(scope.config.options, function (opt) {
+          opt.checked = !!opt.checked
+          scope.field[opt.id] = !!scope.field[opt.id]
+        })
+
+        formCtrl.addObj(scope)
+        scope.type = 'checkboxes'
+
+        scope.getInput = function () {
+          return formCtrl.getForm()[scope.config.options[0].id]
+        }
+
+        scope.validfunc = function () {
+          var result
+          if (_.isObject(scope.config.validate)) {
+            result = scope.config.validate(scope.config.options, scope)
+          } else {
+            result = true
+          }
+
+          if (result === true) {
+            scope.error = {code: '', summary: '', msg: ''}
+            scope.getInput().$setValidity('text', true)
+            return true
+          }
+
+          scope.error = result
+          scope.getInput().$setValidity('checkboxes', false)
+          return false
+        }
+
+        scope.checkBoxChange = function (opt) {
+          scope.field[opt.id] = opt.checked
+          scope.$applyAsync()
         }
       }
     }

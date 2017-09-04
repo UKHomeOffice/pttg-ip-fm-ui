@@ -1,10 +1,13 @@
 /* global angular Clipboard moment _ ga */
 
-/* jshint node: true */
-
-'use strict'
-
 var familymigrationModule = angular.module('hod.familymigration')
+
+familymigrationModule.constant('RESULTCODES', {
+  PAY_FREQUENCY_CHANGE: 'PAY_FREQUENCY_CHANGE',
+  MULTIPLE_EMPLOYERS: 'MULTIPLE_EMPLOYERS',
+  UNKNOWN_PAY_FREQUENCY: 'UNKNOWN_PAY_FREQUENCY',
+  NOT_ENOUGH_RECORDS: 'NOT_ENOUGH_RECORDS'
+});
 
 // #### ROUTES #### //
 familymigrationModule.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
@@ -39,6 +42,8 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
     'RESULT_TEXT', 
     '$timeout',
     '$window',
+    'RESULTCODES',
+    'IOService',
   function (
     $scope, 
     $state, 
@@ -47,33 +52,36 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
     FamilymigrationService, 
     RESULT_TEXT, 
     $timeout,
-    $window
+    $window,
+    RESULTCODES,
+    IOService
   ) {
   var state = 'error'
   var res = FamilymigrationService.getLastAPIresponse()
   $scope.familyDetails = FamilymigrationService.getFamilyDetails()
   $scope.showNewSearchButton = false
+  $scope.feedback = {}
+  $scope.yesNoOptions = [{ value: 'yes', label: 'Yes' }, { value: 'no', label: 'No' }]
 
-  var displayDate = function (d) {
-    return moment(d).format('DD/MM/YYYY')
-  }
+  
+
+  $scope.feedback = { whynot: {} }
+
+  $scope.dFormat = 'dd/MM/yyyy'
 
   if (!res.status) {
     $state.go('familymigration')
     return
   }
 
-  $scope.familyDetails.displayDate = displayDate($scope.familyDetails.applicationRaisedDate)
-
   $scope.haveResult = (res.data && res.data.categoryCheck)
   if ($scope.haveResult) {
-    console.log('RESULT', res.data.categoryCheck.passed)
     $scope.employers = res.data.categoryCheck.employers || []
     $scope.threshold = res.data.categoryCheck.threshold
     $scope.individual = res.data.individual
     $scope.outcomeBoxIndividualName = res.data.individual.forename + ' ' + res.data.individual.surname
-    $scope.outcomeFromDate = displayDate(res.data.categoryCheck.assessmentStartDate)
-    $scope.outcomeToDate = displayDate(res.data.categoryCheck.applicationRaisedDate)
+    $scope.outcomeFromDate = res.data.categoryCheck.assessmentStartDate
+    $scope.outcomeToDate = res.data.categoryCheck.applicationRaisedDate
 
     if (res.data.categoryCheck.passed) {
       state = 'passed'
@@ -84,22 +92,22 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
       $scope.success = false
       // $scope.heading = res.data.individual.forename + ' ' + res.data.individual.surname + ' doesn\'t meet the Category A requirement';
       switch (res.data.categoryCheck.failureReason) {
-        case 'PAY_FREQUENCY_CHANGE':
+        case RESULTCODES.PAY_FREQUENCY_CHANGE:
           state = 'notpassed/paymentfrequencychange'
           $scope.reason = 'Change in payment frequency.'
           break
 
-        case 'MULTIPLE_EMPLOYERS':
+        case RESULTCODES.MULTIPLE_EMPLOYERS:
           state = 'notpassed/multipleemployers'
           $scope.reason = 'Payments from multiple employers.'
           break
 
-        case 'UNKNOWN_PAY_FREQUENCY':
+        case RESULTCODES.UNKNOWN_PAY_FREQUENCY:
           state = 'notpassed/unknownfrequency'
           $scope.reason = 'Unable to calculate a payment frequency.'
           break
 
-        case 'NOT_ENOUGH_RECORDS':
+        case RESULTCODES.NOT_ENOUGH_RECORDS:
           state = 'notpassed/recordcount'
           $scope.reason = 'They haven\'t been with their current employer for 6 months.'
           break
@@ -136,9 +144,108 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
     }
   };
 
-  $scope.newSearch = function () {
-    FamilymigrationService.reset()
-    $state.go('familymigration')
+  var conditionalIfNo = function (fieldName, v, err) {
+    if ($scope.feedback[fieldName] !== 'no') {
+      // not relevant as everything was OK
+      return true
+    }
+
+    if (_.isString(v) && v.length) {
+      return true
+    }
+
+    return err
+  }
+
+
+
+  $scope.conf = {
+    match: {
+      inline: true,
+      onClick: function (opt, scope) {
+        setFeedbackVisibility(opt.value)
+      }
+    },
+    caseref: {
+      classes: {'form-control-1-4': false},
+    },
+    matchComment: {
+      classes: {'form-control-1-4': false},
+      required: false,
+      validate: function (v, sc) {
+        return conditionalIfNo('match', v, { summary: 'The "Why do you think that the paper assessment did not match the IPS result?" is blank', msg: 'Please provide comments' })
+      }
+    },
+    whynot: {
+      id: 'whynot',
+      options: [
+        {id: 'combinedincome', label: 'Combined income (applicant and sponsor)'},
+        {id: RESULTCODES.MULTIPLE_EMPLOYERS.toLowerCase(), label: 'Multiple employers'},
+        {id: RESULTCODES.PAY_FREQUENCY_CHANGE.toLowerCase(), label: 'Payment frequency changes'}
+      ],
+      validate: function (v, sc) {
+        var n = _.reduce($scope.feedback.whynot, function(memo, bool){ return (bool) ? memo + 1 : memo }, 0)
+        
+        if (n || $scope.feedback.matchOther) return true
+        return { summary: 'The "Why do you think that the paper assessment did not match the IPS result?" is blank', msg: 'Select one or more from below' }
+      }
+    },
+    matchOther: {
+      classes: {'form-control-1-4': false},
+      required: false,
+      validate: function (v, sc) {
+        var n = _.reduce($scope.feedback.whynot, function(memo, bool){ return (bool) ? memo + 1 : memo }, 0)
+        return (n || v) ? true : { summary: '', msg: 'Please provide comments' }
+      }
+    }
+  }
+
+  var setFeedbackVisibility = function (v) {
+    $scope.conf.caseref.hidden = true
+    $scope.conf.matchComment.hidden = true
+    $scope.conf.whynot.hidden = true
+    $scope.conf.matchOther.hidden = true
+    if (v === 'no') {
+      if (state === 'passed') {
+        $scope.conf.caseref.hidden = false
+        $scope.conf.matchComment.hidden = false
+      } else {
+        $scope.conf.caseref.hidden = false
+        $scope.conf.whynot.hidden = false
+        $scope.conf.matchOther.hidden = false
+      }
+    }
+  }
+
+  setFeedbackVisibility()
+
+  $scope.feedbackSubmit = function (valid) {
+    if (!valid) return
+    var details = angular.copy($scope.feedback)
+    _.each($scope.conf, function (conf, ref) {
+      if (conf.hidden) {
+        delete details[ref]
+      }
+    })
+
+    var lastCheckDetails = FamilymigrationService.getFamilyDetails()
+    details.nino = lastCheckDetails.nino
+
+    var reload = function () {
+      // track
+      ga('set', 'page', $state.href($state.current.name, $stateParams) + '/' + state + '/feedback/' + details.match)
+      ga('send', 'pageview')
+
+      FamilymigrationService.reset()
+      $state.go('familymigration')
+    }
+
+    IOService.post('feedback', details).then(function (res) {
+      reload()
+    }, function (err) {
+      console.log('ERROR', err)
+      reload()
+    })
   }
 
   // edit search button
@@ -212,6 +319,7 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
     e.clearSelection()
     timeoutResetButtonText()
   })
+
   clipboard.on('error', function (e) {
     console.log('ClipBoard error', e)
     $scope.copysummary = e.action + ' ' + e.trigger

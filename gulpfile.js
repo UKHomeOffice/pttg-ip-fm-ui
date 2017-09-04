@@ -137,7 +137,7 @@ gulp.task('startwatch', function () {
     ignore: ['node_modules/**'],
     watch: ['server.js']
   })
-  gulp.watch(sourcePath + 'index.html', ['minifyHtml'])
+  gulp.watch(sourcePath + '*.html', ['minifyHtml'])
   gulp.watch(sourcePath + 'app/modules/**/*.html', ['templateAndUglify'])
   gulp.watch([sourcePath + 'app/main.js', sourcePath + 'app/modules/**/*.js'], ['uglify'])
   gulp.watch(sourcePath + 'styles/*.scss', ['sass'])

@@ -3,7 +3,7 @@ var app = angular.module('hod.proving', [
   'ngAria',
   'hod.familymigration',
   'hod.contactus',
-  'hod.feedback',
+  // 'hod.feedback',
   'hod.forms',
   'hod.io',
   'hod.availability'

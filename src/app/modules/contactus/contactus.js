@@ -20,7 +20,6 @@ contactusModule.config(['$stateProvider', '$urlRouterProvider', function ($state
 }])
 
 contactusModule.controller('ContactUsCtrl',['$scope', function ($scope) {
-  console.log('ContactUsCtrl')
 
   var safe = function (str) {
     return encodeURIComponent(str)
@@ -51,7 +50,6 @@ contactusModule.controller('ContactUsCtrl',['$scope', function ($scope) {
   $scope.contactusSubmit = function (valid) {
     if (valid) {
       var data = $scope.contactDetails
-      console.log($scope.contactDetails)
       var body = '# Contact from PTTG IPS #\n\n'
       body += moment().format('YYYY-MM-DD HH:mm:ss')
       body += '\n\n## Kind of issue ##\n' + data.issueType.toUpperCase()

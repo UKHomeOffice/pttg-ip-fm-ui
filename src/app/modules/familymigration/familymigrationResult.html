@@ -19,7 +19,7 @@
   </div>
 
 
-  <div class="panel panel-border-wide text">
+  <div class="pttg-panel">
     <h2 id="whatToDoNextHeading" class="heading-small">What to do next</h2>
     <ol class="list list-number">
 
@@ -43,7 +43,7 @@
       </tr>
       <tr ng-if="success">
         <th scope="row">Income within date range</th>
-        <td><span id="outcomeFromDate">{{ outcomeFromDate }}</span> - <span id="outcomeToDate">{{ outcomeToDate }}</span></td>
+        <td><span id="outcomeFromDate">{{ outcomeFromDate | date: dFormat }}</span> - <span id="outcomeToDate">{{ outcomeToDate | date: dFormat }}</span></td>
       </tr>
       <tr ng-if="employers.length">
         <th scope="row">Employers</th>
@@ -75,7 +75,7 @@
     </tr>
     <tr>
       <th scope="row">Date of birth</th>
-      <td><span id="dateOfBirth">{{ familyDetails.dateOfBirth }}</span></td>
+      <td><span id="dateOfBirth">{{ familyDetails.dateOfBirth | date: dFormat }}</span></td>
     </tr>
     <tr>
       <th scope="row">National Insurance number</th>
@@ -87,7 +87,7 @@
     </tr>
     <tr>
       <th scope="row">Application raised</th>
-      <td><span id="yourSearchApplicationRaisedDate">{{ familyDetails.displayDate }}</span></td>
+      <td><span id="yourSearchApplicationRaisedDate">{{ familyDetails.applicationRaisedDate | date: dFormat }}</span></td>
     </tr>
   </table>
 
@@ -96,9 +96,24 @@
       <input id="editSearchBtn" type="submit" class="button button--editSearch button-info" value="Edit" ng-click="editSearch()">
   </div>
 
-  <div class="form-group form-group--topspace">
-      <a id="feedbackBtn" class="button button--newSearch" ui-sref="feedback">Feedback</a>
-  </div>
+  <h2 class="heading-medium ng-scope" id="feedbackheading">Feedback</h2>
+
+  <hod-form name="feedback" config="conf.feedback" submit="feedbackSubmit">
+    
+    <hod-radio name="match" config="conf.match" label="Did IPS match the paper assessment?" field="feedback.match" options="yesNoOptions"></hod-radio>
+
+    <div class="panel panel-border-wide text" ng-show="feedback.match==='no'">
+      <hod-text name="caseref" label="Case reference" field="feedback.caseref" config="conf.caseref"></hod-text>
+
+      <hod-textarea name="matchComment" config="conf.matchComment" label="Why do you think that the paper assessment did not match the IPS result?" field="feedback.matchComment"></hod-textarea>
+      
+      <hod-checkboxes label="Why do you think that the paper assessment did not match the IPS result?" field="feedback.whynot" config="conf.whynot"></hod-checkboxes>
+
+      <hod-text name="matchOther" config="conf.matchOther" label="Other" field="feedback.matchOther"></hod-text>
+    </div>
+
+    <hod-submit value="Submit and start a new search"></hod-submit>
+  </hod-form>
 
   <div class="form-group form-group--topspace" ng-if="showNewSearchButton">
       <input id="newSearchBtn" type="submit" class="button button--newSearch" value="Begin a new check" ng-click="newSearch()">
