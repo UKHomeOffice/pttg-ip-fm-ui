@@ -4,12 +4,12 @@ Feature: System errors - specify messages shown in response to (simulated) conne
     Given the api health check response has status 200
     And Caseworker is using the Income Proving Service Case Worker Tool
 
-  Scenario: Sensible connection timeout
-    Given the api response is delayed for 40 seconds
-    When the income check is performed
-    Then the service displays the following page content within 32 seconds
-      | Page dynamic heading | Your Keycloak session has timed out |
-      | Page dynamic detail  | The page will now reload.           |
+#  Scenario: Sensible connection timeout
+#    Given the api response is delayed for 40 seconds
+#    When the income check is performed
+#    Then the service displays the following page content within 32 seconds
+#      | Page dynamic heading | Your Keycloak session has timed out |
+#      | Page dynamic detail  | The page will now reload.           |
 
   Scenario: Coping with a garbage response
     Given the api response is garbage
