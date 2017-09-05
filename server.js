@@ -55,7 +55,7 @@ var stdRelay = function (req, res, uri, qs, postdata) {
     res.status(status)
     res.send(body)
 
-    console.log(headers['x-correlation-id'], opts.method, opts.uri, response.statusCode, error)
+    console.log(headers['x-correlation-id'], opts.method, opts.uri, status, error)
 
     if (error) {
       console.log(headers['x-correlation-id'], body)
