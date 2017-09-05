@@ -8,7 +8,7 @@ pipeline:
     commands:
       - docker build -t pttg-ip-fm-ui .
     when:
-      event: push
+      event: [push, tag]
 
   test:
     privileged: true
@@ -35,6 +35,17 @@ pipeline:
       event: push
       branch: master
 
+  push_with_tag:
+    image: docker:1.11
+    environment:
+      - DOCKER_HOST=tcp://127.0.0.1:2375
+    commands:
+      - docker login -u="ukhomeofficedigital+pttg" -p=${DOCKER_PASSWORD} quay.io
+      - docker tag pttg-ip-fm-ui quay.io/ukhomeofficedigital/pttg-ip-fm-ui:${DRONE_TAG}
+      - docker push quay.io/ukhomeofficedigital/pttg-ip-fm-ui:${DRONE_TAG}
+    when:
+      event: tag
+
   get-kube-configuration-deployment:
     image: plugins/git
     environment:
@@ -42,8 +53,7 @@ pipeline:
     commands:
       - git clone https://github.com/UKHomeOffice/kube-pttg-ip-fm-ui.git
     when:
-      event: [push, deployment]
-      branch: master
+      event: [push, deployment, tag]
 
   deploy-to-dev:
     image: quay.io/ukhomeofficedigital/kd:v0.2.3
@@ -73,23 +83,21 @@ pipeline:
       - ./deploy.sh
     when:
       event: deployment
-      environment: [dev, test]
+      environment: [dev, test, preprod]
 
   deploy-to-preprod:
-    image: quay.io/ukhomeofficedigital/kd:v0.2.3
+    image: quay.io/ukhomeofficedigital/kd:v0.2.2
     environment:
       - DOCKER_HOST=tcp://127.0.0.1:2375
-      - KUBE_NAMESPACE=pt-i-${DRONE_DEPLOY_TO}
-      - ENVIRONMENT=${DRONE_DEPLOY_TO}
-      - VERSION=${IMAGE_VERSION}
+      - KUBE_NAMESPACE=pt-i-preprod
+      - ENVIRONMENT=preprod
+      - VERSION=${DRONE_TAG}
       - KUBE_SERVER=https://kube-dev.dsp.notprod.homeoffice.gov.uk
-      - WHITELIST=62.25.109.196/24,213.251.23.164/24
     commands:
       - cd kube-pttg-ip-fm-ui
       - ./deploy.sh
     when:
-      event: deployment
-      environment: preprod
+      event: [tag]
 
   deploy-to-prod:
     image: quay.io/ukhomeofficedigital/kd:v0.2.3
