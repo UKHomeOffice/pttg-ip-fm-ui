@@ -43,6 +43,25 @@ Feature: Feedback form
     Then the service displays the following result
       | Page sub title | Individual's details |
 
+  Scenario Outline: Invalid Case IDs
+    #Given Caseworker is using the Income Proving Service Case Worker Tool
+    Given the account data for TL123456A
+    And the income check is performed
+    And the feedback form is completed
+      | match   | No    |
+      | caseref | <ref> |
+    When the submit button is clicked
+    Then the service displays the following result
+      | caseref-error | Enter a valid "Case ID" |
+    Examples:
+      | ref       |
+      | 1234567   |
+      | 123456789 |
+      | 222       |
+      | 2222222T  |
+      | eightchr  |
+      | 01234567  |
+
     #### PASSED ####
 
   Scenario: When No is selected and result is Passed then case reference and text area should be displayed
@@ -54,7 +73,7 @@ Feature: Feedback form
       | caseref       |
       | match comment |
     And the service displays the following result
-      | caseref-label       | Case reference                                                           |
+      | caseref-label       | Case ID                                                                  |
       | match comment-label | Why do you think that the paper assessment did not match the IPS result? |
     And the following are hidden
       | match other                |
@@ -70,8 +89,8 @@ Feature: Feedback form
       | match | No |
     When the submit button is clicked
     Then the service displays the following result
-      | caseref-error       | Enter a valid "Case reference" |
-      | match comment-error | Please provide comments        |
+      | caseref-error       | Enter a valid "Case ID" |
+      | match comment-error | Please provide comments |
 
 
     #### NOT PASSED ####
@@ -109,5 +128,5 @@ Feature: Feedback form
       | match | No |
     When the submit button is clicked
     Then the service displays the following result
-      | whynot-error               | Select one or more from below |
-      | match other-error          | Please provide comments       |
+      | whynot-error      | Select one or more from below |
+      | match other-error | Please provide comments       |
