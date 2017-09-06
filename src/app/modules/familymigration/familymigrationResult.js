@@ -167,7 +167,17 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
       }
     },
     caseref: {
+      length: 8,
       classes: {'form-control-1-4': false},
+      validate: function (val) {
+        if (val) {
+          var v = val.replace(/[^a-zA-Z0-9]/g, '')
+          if (/^2[0-9]{7}$/.test(v)) {
+            return true
+          }
+        }
+        return false
+      }
     },
     matchComment: {
       classes: {'form-control-1-4': false},
