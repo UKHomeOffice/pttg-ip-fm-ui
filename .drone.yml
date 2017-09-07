@@ -61,7 +61,8 @@ pipeline:
       - DOCKER_HOST=tcp://127.0.0.1:2375
       - KUBE_NAMESPACE=pt-i-dev
       - ENVIRONMENT=dev
-      - PTTG_KUBE_TOKEN=${KUBE_TOKEN}
+      - PTTG_KUBE_TOKEN=$$KUBE_TOKEN
+      - KUBE_TOKEN=$$KUBE_TOKEN
       - VERSION=build-${DRONE_BUILD_NUMBER}
       - KUBE_SERVER=https://kube-dev.dsp.notprod.homeoffice.gov.uk
     commands:
@@ -76,7 +77,8 @@ pipeline:
     environment:
       - DOCKER_HOST=tcp://127.0.0.1:2375
       - KUBE_NAMESPACE=pt-i-${DRONE_DEPLOY_TO}
-      - PTTG_KUBE_TOKEN=${KUBE_TOKEN}
+      - PTTG_KUBE_TOKEN=$$KUBE_TOKEN
+      - KUBE_TOKEN=$$KUBE_TOKEN
       - ENVIRONMENT=${DRONE_DEPLOY_TO}
       - VERSION=${IMAGE_VERSION}
       - KUBE_SERVER=https://kube-dev.dsp.notprod.homeoffice.gov.uk
@@ -92,7 +94,8 @@ pipeline:
     environment:
       - DOCKER_HOST=tcp://127.0.0.1:2375
       - KUBE_NAMESPACE=pt-i-preprod
-      - PTTG_KUBE_TOKEN=${KUBE_TOKEN}
+      - PTTG_KUBE_TOKEN=$$KUBE_TOKEN
+      - KUBE_TOKEN=$$KUBE_TOKEN
       - ENVIRONMENT=preprod
       - VERSION=${DRONE_TAG}
       - KUBE_SERVER=https://kube-dev.dsp.notprod.homeoffice.gov.uk
@@ -107,7 +110,8 @@ pipeline:
     environment:
       - DOCKER_HOST=tcp://127.0.0.1:2375
       - KUBE_NAMESPACE=pt-i-prod
-      - PTTG_KUBE_TOKEN=${PROD_KUBE_TOKEN}
+      - PTTG_KUBE_TOKEN=$$PROD_KUBE_TOKEN
+      - KUBE_TOKEN=$$PROD_KUBE_TOKEN
       - ENVIRONMENT=prod
       - VERSION=${IMAGE_VERSION}
       - KUBE_SERVER=https://kube.dsp.digital.homeoffice.gov.uk
