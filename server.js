@@ -17,8 +17,18 @@ app.use(bodyParser.json())
 var path = require('path')
 process.chdir(path.resolve(__dirname))
 
+var addSecureHeaders = function (res) {
+  res.setHeader('X-XSS-Protection', '1; mode=block')
+  res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains')
+  res.setHeader('X-Content-Type-Options', 'nosniff')
+  res.setHeader('Cache-control', 'no-store, no-cache')
+}
+
 var stdRelay = function (req, res, uri, qs, postdata) {
   var headers = {}
+
+  addSecureHeaders(res)
+
   if (req.headers['x-auth-userid']) {
     headers['x-auth-userid'] = req.headers['x-auth-userid']
   }
@@ -68,7 +78,7 @@ var stdRelay = function (req, res, uri, qs, postdata) {
   })
 }
 
-app.use(serveStatic('public/', { 'index': ['index.html'] }))
+app.use(serveStatic('public/', { 'index': ['index.html'], setHeaders: addSecureHeaders }))
 
 app.listen(port, function () {
   console.log('ui on:' + port)
@@ -79,9 +89,9 @@ app.get('/ping', function (req, res) {
   res.send('')
 })
 
-app.get('/healthz', function (req, res) {
-  res.send({env: process.env.ENV, status: 'OK'})
-})
+// app.get('/healthz', function (req, res) {
+//   res.send({env: process.env.ENV, status: 'OK'})
+// })
 
 app.get(uiBaseUrl + 'availability', function (req, res) {
   stdRelay(req, res, apiRoot + '/healthz', '')
