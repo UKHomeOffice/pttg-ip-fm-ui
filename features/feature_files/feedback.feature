@@ -129,7 +129,7 @@ Feature: Feedback form
       | multiple_employers-label   |
       | pay_frequency_change-label |
     And the service displays the following result
-      | match-label                | Did the applicant pass under any Category? |
+      | match-label                | Did the applicant pass under any category? |
       | combinedincome-label       | Combined income (applicant and sponsor)    |
       | multiple_employers-label   | Multiple employers                         |
       | pay_frequency_change-label | Payment frequency changes                  |

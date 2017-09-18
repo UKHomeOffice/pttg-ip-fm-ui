@@ -212,7 +212,7 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
   }
 
   var setFeedbackVisibility = function (v) {
-    $scope.conf.match.label = (state === 'passed') ? 'Did IPS match the paper assessment?': 'Did the applicant pass under any Category?'
+    $scope.conf.match.label = (state === 'passed') ? 'Did IPS match the paper assessment?': 'Did the applicant pass under any category?'
     $scope.conf.caseref.hidden = true
     $scope.conf.matchComment.hidden = true
     $scope.conf.whynot.hidden = true
