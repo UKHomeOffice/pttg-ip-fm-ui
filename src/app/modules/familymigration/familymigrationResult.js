@@ -167,12 +167,13 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
       }
     },
     caseref: {
-      length: 8,
+      // length: 9,
       classes: {'form-control-1-4': false},
       validate: function (val) {
         if (val) {
-          var v = val.replace(/[^a-zA-Z0-9]/g, '')
-          if (/^2[0-9]{7}$/.test(v)) {
+          var v = val.trim()
+          // var v = val.replace(/[^a-zA-Z0-9]/g, '')
+          if (/^(2|02)[0-9]{7}$/.test(v)) {
             return true
           }
         }
