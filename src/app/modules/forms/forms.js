@@ -472,6 +472,7 @@ formsModule.directive('hodRadio', ['FormsService', function (FormsService) {
           hidden: false,
           inline: false,
           required: true,
+          label: scope.label || '',
           // options: [{label: 'Please select', value: 0}],
           errors: {
             required: {
