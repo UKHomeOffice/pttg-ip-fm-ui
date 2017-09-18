@@ -212,19 +212,21 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
   }
 
   var setFeedbackVisibility = function (v) {
+    $scope.conf.match.label = (state === 'passed') ? 'Did IPS match the paper assessment?': 'Did the applicant pass under any Category?'
     $scope.conf.caseref.hidden = true
     $scope.conf.matchComment.hidden = true
     $scope.conf.whynot.hidden = true
     $scope.conf.matchOther.hidden = true
-    if (v === 'no') {
-      if (state === 'passed') {
-        $scope.conf.caseref.hidden = false
-        $scope.conf.matchComment.hidden = false
-      } else {
-        $scope.conf.caseref.hidden = false
-        $scope.conf.whynot.hidden = false
-        $scope.conf.matchOther.hidden = false
-      }
+
+    if (state === 'passed' && v === 'no') {
+      $scope.conf.caseref.hidden = false
+      $scope.conf.matchComment.hidden = false
+    }
+
+    if (state !== 'passed' && v === 'yes') {
+      $scope.conf.caseref.hidden = false
+      $scope.conf.whynot.hidden = false
+      $scope.conf.matchOther.hidden = false
     }
   }
 

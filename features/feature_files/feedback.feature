@@ -16,7 +16,7 @@ Feature: Feedback form
     When the income check is performed
     Then the service displays the following result
       | feedbackheading | Feedback                            |
-      | match           | Did IPS match the paper assessment? |
+      | match-label     | Did IPS match the paper assessment? |
       | match-yes-label | Yes                                 |
       | match-no-label  | No                                  |
       | submit btn      | Submit and start a new search       |
@@ -54,15 +54,15 @@ Feature: Feedback form
     Then the service displays the following result
       | caseref-error | Enter a valid "Case ID" |
     Examples:
-      | ref       |
-      | 1234567   |
-      | 123456789 |
-      | 222       |
-      | 2222222T  |
-      | eightchr  |
-      | 01234567  |
-      | 02345678  |
-      | 012345678 |
+      | ref        |
+      | 1234567    |
+      | 123456789  |
+      | 222        |
+      | 2222222T   |
+      | eightchr   |
+      | 01234567   |
+      | 02345678   |
+      | 012345678  |
       | 0234567666 |
       | 23456789 ! |
 
@@ -77,12 +77,12 @@ Feature: Feedback form
     Then the following are hidden
       | caseref-error |
     Examples:
-      | ref        |
-      | 23456789   |
-      | 29876543   |
-      | 023456789  |
-      | 029876543  |
-      
+      | ref       |
+      | 23456789  |
+      | 29876543  |
+      | 023456789 |
+      | 029876543 |
+
 
     #### PASSED ####
 
@@ -95,6 +95,7 @@ Feature: Feedback form
       | caseref       |
       | match comment |
     And the service displays the following result
+      | match-label         | Did IPS match the paper assessment?                                      |
       | caseref-label       | Case ID                                                                  |
       | match comment-label | Why do you think that the paper assessment did not match the IPS result? |
     And the following are hidden
@@ -117,26 +118,27 @@ Feature: Feedback form
 
     #### NOT PASSED ####
 
-  Scenario: When No is selected and result is NOT Passed then case reference, checkboxes and text area should be displayed
+  Scenario: When Yes is selected and result is NOT Passed then case reference, checkboxes and text area should be displayed
     Given the account data for BS123456B
     And the income check is performed
     When the feedback form is completed
-      | match | No |
+      | match | Yes |
     Then the following are visible
       | match other                |
       | combinedincome-label       |
       | multiple_employers-label   |
       | pay_frequency_change-label |
     And the service displays the following result
-      | combinedincome-label       | Combined income (applicant and sponsor) |
-      | multiple_employers-label   | Multiple employers                      |
-      | pay_frequency_change-label | Payment frequency changes               |
+      | match-label                | Did the applicant pass under any Category? |
+      | combinedincome-label       | Combined income (applicant and sponsor)    |
+      | multiple_employers-label   | Multiple employers                         |
+      | pay_frequency_change-label | Payment frequency changes                  |
 
   Scenario: Other is only required when no checkbox is selected
     Given the account data for BS123456B
     And the income check is performed
     When the feedback form is completed
-      | match          | No      |
+      | match          | Yes     |
       | combinedincome | checked |
     And the submit button is clicked
     Then the following are hidden
@@ -147,7 +149,7 @@ Feature: Feedback form
     Given the account data for BS123456B
     And the income check is performed
     And the feedback form is completed
-      | match | No |
+      | match | Yes |
     When the submit button is clicked
     Then the service displays the following result
       | whynot-error      | Select one or more from below |
