@@ -1,8 +1,8 @@
 FROM quay.io/ukhomeofficedigital/nodejs-base:v6.11.0-0
 
 ENV PTTG_API_ENDPOINT localhost
-ENV USER pttg
-ENV GROUP pttg
+ENV USER user-pttg-ip-ui
+ENV GROUP group-pttg-ip-ui
 ENV NAME pttg-ip-fm-ui
 
 ARG VERSION
@@ -20,7 +20,7 @@ RUN npm --loglevel warn run postinstall
 
 RUN chmod a+x /app/run.sh
 
-USER pttg
+USER ${USER}
 
 EXPOSE 8000
 
