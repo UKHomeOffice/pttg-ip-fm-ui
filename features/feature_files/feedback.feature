@@ -61,6 +61,28 @@ Feature: Feedback form
       | 2222222T  |
       | eightchr  |
       | 01234567  |
+      | 02345678  |
+      | 012345678 |
+      | 0234567666 |
+      | 23456789 ! |
+
+  Scenario Outline: Valid Case IDs
+    #Given Caseworker is using the Income Proving Service Case Worker Tool
+    Given the account data for TL123456A
+    And the income check is performed
+    And the feedback form is completed
+      | match   | No    |
+      | caseref | <ref> |
+    When the submit button is clicked
+    Then the following are hidden
+      | caseref-error |
+    Examples:
+      | ref        |
+      | 23456789   |
+      | 29876543   |
+      | 023456789  |
+      | 029876543  |
+      
 
     #### PASSED ####
 
