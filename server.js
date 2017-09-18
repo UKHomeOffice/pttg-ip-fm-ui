@@ -18,9 +18,6 @@ var path = require('path')
 process.chdir(path.resolve(__dirname))
 
 var addSecureHeaders = function (res) {
-  res.setHeader('X-XSS-Protection', '1; mode=block')
-  res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains')
-  res.setHeader('X-Content-Type-Options', 'nosniff')
   res.setHeader('Cache-control', 'no-store, no-cache')
 }
 
