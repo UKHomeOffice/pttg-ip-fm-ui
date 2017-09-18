@@ -89,9 +89,9 @@ app.get('/ping', function (req, res) {
   res.send('')
 })
 
-// app.get('/healthz', function (req, res) {
-//   res.send({env: process.env.ENV, status: 'OK'})
-// })
+app.get('/healthz', function (req, res) {
+  res.send({env: process.env.ENV, status: 'OK'})
+})
 
 app.get(uiBaseUrl + 'availability', function (req, res) {
   stdRelay(req, res, apiRoot + '/healthz', '')
