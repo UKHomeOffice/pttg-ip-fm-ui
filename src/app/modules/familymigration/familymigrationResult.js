@@ -307,7 +307,8 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
   copyText += lineLength('Date of birth: ', 36) + $scope.familyDetails.dateOfBirth + '\n'
   copyText += lineLength('Dependants: ', 36) + $scope.familyDetails.dependants + '\n'
   copyText += lineLength('NINO: ', 36) + $scope.familyDetails.nino + '\n'
-  copyText += lineLength('Application raised: ', 36) + $scope.familyDetails.displayDate + '\n'
+  copyText += lineLength('Application raised: ', 36) + $filter('date')($scope.familyDetails.applicationRaisedDate, $scope.dFormat) + '\n'
+  // familyDetails.applicationRaisedDate | date: dFormat
 
   // init the clipboard object
   var clipboard = new Clipboard('.button--copy', {
