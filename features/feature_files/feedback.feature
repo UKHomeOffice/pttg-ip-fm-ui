@@ -41,7 +41,7 @@ Feature: Feedback form
       | match | Yes |
     And the submit button is clicked
     Then the service displays the following result
-      | Page sub title | Individual's details |
+      | feedbackthanks | Thank you for supplying feedback on this service. |
 
   Scenario Outline: Invalid Case IDs
     #Given Caseworker is using the Income Proving Service Case Worker Tool
