@@ -59,6 +59,7 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
   var state = 'error'
   var res = FamilymigrationService.getLastAPIresponse()
   $scope.familyDetails = FamilymigrationService.getFamilyDetails()
+  $scope.showFeedbackForm = true
   $scope.showNewSearchButton = false
   $scope.feedback = {}
   $scope.yesNoOptions = [{ value: 'yes', label: 'Yes' }, { value: 'no', label: 'No' }]
@@ -249,8 +250,8 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
       ga('set', 'page', $state.href($state.current.name, $stateParams) + '/' + state + '/feedback/' + details.match)
       ga('send', 'pageview')
 
-      FamilymigrationService.reset()
-      $state.go('familymigration')
+      $scope.showFeedbackForm = false
+      $scope.showNewSearchButton = true
     }
 
     IOService.post('feedback', details).then(function (res) {
@@ -259,6 +260,11 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
       console.log('ERROR', err)
       reload()
     })
+  }
+
+  $scope.newSearch = function () {
+    FamilymigrationService.reset()
+    $state.go('familymigration')
   }
 
   // edit search button
