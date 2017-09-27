@@ -263,8 +263,7 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
   }
 
   $scope.newSearch = function () {
-    FamilymigrationService.reset()
-    $state.go('familymigration')
+    $window.location.reload();
   }
 
   // edit search button
