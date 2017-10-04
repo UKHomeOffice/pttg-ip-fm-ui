@@ -6,6 +6,8 @@ var uiBaseUrl = '/incomeproving/v2/'
 var apiBaseUrl = apiRoot + '/incomeproving/v2/'
 var request = require('request')
 var port = process.env.SERVER_PORT || '8000'
+var PROXY_DISCOVERY_URL = process.env.PROXY_DISCOVERY_URL || ''
+var PROXY_REDIRECTION_URL = process.env.PROXY_REDIRECTION_URL || ''
 var moment = require('moment')
 var uuid = require('uuid/v4')
 var fs = require('fs')
@@ -84,6 +86,12 @@ app.listen(port, function () {
 
 app.get('/ping', function (req, res) {
   res.send('')
+})
+
+app.get('/logout', function (req, res) {
+  let url = PROXY_REDIRECTION_URL + '/oauth/logout?redirect=' + encodeURIComponent(PROXY_DISCOVERY_URL + '/protocol/openid-connect/logout')
+  res.setHeader('Content-Type', 'application/json')
+  res.send({logout: url})
 })
 
 app.get('/healthz', function (req, res) {

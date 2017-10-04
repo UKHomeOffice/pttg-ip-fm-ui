@@ -103,3 +103,17 @@ h1 {
 #matchOther-label {
   padding-top: 20px;
 }
+
+
+.header-wrapper {
+  position: relative;
+}
+
+#logout {
+  color: #fff;
+  position: absolute;
+  top: 30%;
+  right: 30px;
+  font-size: 16px;
+  text-decoration: underline;
+}
