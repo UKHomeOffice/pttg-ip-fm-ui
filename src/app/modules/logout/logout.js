@@ -22,15 +22,25 @@ logoutModule.config(['$stateProvider', '$urlRouterProvider', function ($statePro
 logoutModule.controller('LogoutCtrl',['$scope', '$http', '$window', function ($scope, $http, $window) {
   $http.get('/logout').then(function (result) {
     var logoutUrl = (result && result.data) ? result.data.logout : ''
-    return $http.get(logoutUrl)
-  }).then(function (result) {
-    console.log('RESULT', result)
-  }).catch(function (err) {
-    console.log('ERROR', err)
-  }).then(function () {
-    setTimeout(function () {
-      // $window.location = '/';
-      console.log('timeout')
-    }, 2000)
+    if (logoutUrl) {
+      $window.location = logoutUrl
+    }
+  }).catch(function (e) {
+    console.log(e)
   })
+
+
+  // $http.get('/logout').then(function (result) {
+  //   var logoutUrl = (result && result.data) ? result.data.logout : ''
+  //   return $http.get(logoutUrl)
+  // }).then(function (result) {
+  //   console.log('RESULT', result)
+  // }).catch(function (err) {
+  //   console.log('ERROR', err)
+  // }).then(function () {
+  //   setTimeout(function () {
+  //     $window.location = '/';
+  //     console.log('timeout')
+  //   }, 2000)
+  // })
 }])
