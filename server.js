@@ -89,7 +89,7 @@ app.get('/ping', function (req, res) {
 })
 
 app.get('/logout', function (req, res) {
-  let url = PROXY_REDIRECTION_URL + '/oauth/logout?redirect=' + encodeURIComponent(PROXY_DISCOVERY_URL + '/protocol/openid-connect/logout')
+  let url = PROXY_REDIRECTION_URL + '/oauth/logout?redirect=' + encodeURIComponent(PROXY_DISCOVERY_URL + '/protocol/openid-connect/logout') + '&post_logout_redirect_uri=' + encodeURIComponent(PROXY_REDIRECTION_URL)
   res.setHeader('Content-Type', 'application/json')
   res.send({logout: url})
 })
