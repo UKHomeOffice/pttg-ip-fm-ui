@@ -6,8 +6,8 @@ var uiBaseUrl = '/incomeproving/v2/'
 var apiBaseUrl = apiRoot + '/incomeproving/v2/'
 var request = require('request')
 var port = process.env.SERVER_PORT || '8000'
-var PROXY_DISCOVERY_URL = process.env.PROXY_DISCOVERY_URL || ''
-var PROXY_REDIRECTION_URL = process.env.PROXY_REDIRECTION_URL || ''
+var PROXY_DISCOVERY_URL = process.env.PROXY_DISCOVERY_URL || 'https://sso.digital.homeoffice.gov.uk/auth/realms/pttg-qa'
+var PROXY_REDIRECTION_URL = process.env.PROXY_REDIRECTION_URL || 'https://fm.ip.dev.notprod.pttg.homeoffice.gov.uk'
 var moment = require('moment')
 var uuid = require('uuid/v4')
 var fs = require('fs')
@@ -89,7 +89,7 @@ app.get('/ping', function (req, res) {
 })
 
 app.get('/logout', function (req, res) {
-  let url = PROXY_REDIRECTION_URL + '/oauth/logout?redirect=' + encodeURIComponent(PROXY_DISCOVERY_URL + '/protocol/openid-connect/logout') + '&post_logout_redirect_uri=' + encodeURIComponent(PROXY_REDIRECTION_URL)
+  let url = PROXY_REDIRECTION_URL + '/oauth/logout?redirect=' + encodeURIComponent(PROXY_DISCOVERY_URL + '/protocol/openid-connect/logout?post_logout_redirect_uri=' + PROXY_REDIRECTION_URL)
   res.setHeader('Content-Type', 'application/json')
   res.send({logout: url})
 })
