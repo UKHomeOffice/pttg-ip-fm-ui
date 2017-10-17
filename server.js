@@ -2,6 +2,7 @@ var express = require('express')
 var serveStatic = require('serve-static')
 var app = express()
 var apiRoot = process.env.API_ROOT || 'http://localhost:8081'
+var httpauth = process.env.IP_API_AUTH || ''
 var uiBaseUrl = '/incomeproving/v2/'
 var apiBaseUrl = apiRoot + '/incomeproving/v2/'
 var request = require('request')
@@ -34,6 +35,10 @@ var stdRelay = function (req, res, uri, qs, postdata) {
 
   if (req.headers['kc-access']) {
     headers['kc-access'] = req.headers['kc-access']
+  }
+
+  if (httpauth) {
+    headers['Authorization'] = 'Basic ' + new Buffer(httpauth).toString('base64');
   }
 
   headers['x-correlation-id'] = uuid()
