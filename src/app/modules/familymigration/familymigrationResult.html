@@ -96,10 +96,11 @@
       <input id="editSearchBtn" type="submit" class="button button--editSearch button-info" value="Edit" ng-click="editSearch()">
   </div>
 
-  <h2 class="heading-medium ng-scope" id="feedbackheading">Feedback</h2>
+  
 
   <hod-form name="feedback" config="conf.feedback" submit="feedbackSubmit" ng-show="showFeedbackForm">
-    
+    <h2 class="heading-medium ng-scope" id="feedbackheading">Feedback</h2>
+
     <hod-radio name="match" config="conf.match" field="feedback.match" options="yesNoOptions"></hod-radio>
 
     <div class="panel panel-border-wide text" ng-show="!conf.caseref.hidden">
@@ -115,10 +116,12 @@
     <hod-submit value="Submit and start a new search"></hod-submit>
   </hod-form>
 
-  <div class="form-group" ng-if="showNewSearchButton">
-      <p id="feedbackthanks">Thank you for supplying feedback on this service.</p>
-      <input id="newSearchBtn" type="submit" class="button button--newSearch" value="Begin a new check" ng-click="newSearch()">
+  <div class="form-group" ng-if="showFeedbackThanks">
+    <h2 class="heading-medium ng-scope" id="feedbackthankyouheading">Feedback</h2>
+    <p id="feedbackthanks">Thank you for supplying feedback on this service.</p>
   </div>
+
+  <input id="newSearchBtn" type="submit" class="button button--newSearch" value="Begin a new check" ng-click="newSearch()" ng-if="showNewSearchButton" />
 
   <div class="form-group ng-scope">
     <details role="group">
