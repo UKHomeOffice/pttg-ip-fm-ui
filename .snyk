@@ -5,12 +5,15 @@ ignore: {}
 patch:
   'npm:minimatch:20160620':
     - gulp > vinyl-fs > glob-watcher > gaze > globule > glob > minimatch:
-        patched: '2017-11-09T09:18:43.535Z'
+        patched: '2017-11-09T09:31:35.152Z'
     - gulp > vinyl-fs > glob-watcher > gaze > globule > minimatch:
-        patched: '2017-11-09T09:18:43.535Z'
+        patched: '2017-11-09T09:31:35.152Z'
     - gulp > vinyl-fs > glob-stream > glob > minimatch:
-        patched: '2017-11-09T09:18:43.535Z'
+        patched: '2017-11-09T09:31:35.152Z'
     - gulp > vinyl-fs > glob-stream > minimatch:
-        patched: '2017-11-09T09:18:43.535Z'
+        patched: '2017-11-09T09:31:35.152Z'
     - gulp-order > minimatch:
-        patched: '2017-11-09T09:18:43.535Z'
+        patched: '2017-11-09T09:31:35.152Z'
+  'npm:debug:20170905':
+    - clite > debug:
+        patched: '2017-11-09T09:31:35.152Z'
