@@ -8,7 +8,9 @@
     "test:all": "npm run test:unit && npm run test:bdd",
     "test:unit": "gulp",
     "test:bdd": "./node_modules/.bin/cucumber.js",
-    "postinstall": "gulp"
+    "postinstall": "gulp",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "dependencies": {
     "angular": "^1.6.5",
@@ -16,11 +18,12 @@
     "angular-ui-router": "^0.3.2",
     "angular-ui-validate": "^1.2.3",
     "async": "^2.5.0",
-    "body-parser": "^1.17.2",
+    "body-parser": "^1.18.2",
     "clipboard": "^1.7.1",
-    "express": "^4.15.3",
+    "express": "^4.16.0",
     "govuk-elements-sass": "^2.2.1",
     "govuk_frontend_toolkit": "^5.2.0",
+    "graceful-fs": "^4.1.11",
     "gulp": "^3.9.1",
     "gulp-angular-templatecache": "^2.0.0",
     "gulp-autoprefixer": "^3.1.1",
@@ -41,9 +44,10 @@
     "request": "^2.81.0",
     "require-dir": "^0.3.2",
     "run-sequence": "^1.2.2",
-    "serve-static": "^1.12.3",
+    "serve-static": "^1.13.0",
     "underscore": "^1.8.3",
-    "uuid": "^3.1.0"
+    "uuid": "^3.1.0",
+    "snyk": "^1.38.0"
   },
   "devDependencies": {
     "angular-mocks": "^1.6.4",
@@ -66,7 +70,7 @@
     "karma-jasmine": "^1.1.0",
     "karma-spec-reporter": "0.0.26",
     "selenium-webdriver": "^3.4.0",
-    "snyk": "^1.19.1",
     "standard": "^10.0.2"
-  }
+  },
+  "snyk": true
 }
