@@ -60,6 +60,7 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
   var res = FamilymigrationService.getLastAPIresponse()
   $scope.familyDetails = FamilymigrationService.getFamilyDetails()
   $scope.showFeedbackForm = true
+  $scope.showFeedbackThanks = false
   $scope.showNewSearchButton = false
   $scope.feedback = {}
   $scope.yesNoOptions = [{ value: 'yes', label: 'Yes' }, { value: 'no', label: 'No' }]
@@ -124,6 +125,9 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
       state = 'failure/norecord'
       $scope.heading = 'There is no record for ' + $scope.familyDetails.nino + ' with HMRC'
       $scope.reason = 'We couldn\'t perform the financial requirement check as no income information exists with HMRC.'
+      $scope.showFeedbackForm = false
+      $scope.showFeedbackThanks = false
+      $scope.showNewSearchButton = true
     } else if (res.status === 404) {
       $scope.heading = 'Incoming Proving Service Currently Unavailable'
       $scope.reason = 'The page will now reload.'
@@ -251,7 +255,9 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
       ga('send', 'pageview')
 
       $scope.showFeedbackForm = false
+      $scope.showFeedbackThanks = true
       $scope.showNewSearchButton = true
+
     }
 
     IOService.post('feedback', details).then(function (res) {
