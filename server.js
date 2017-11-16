@@ -2,9 +2,11 @@ var express = require('express')
 var serveStatic = require('serve-static')
 var app = express()
 var apiRoot = process.env.API_ROOT || 'http://localhost:8081'
+var feedbackRoot = process.env.FEEDBACK_ROOT || 'http://localhost:8082'
 var httpauth = process.env.IP_API_AUTH || ''
 var uiBaseUrl = '/incomeproving/v2/'
 var apiBaseUrl = apiRoot + '/incomeproving/v2/'
+var feedbackBaseUrl = feedbackRoot + '/feedback'
 var request = require('request')
 var port = process.env.SERVER_PORT || '8000'
 var PROXY_DISCOVERY_URL = process.env.PROXY_DISCOVERY_URL || 'https://sso.digital.homeoffice.gov.uk/auth/realms/pttg-qa'
@@ -112,7 +114,7 @@ app.post(uiBaseUrl + 'individual/financialstatus', function (req, res) {
 })
 
 app.post(uiBaseUrl + 'feedback', function (req, res) {
-  stdRelay(req, res, apiBaseUrl + 'feedback', '', req.body)
+  stdRelay(req, res, feedbackBaseUrl, '', req.body)
 })
 
 app.all('*', function (req, res, next) {
