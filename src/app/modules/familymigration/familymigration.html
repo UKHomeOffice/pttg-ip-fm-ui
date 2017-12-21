@@ -21,6 +21,20 @@
 
       <hod-text name="nino" label="National Insurance number" field="familyDetails.nino" config="conf.nino"></hod-text>
 
+      <div class="details" style="margin-bottom: 30px;">
+        <a class="summary" ng-click="showJoint=!showJoint" ng-class="{'summary--open': showJoint}" id="secondindividual">Add a second individual</a>
+        <div class="panel panel-border-narrow" ng-if="showJoint">
+          <hod-text name="pForename" label="First name" field="familyDetails.partner.forename" config="conf.partner.forename"></hod-text>
+      
+          <hod-text name="pSurname" label="Surname" field="familyDetails.partner.surname" config="conf.partner.surname"></hod-text>
+          
+          <hod-date name="pDateOfBirth" label="Date of birth" field="familyDetails.partner.dateOfBirth" config="conf.partner.dateOfBirth"></hod-date>
+
+          <hod-text name="pNino" label="National Insurance number" field="familyDetails.partner.nino" config="conf.partner.nino"></hod-text>
+        </div>  
+      </div>
+      
+
       <hod-number name="dependants" label="Number of dependants" field="familyDetails.dependants" config="conf.dependants" required="false"></hod-number>
 
       <hod-date name="applicationRaisedDate" label="Application raised date" field="familyDetails.applicationRaisedDate" config="conf.applicationRaisedDate"></hod-date>

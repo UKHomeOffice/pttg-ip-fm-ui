@@ -59,12 +59,13 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
   var state = 'error'
   var res = FamilymigrationService.getLastAPIresponse()
   $scope.familyDetails = FamilymigrationService.getFamilyDetails()
+  $scope.showJoint = ($scope.familyDetails.partner.forename.length > 0)
   $scope.showFeedbackForm = true
   $scope.showFeedbackThanks = false
   $scope.showNewSearchButton = false
   $scope.feedback = {}
   $scope.yesNoOptions = [{ value: 'yes', label: 'Yes' }, { value: 'no', label: 'No' }]
-
+  
   
 
   $scope.feedback = { whynot: {} }
@@ -72,25 +73,37 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
   $scope.dFormat = 'dd/MM/yyyy'
 
   if (!res.status) {
+    console.log(res)
     $state.go('familymigration')
     return
   }
 
   $scope.haveResult = (res.data && res.data.categoryCheck)
   if ($scope.haveResult) {
-    $scope.employers = res.data.categoryCheck.employers || []
     $scope.threshold = res.data.categoryCheck.threshold
+
+    // applicant
     $scope.individual = res.data.individual
+    $scope.individual.employers = res.data.categoryCheck.employers || []
+    $scope.individual.outcomeFromDate = res.data.categoryCheck.assessmentStartDate
+    $scope.individual.outcomeToDate = res.data.categoryCheck.applicationRaisedDate
     $scope.outcomeBoxIndividualName = res.data.individual.forename + ' ' + res.data.individual.surname
-    $scope.outcomeFromDate = res.data.categoryCheck.assessmentStartDate
-    $scope.outcomeToDate = res.data.categoryCheck.applicationRaisedDate
+    
+
+    // partner
+    if (_.has(res.data.categoryCheck, 'partner')) {
+      $scope.partner = res.data.partner
+      $scope.partner.employers = res.data.categoryCheck.partner.employers || []
+      $scope.partner.outcomeFromDate = res.data.categoryCheck.partner.assessmentStartDate
+      $scope.partner.outcomeToDate = res.data.categoryCheck.applicationRaisedDate
+    }
 
     if (res.data.categoryCheck.passed) {
       state = 'passed'
-      $scope.copysummary = $scope.outcomeBoxIndividualName + ' meets the Category A requirement'
+      $scope.copysummary = $scope.outcomeBoxIndividualName + ' meets the Category ' + res.data.categoryCheck.category + ' requirement'
       $scope.success = true
     } else {
-      $scope.copysummary = $scope.outcomeBoxIndividualName + ' does not meet the Category A requirement'
+      $scope.copysummary = $scope.outcomeBoxIndividualName + ' does not meet either Category A or B requirements'
       $scope.success = false
       // $scope.heading = res.data.individual.forename + ' ' + res.data.individual.surname + ' doesn\'t meet the Category A requirement';
       switch (res.data.categoryCheck.failureReason) {

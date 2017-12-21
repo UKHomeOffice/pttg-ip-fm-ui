@@ -6,6 +6,15 @@ h1 {
     font-size: 18px;
   }
 
+
+
+.extraspace--before {
+  padding-top: 30px;
+  th, td {
+    padding-top: 30px;
+  }
+}
+
   .pttg-panel {
     box-sizing: border-box;
     clear: both;
@@ -120,4 +129,50 @@ h1 {
 
 #newSearchBtn {
   margin-bottom: 30px;
+}
+
+
+.details {
+  .summary {
+    text-decoration: underline;
+    color: #005ea5;
+    &::before {
+      display: inline-block;
+      content: ' ';
+      box-sizing: border-box;
+      width: 10px;
+      height: 10px;
+      border-bottom: 5px solid transparent;
+      border-left: 10px solid #005ea5;
+      border-right: none;
+      border-top: 5px solid transparent;
+      margin-right: 4px;
+    }
+    &.summary--open {
+      &::before {
+        border-bottom: none;
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
+        border-top: 10px solid #005ea5;
+      }
+    }
+  }
+}
+
+[ng-click] {
+  cursor: pointer;
+}
+
+.result__person {
+  th, td {
+    // padding-top: 20px;
+    border: none;
+    .heading-small {
+      margin: 0;
+    }
+  }
+}
+
+.list {
+  margin-bottom: 0;
 }

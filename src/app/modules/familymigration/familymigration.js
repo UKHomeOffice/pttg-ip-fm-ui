@@ -14,7 +14,13 @@ familymigrationModule.factory('FamilymigrationService', ['IOService', '$state', 
     dateOfBirth: '',
     nino: '',
     applicationRaisedDate: '',
-    dependants: ''
+    dependants: '',
+    partner: {
+      forename: '',
+      surname: '',
+      dateOfBirth: '',
+      nino: '',
+    }
   }
 
   this.submit = function (fam) {
@@ -92,29 +98,51 @@ familymigrationModule.controller(
     ga('send', 'pageview')
 
     $scope.familyDetails = FamilymigrationService.getFamilyDetails()
+    $scope.showJoint = ($scope.familyDetails.partner.forename.length > 0)
 
     var appRaisedDateMsg = {
       summary: 'The "Application raised date" is invalid',
       msg: 'Enter a valid "Application raised date"'
     }
 
+    var ninoValidation = function (val) {
+      if (val) {
+        var v = val.replace(/[^a-zA-Z0-9]/g, '')
+        if (/^[a-zA-Z]{2}[0-9]{6}[a-dA-D]{1}$/.test(v)) {
+          return true
+        }
+      }
+      return false
+    }
+
     $scope.conf = {
-      forename: {
-
-      },
-      surname: {
-
-      },
+      forename: {},
+      surname: {},
       nino: {
-        validate: function (val) {
-          if (val) {
-            var v = val.replace(/[^a-zA-Z0-9]/g, '')
-            if (/^[a-zA-Z]{2}[0-9]{6}[a-dA-D]{1}$/.test(v)) {
-              return true
+        validate: ninoValidation
+      },
+      dateOfBirth: {
+        max: moment().subtract(10, 'years').format('YYYY-MM-DD'),
+        errors: {
+          max: {
+            msg: 'Enter a valid "Date of birth"'
+          }
+        }
+      },
+      partner: {
+        forename: {},
+        surname: {},
+        nino: {
+          validate: ninoValidation
+        },
+        dateOfBirth: {
+          max: moment().subtract(10, 'years').format('YYYY-MM-DD'),
+          errors: {
+            max: {
+              msg: 'Enter a valid "Date of birth"'
             }
           }
-          return false
-        }
+        },
       },
       dependants: {
         required: false,
@@ -150,14 +178,6 @@ familymigrationModule.controller(
           max: appRaisedDateMsg
         }
       },
-      dateOfBirth: {
-        max: moment().subtract(10, 'years').format('YYYY-MM-DD'),
-        errors: {
-          max: {
-            msg: 'Enter a valid "Date of birth"'
-          }
-        }
-      }
     }
 
     $scope.submitButton = {
