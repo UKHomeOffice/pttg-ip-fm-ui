@@ -16,16 +16,16 @@ Feature: Category A Financial Requirement
     When caseworker submits a query
       | Dependants | 0 |
     Then the service displays the following result
-      | Page dynamic heading                  | Not passed                                                  |
-      | Page dynamic detail                   | Kumar Sangakkara doesn't meet the Category A requirement    |
-      | Page dynamic reason                   | They haven't been with their current employer for 6 months. |
-      | Threshold                             | £123.45                                                     |
-      | Employer0                             | Pizza Ltd                                                   |
-      | Employer1                             | Morrisons                                                   |
-      | Employer2                             | The Home Office                                             |
-      | Your Search Individual Name           | Kumar Sangakkara                                            |
-      | Your Search National Insurance Number | KS123456C                                                   |
-      | Your Search Application Raised Date   | 03/07/2015                                                  |
+      | Page dynamic heading                  | Not passed                                                         |
+      | Outcome box summary                   | Kumar Sangakkara does not meet either Category A or B requirements |
+      | Page dynamic reason                   | They haven't been with their current employer for 6 months.        |
+      | Threshold                             | £123.45                                                            |
+      | Employer0                             | Pizza Ltd                                                          |
+      | Employer1                             | Morrisons                                                          |
+      | Employer2                             | The Home Office                                                    |
+      | Your Search Individual Name           | Kumar Sangakkara                                                   |
+      | Your Search National Insurance Number | KS123456C                                                          |
+      | Your Search Application Raised Date   | 03/07/2015                                                         |
 
   Scenario: Does not meet the Category A Financial Requirement (earned < the Cat A financial threshold)
     Given the account data for BS123456B
@@ -37,15 +37,15 @@ Feature: Category A Financial Requirement
       | Application Raised Date | 10/02/2015 |
       | Dependants              | 2          |
     Then the service displays the following result
-      | Page dynamic heading                  | Not passed                                             |
-      | Page dynamic detail                   | Brian Sinclair doesn't meet the Category A requirement |
-      | Page dynamic reason                   | They haven't met the required monthly amount.          |
-      | Your Search Individual Name           | Brian Sinclair                                         |
-      | Your Search Dependants                | 2                                                      |
-      | Your Search National Insurance Number | BS123456B                                              |
-      | Your Search Application Raised Date   | 10/02/2015                                             |
-      | Threshold                             | £999.99                                                |
-      | Employer0                             | The Home Office                                        |
+      | Page dynamic heading                  | Not passed                                                       |
+      | Outcome box summary                   | Brian Sinclair does not meet either Category A or B requirements |
+      | Page dynamic reason                   | They haven't met the required monthly amount.                    |
+      | Your Search Individual Name           | Brian Sinclair                                                   |
+      | Your Search Dependants                | 2                                                                |
+      | Your Search National Insurance Number | BS123456B                                                        |
+      | Your Search Application Raised Date   | 10/02/2015                                                       |
+      | Threshold                             | £999.99                                                          |
+      | Employer0                             | The Home Office                                                  |
 
 
   Scenario: Meets the Category A Financial Requirement with 1 dependant
@@ -119,7 +119,7 @@ Feature: Category A Financial Requirement
       | Dependants              | 0          |
     Then the service displays the following result
       | Page dynamic heading                  | There is no record for RK123456C with HMRC                                                     |
-      | Page dynamic detail                   | We couldn't perform the financial requirement check as no income information exists with HMRC. |
+      | Outcome box summary                   | We couldn't perform the financial requirement check as no income information exists with HMRC. |
       | Your Search National Insurance Number | RK123456C                                                                                      |
       | Your Search Application Raised Date   | 03/07/2015                                                                                     |
 

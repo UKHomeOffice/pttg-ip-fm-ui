@@ -561,7 +561,6 @@ formsModule.directive('hodCheckbox', ['FormsService', function (FormsService) {
   }
 }])
 
-
 formsModule.directive('hodCheckboxes', ['FormsService', function (FormsService) {
   return {
     restrict: 'E',

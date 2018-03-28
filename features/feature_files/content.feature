@@ -19,7 +19,7 @@ Feature: Page content
       | Last name     | Lew        |
       | date of birth | 08/08/1980 |
     Then the service displays the following result
-      | Page dynamic detail         | Jill Lewondoski doesn't meet the Category A requirement                                        |
+      | Outcome box summary         | Jill Lewondoski doesn't meet the Category A requirement                                        |
       | Page dynamic reason         | They haven't met the required monthly amount.                                                  |
       | What to do next heading     | What to do next                                                                                |
       | What to do next sub heading | You should consider if the applicant meets the financial requirement under any other category. |
@@ -45,19 +45,19 @@ Feature: Page content
     Given the account data for PAY_FREQUENCY_CHANGE
     When the income check is performed
     Then the service displays the following result
-      | Page dynamic detail | Percy Frank-Carter doesn't meet the Category A requirement |
+      | Outcome box summary | Percy Frank-Carter doesn't meet the Category A requirement |
       | Page dynamic reason | Change in payment frequency.                               |
 
   Scenario: Show failure message when payments from multiple employers is seen
     Given the account data for MULTIPLE_EMPLOYERS
     When the income check is performed
     Then the service displays the following result
-      | Page dynamic detail | Martin Elton doesn't meet the Category A requirement |
+      | Outcome box summary | Martin Elton doesn't meet the Category A requirement |
       | Page dynamic reason | Payments from multiple employers.                    |
 
   Scenario: Show failure message when a payment frequency cannot be determined
     Given the account data for UNKNOWN_PAY_FREQUENCY
     When the income check is performed
     Then the service displays the following result
-      | Page dynamic detail | Unwin Pat-Frank doesn't meet the Category A requirement |
+      | Outcome box summary | Unwin Pat-Frank doesn't meet the Category A requirement |
       | Page dynamic reason | Unable to calculate a payment frequency.                |
