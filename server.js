@@ -60,18 +60,22 @@ var stdRelay = function (req, res, uri, qs, postdata) {
     // console.log(opts.body)
   }
 
-  console.log(headers['x-correlation-id'], opts.method, opts.uri)
+  console.log(moment().toISOString(), 'REQUEST', headers['x-correlation-id'], opts.method, opts.uri)
   request(opts, function (error, response, body) {
     var status = (response && response.statusCode) ? response.statusCode : 500
     if ((body === '' || body === '""') && status === 200) {
       status = 500
     }
 
+    console.log(moment().toISOString(), 'RESPONSE', headers['x-correlation-id'], opts.method, opts.uri, status, error)
+    console.log(response.body)
+
+
     res.setHeader('Content-Type', 'application/json')
     res.status(status)
     res.send(body)
 
-    console.log(headers['x-correlation-id'], opts.method, opts.uri, status, error)
+    
 
     if (error) {
       console.log(headers['x-correlation-id'], body)
