@@ -30,7 +30,7 @@ This service currently runs in AWS and has an associated [kubernetes configurati
 
 ## Building
 
-This service is built using Gradle on Drone using [Drone yaml]
+This service is built using Node JS on Drone using [Drone yaml]
 
 ## Versioning
 
