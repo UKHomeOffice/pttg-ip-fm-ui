@@ -53,7 +53,7 @@
     "chai": "^3.5.0",
     "chai-as-promised": "^6.0.0",
     "chalk": "^1.1.1",
-    "chromedriver": "2.32.3",
+    "chromedriver": "2.38.3",
     "cucumber": "^2.2.0",
     "cucumber-html-reporter": "^0.4.2",
     "gulp-jasmine": "^2.4.2",
