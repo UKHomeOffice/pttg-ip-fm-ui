@@ -4,13 +4,11 @@
   "description": "migration family case worker tool",
   "scripts": {
     "init": "npm install",
-    "test": "snyk test && gulp test",
+    "test": "gulp test",
     "test:all": "npm run test:unit && npm run test:bdd",
     "test:unit": "gulp",
     "test:bdd": "./node_modules/.bin/cucumber.js",
-    "postinstall": "gulp",
-    "snyk-protect": "snyk protect",
-    "prepare": "npm run snyk-protect"
+    "postinstall": "gulp"
   },
   "dependencies": {
     "angular": "^1.6.5",
@@ -32,22 +30,23 @@
     "gulp-htmlmin": "^2.0.0",
     "gulp-inject": "^3.0.0",
     "gulp-load-plugins": "^1.5.0",
-    "gulp-order": "^1.1.1",
     "gulp-plumber": "^1.1.0",
     "gulp-sass": "^2.3.2",
     "gulp-sourcemaps": "^1.12.0",
     "gulp-uglify": "^2.1.2",
     "gulp-util": "^3.0.8",
-    "moment": "^2.18.1",
+    "moment": "^2.22.1",
     "node-sass": "^3.13.1",
     "prod": "^1.0.1",
-    "request": "^2.81.0",
+    "request": "^2.85.0",
     "require-dir": "^0.3.2",
     "run-sequence": "^1.2.2",
     "serve-static": "^1.13.0",
-    "snyk": "^1.36.2",
     "underscore": "^1.8.3",
     "uuid": "^3.1.0"
+  },
+  "optionalDependencies": {
+    "fsevents": "1.2.2"
   },
   "devDependencies": {
     "angular-mocks": "^1.6.4",
@@ -57,12 +56,9 @@
     "chromedriver": "2.32.3",
     "cucumber": "^2.2.0",
     "cucumber-html-reporter": "^0.4.2",
-    "gulp-debug": "^2.1.2",
     "gulp-jasmine": "^2.4.2",
-    "gulp-jscs": "^3.0.2",
-    "gulp-jshint": "^2.0.0",
     "gulp-nodemon": "^2.2.1",
-    "gulp-watch": "^4.3.5",
+    "gulp-watch": "^5.0.0",
     "jasmine": "^2.5.2",
     "jasmine-core": "^2.6.4",
     "karma": "^1.7.0",
@@ -71,6 +67,5 @@
     "karma-spec-reporter": "0.0.26",
     "selenium-webdriver": "^3.4.0",
     "standard": "^10.0.2"
-  },
-  "snyk": true
+  }
 }
