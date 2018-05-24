@@ -9,8 +9,9 @@ var apiBaseUrl = apiRoot + '/incomeproving/v2/'
 var feedbackBaseUrl = feedbackRoot + '/feedback'
 var request = require('request')
 var port = process.env.SERVER_PORT || '8000'
-var PROXY_DISCOVERY_URL = process.env.PROXY_DISCOVERY_URL || 'https://sso.digital.homeoffice.gov.uk/auth/realms/pttg-qa'
-var PROXY_REDIRECTION_URL = process.env.PROXY_REDIRECTION_URL || 'https://fm.ip.dev.notprod.pttg.homeoffice.gov.uk'
+// PROXY_DISCOVERY_URL eg https://sso.digital.homeoffice.gov.uk/auth/realms/pttg-qa or pttg-production
+var PROXY_DISCOVERY_URL = process.env.PROXY_DISCOVERY_URL || ''
+var PROXY_REDIRECTION_URL = process.env.PROXY_REDIRECTION_URL || ''
 var moment = require('moment')
 var uuid = require('uuid/v4')
 var fs = require('fs')
@@ -40,7 +41,7 @@ var stdRelay = function (req, res, uri, qs, postdata) {
   }
 
   if (httpauth) {
-    headers['Authorization'] = 'Basic ' + new Buffer(httpauth).toString('base64');
+    headers['Authorization'] = 'Basic ' + new Buffer(httpauth).toString('base64')
   }
 
   headers['x-correlation-id'] = uuid()
@@ -70,12 +71,9 @@ var stdRelay = function (req, res, uri, qs, postdata) {
     console.log(moment().toISOString(), 'RESPONSE', headers['x-correlation-id'], opts.method, opts.uri, status, error)
     console.log(body)
 
-
     res.setHeader('Content-Type', 'application/json')
     res.status(status)
     res.send(body)
-
-    
 
     if (error) {
       console.log(headers['x-correlation-id'], body)
@@ -100,6 +98,12 @@ app.get('/ping', function (req, res) {
 })
 
 app.get('/logout', function (req, res) {
+  if (!PROXY_REDIRECTION_URL || !PROXY_DISCOVERY_URL) {
+    // NB: same as when the KC session has timed out
+    res.statusCode = 307
+    res.send()
+    return
+  }
   let url = PROXY_REDIRECTION_URL + '/oauth/logout?redirect=' + encodeURIComponent(PROXY_DISCOVERY_URL + '/protocol/openid-connect/logout?post_logout_redirect_uri=' + PROXY_REDIRECTION_URL)
   res.setHeader('Content-Type', 'application/json')
   res.send({logout: url})

@@ -1,4 +1,4 @@
-/* global angular moment */
+/* global angular */
 
 var logoutModule = angular.module('hod.logout', [])
 
@@ -19,28 +19,17 @@ logoutModule.config(['$stateProvider', '$urlRouterProvider', function ($statePro
   })
 }])
 
-logoutModule.controller('LogoutCtrl',['$scope', '$http', '$window', function ($scope, $http, $window) {
+logoutModule.controller('LogoutCtrl', ['$scope', '$http', '$window', function ($scope, $http, $window) {
   $http.get('/logout').then(function (result) {
     var logoutUrl = (result && result.data) ? result.data.logout : ''
     if (logoutUrl) {
       $window.location = logoutUrl
     }
   }).catch(function (e) {
-    console.log(e)
+    var logoutUrl = window.location.protocol + '//' + window.location.hostname
+    if (window.location.port !== '80' && window.location.port !== '443') {
+      logoutUrl += ':' + window.location.port
+    }
+    $window.location = logoutUrl
   })
-
-
-  // $http.get('/logout').then(function (result) {
-  //   var logoutUrl = (result && result.data) ? result.data.logout : ''
-  //   return $http.get(logoutUrl)
-  // }).then(function (result) {
-  //   console.log('RESULT', result)
-  // }).catch(function (err) {
-  //   console.log('ERROR', err)
-  // }).then(function () {
-  //   setTimeout(function () {
-  //     $window.location = '/';
-  //     console.log('timeout')
-  //   }, 2000)
-  // })
 }])
