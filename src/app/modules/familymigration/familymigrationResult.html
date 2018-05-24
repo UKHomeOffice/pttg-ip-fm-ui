@@ -23,8 +23,8 @@
     <h2 id="whatToDoNextHeading" class="heading-small">What to do next</h2>
     <ol class="list list-number">
 
-      <li ng-if="haveResult">Check that the name matches applicant's details</li>
-      <li>Check you have entered the correct information</li>
+      <li ng-if="haveResult">Check that the name matches the applicant's details</li>
+      <li>Check that you have entered the correct information</li>
       <li id="whatToDoNextSubHeading" ng-if="!success">You should consider if the applicant meets the financial requirement under any other category.</li>
     </ol>
   </div>
@@ -33,12 +33,6 @@
   <div ng-if="haveResult">
     <h2 class="heading-medium">Results</h2>
     <table class="ng-scope">
-      <tbody>
-        <tr>
-          <th scope="row">Threshold</th>
-          <td><span id="threshold">{{ threshold | currency : '£' }}</span></td>
-        </tr>
-      </tbody>
       <tbody>
         <tr class="result__person extraspace--before">
           <th colspan="2"><span id="yourSearchIndividualName" class="heading-small">{{ individual.forename}} {{ individual.surname }}</span></th>
@@ -59,7 +53,7 @@
         </tr>
       </tbody>
 
-      <tbody>
+      <tbody ng-if="showJoint">
         <tr class="result__person extraspace--before">
           <th colspan="2"><span id="yourSearchPartnerName" class="heading-small">{{ partner.forename}} {{ partner.surname }}</span></th>
         </tr>
@@ -149,16 +143,10 @@
     <h2 class="heading-medium ng-scope" id="feedbackheading">Feedback</h2>
 
     <hod-radio name="match" config="conf.match" field="feedback.match" options="yesNoOptions"></hod-radio>
+  
+    <hod-radio label="Why do you think that the paper assessment did not match the IPS result?" field="feedback.whynot" config="conf.whynot"></hod-radio>
 
-    <div class="panel panel-border-wide text" ng-show="!conf.caseref.hidden">
-      <hod-text name="caseref" label="Case ID" field="feedback.caseref" config="conf.caseref"></hod-text>
-
-      <hod-textarea name="matchComment" config="conf.matchComment" label="Why do you think that the paper assessment did not match the IPS result?" field="feedback.matchComment"></hod-textarea>
-      
-      <hod-checkboxes label="Why do you think that the paper assessment did not match the IPS result?" field="feedback.whynot" config="conf.whynot"></hod-checkboxes>
-
-      <hod-text name="matchOther" config="conf.matchOther" label="Other" field="feedback.matchOther"></hod-text>
-    </div>
+    <hod-text name="matchOther" config="conf.matchOther" label="Other" field="feedback.matchOther"></hod-text>
 
     <hod-submit value="Submit and start a new search"></hod-submit>
   </hod-form>

@@ -1,0 +1,30 @@
+{
+  "status" : {
+    "code" : "200",
+    "message" : "OK"
+  },
+  "individual" : {
+    "forename" : "The",
+    "surname" : "Joker",
+    "nino" : "BB123456C",
+    "dob" : "1960-05-05"
+  },
+  "partner" : {
+    "forename" : "Poison",
+    "surname" : "Ivy",
+    "nino" : "XX123456X",
+    "dob" : "1970-05-05"
+  },
+  "categoryCheck" : {
+    "category" : "A",
+    "passed" : false,
+    "applicationRaisedDate" : "2015-01-03",
+    "assessmentStartDate" : "2014-07-03",
+    "threshold" : "128.64",
+    "employers" : ["Crime Inc"],
+    "partner": {
+      "assessmentStartDate" : "2015-07-03",
+      "employers" : ["The Botanical Gardens"]
+    }
+  }
+}
