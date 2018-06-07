@@ -45,21 +45,26 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
     'RESULTCODES',
     'IOService',
     function (
-    $scope,
-    $state,
-    $stateParams,
-    $filter,
-    FamilymigrationService,
-    RESULT_TEXT,
-    $timeout,
-    $window,
-    RESULTCODES,
-    IOService
-  ) {
+      $scope,
+      $state,
+      $stateParams,
+      $filter,
+      FamilymigrationService,
+      RESULT_TEXT,
+      $timeout,
+      $window,
+      RESULTCODES,
+      IOService
+    ) {
       var state = 'error'
       var res = FamilymigrationService.getLastAPIresponse()
-      $scope.familyDetails = FamilymigrationService.getFamilyDetails()
-      $scope.showJoint = ($scope.familyDetails.partner.forename.length > 0)
+
+      $scope.search = FamilymigrationService.getSearch()
+      $scope.applicant = FamilymigrationService.getApplicant()
+      $scope.partner = FamilymigrationService.getPartner()
+      $scope.showJoint = ($scope.partner)
+      $scope.haveResult = FamilymigrationService.haveResult()
+
       $scope.showFeedbackForm = true
       $scope.showFeedbackThanks = false
       $scope.showNewSearchButton = false
@@ -67,44 +72,31 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
       $scope.yesNoOptions = [{ value: 'yes', label: 'Yes' }, { value: 'no', label: 'No' }]
 
       $scope.feedback = { whynot: {} }
-
       $scope.dFormat = 'dd/MM/yyyy'
 
       if (!res.status) {
-        console.log(res)
         $state.go('familymigration')
         return
       }
 
-      $scope.haveResult = (res.data && res.data.categoryCheck)
-      if ($scope.haveResult) {
-        $scope.threshold = res.data.categoryCheck.threshold
-        $scope.showJoint = (res.data.partner) ? (res.data.partner.forename.length > 0) : false
+      var summary = FamilymigrationService.getResultSummary()
+      console.log(summary)
+      $scope.success = summary && summary.passed
+      if (summary) {
+        $scope.summary = summary
+        $scope.showJoint = (summary.individuals && summary.individuals.length > 1)
+        $scope.individual = _.first(summary.individuals)
+        $scope.outcomeBoxIndividualName = $scope.individual.forename + ' ' + $scope.individual.surname
 
-    // applicant
-        $scope.individual = res.data.individual
-        $scope.individual.employers = res.data.categoryCheck.employers || []
-        $scope.individual.outcomeFromDate = res.data.categoryCheck.assessmentStartDate
-        $scope.individual.outcomeToDate = res.data.categoryCheck.applicationRaisedDate
-        $scope.outcomeBoxIndividualName = res.data.individual.forename + ' ' + res.data.individual.surname
-
-    // partner
-        if (_.has(res.data.categoryCheck, 'partner')) {
-          $scope.partner = res.data.partner
-          $scope.partner.employers = res.data.categoryCheck.partner.employers || []
-          $scope.partner.outcomeFromDate = res.data.categoryCheck.partner.assessmentStartDate
-          $scope.partner.outcomeToDate = res.data.categoryCheck.applicationRaisedDate
-        }
-
-        if (res.data.categoryCheck.passed) {
+        if (summary.passed) {
           state = 'passed'
-          $scope.copysummary = $scope.outcomeBoxIndividualName + ' meets the Category ' + res.data.categoryCheck.category + ' requirement'
+          $scope.copysummary = $scope.outcomeBoxIndividualName + ' meets the Category ' + summary.category + ' requirement'
           $scope.success = true
         } else {
           $scope.copysummary = $scope.outcomeBoxIndividualName + ' does not meet either Category A or B requirements'
           $scope.success = false
       // $scope.heading = res.data.individual.forename + ' ' + res.data.individual.surname + ' doesn\'t meet the Category A requirement';
-          switch (res.data.categoryCheck.failureReason) {
+          switch (summary.failureReason) {
             case RESULTCODES.PAY_FREQUENCY_CHANGE:
               state = 'notpassed/paymentfrequencychange'
               $scope.reason = 'Change in payment frequency.'
@@ -132,9 +124,10 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
         }
       } else {
         console.log('ERROR', res)
+        console.log($scope.applicant)
         if (res.status === 404 && res.data && res.data.status && res.data.status.code === '0009') {
           state = 'failure/norecord'
-          $scope.heading = 'There is no record for ' + $scope.familyDetails.nino + ' with HMRC'
+          $scope.heading = 'There is no record for ' + $scope.applicant.nino + ' with HMRC'
           $scope.reason = 'We couldn\'t perform the financial requirement check as no income information exists with HMRC.'
           $scope.showFeedbackForm = false
           $scope.showFeedbackThanks = false
@@ -160,19 +153,6 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
         }
       };
 
-      var conditionalIfNo = function (fieldName, v, err) {
-        if ($scope.feedback[fieldName] !== 'no') {
-      // not relevant as everything was OK
-          return true
-        }
-
-        if (_.isString(v) && v.length) {
-          return true
-        }
-
-        return err
-      }
-
       // #### FEEDBACK #### //
 
       $scope.conf = {
@@ -195,13 +175,6 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
             { value: 'failed-b-salaried', label: 'Not Passed on Cat B Salaried' },
             { value: 'failed-b-nonsalaried', label: 'Not Passed on Cat B Non-Salaried' }
           ]
-          // validate: function (v, sc) {
-          //   console.log('validate whynot')
-          //   var n = _.reduce($scope.feedback.whynot, function (memo, bool) { return (bool) ? memo + 1 : memo }, 0)
-          //   console.log('validate', n, $scope.feedback.matchOther)
-          //   if (n || $scope.feedback.matchOther) return true
-          //   return { summary: 'The "Why do you think that the paper assessment did not match the IPS result?" is blank', msg: 'Select one or more from below' }
-          // }
         },
         matchOther: {
           classes: {'form-control-1-4': false},
@@ -232,13 +205,14 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
 
         // #### END FEEDBACK ####
 
-        var lastCheckDetails = FamilymigrationService.getFamilyDetails()
-        details.nino = lastCheckDetails.nino
+        // var lastCheckDetails = FamilymigrationService.getFamilyDetails()
+        // details.nino = lastCheckDetails.nino
+        details.nino = _.pluck(res.data.individuals, 'nino').join(',')
 
         var reload = function () {
-      // track
-          ga('set', 'page', $state.href($state.current.name, $stateParams) + '/' + state + '/feedback/' + details.match)
-          ga('send', 'pageview')
+          // track
+          // ga('set', 'page', $state.href($state.current.name, $stateParams) + '/' + state + '/feedback/' + details.match)
+          // ga('send', 'pageview')
 
           $scope.showFeedbackForm = false
           $scope.showFeedbackThanks = true
@@ -257,59 +231,18 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
         $window.location.reload()
       }
 
-  // edit search button
+      // edit search button
       $scope.editSearch = function () {
         $state.go('familymigration')
       }
 
-  // track
+      // track
       ga('set', 'page', $state.href($state.current.name, $stateParams) + '/' + state)
       ga('send', 'pageview')
 
-  // ######################## //
-  // #### COPY AND PASTE #### //
-  // ######################## //
       $scope.copyToClipboardBtnText = RESULT_TEXT.copybtn
-      var lineLength = function (str, len) {
-        while (str.length < len) {
-          str += ' '
-        }
-        return str
-      }
 
-  // compile the copy text
-      var copyText = ''// (($scope.success) ? 'PASSED': 'NOT PASSED') + '\n'
-      if ($scope.success) {
-        copyText += 'PASSED\n'
-        copyText += $scope.outcomeBoxIndividualName + ' meets the Category A requirement\n\n'
-      } else {
-        copyText += 'NOT PASSED\n'
-        copyText += $scope.reason + '\n\n'
-      }
-
-      copyText += 'RESULTS\n'
-      copyText += lineLength('Individual: ', 36) + $scope.outcomeBoxIndividualName + '\n'
-      copyText += lineLength('Threshold: ', 36) + $filter('currency')($scope.threshold, '£') + '\n'
-      copyText += lineLength('Income within date range: ', 36) + $scope.outcomeFromDate + ' - ' + $scope.outcomeToDate + '\n'
-      _.each($scope.employers, function (e, i) {
-        if (i === 0) {
-          copyText += lineLength('Employers: ', 36) + e + '\n'
-        } else {
-          copyText += lineLength('', 36) + e + '\n'
-        }
-      })
-
-  // add the your search to it
-      copyText += '\n\nSEARCH CRITERIA\n'
-      copyText += lineLength('First name: ', 36) + $scope.familyDetails.forename + '\n'
-      copyText += lineLength('Surname: ', 36) + $scope.familyDetails.surname + '\n'
-      copyText += lineLength('Date of birth: ', 36) + $scope.familyDetails.dateOfBirth + '\n'
-      copyText += lineLength('Dependants: ', 36) + $scope.familyDetails.dependants + '\n'
-      copyText += lineLength('NINO: ', 36) + $scope.familyDetails.nino + '\n'
-      copyText += lineLength('Application raised: ', 36) + $filter('date')($scope.familyDetails.applicationRaisedDate, $scope.dFormat) + '\n'
-  // familyDetails.applicationRaisedDate | date: dFormat
-
-  // init the clipboard object
+      var copyText = FamilymigrationService.getCopyPasteSummary()
       var clipboard = new Clipboard('.button--copy', {
         text: function () {
           return copyText

@@ -4,28 +4,33 @@ Feature: Category A Financial Requirement
     Given the api health check response has status 200
     And Caseworker is using the Income Proving Service Case Worker Tool
     And the default details are
+      | Dependants              | 0          |
       | NINO                    | KS123456C  |
       | Application Raised Date | 03/07/2015 |
       | Forename                | Kumar      |
       | Surname                 | Sangakkara |
       | Date Of Birth           | 01/01/1978 |
-      | Dependants              | 0          |
+
 
   Scenario: Does not meet the Category A employment duration Requirement (with current employer for only 3 months)
     Given the account data for KS123456C
     When caseworker submits a query
-      | Dependants | 0 |
     Then the service displays the following result
-      | Page dynamic heading                  | Not passed                                                         |
-      | Outcome box summary                   | Kumar Sangakkara does not meet either Category A or B requirements |
-      | Page dynamic reason                   | They haven't been with their current employer for 6 months.        |
-      | Threshold                             | £123.45                                                            |
-      | Employer0                             | Pizza Ltd                                                          |
-      | Employer1                             | Morrisons                                                          |
-      | Employer2                             | The Home Office                                                    |
-      | Your Search Individual Name           | Kumar Sangakkara                                                   |
-      | Your Search National Insurance Number | KS123456C                                                          |
-      | Your Search Application Raised Date   | 03/07/2015                                                         |
+      | Page dynamic heading | Not passed                                                         |
+      | Outcome box summary  | Kumar Sangakkara does not meet either Category A or B requirements |
+      | Page dynamic reason  | They haven't been with their current employer for 6 months.        |
+    And the service displays the following result table
+      | Kumar Sangakkara |                 |
+      | Employers        | Pizza Ltd       |
+      |                  | Morrisons       |
+      |                  | The Home Office |
+    And the service displays the following search table
+      | First name                | Kumar      |
+      | Surname                   | Sangakkara |
+      | Date of birth             | 01/01/1978 |
+      | National Insurance number | KS123456C  |
+      | Dependants                | 0          |
+      | Application raised        | 03/07/2015 |
 
   Scenario: Does not meet the Category A Financial Requirement (earned < the Cat A financial threshold)
     Given the account data for BS123456B
@@ -37,15 +42,19 @@ Feature: Category A Financial Requirement
       | Application Raised Date | 10/02/2015 |
       | Dependants              | 2          |
     Then the service displays the following result
-      | Page dynamic heading                  | Not passed                                                       |
-      | Outcome box summary                   | Brian Sinclair does not meet either Category A or B requirements |
-      | Page dynamic reason                   | They haven't met the required monthly amount.                    |
-      | Your Search Individual Name           | Brian Sinclair                                                   |
-      | Your Search Dependants                | 2                                                                |
-      | Your Search National Insurance Number | BS123456B                                                        |
-      | Your Search Application Raised Date   | 10/02/2015                                                       |
-      | Threshold                             | £999.99                                                          |
-      | Employer0                             | The Home Office                                                  |
+      | Page dynamic heading | Not passed                                                       |
+      | Outcome box summary  | Brian Sinclair does not meet either Category A or B requirements |
+      | Page dynamic reason  | They haven't met the required monthly amount.                    |
+    And the service displays the following result table
+      | Brian Sinclair |                 |
+      | Employers      | The Home Office |
+    And the service displays the following search table
+      | First name                | Brian      |
+      | Surname                   | Sinclair   |
+      | Date of birth             | 06/06/1970 |
+      | National Insurance number | BS123456B  |
+      | Dependants                | 2          |
+      | Application raised        | 10/02/2015 |
 
 
   Scenario: Meets the Category A Financial Requirement with 1 dependant
@@ -58,16 +67,20 @@ Feature: Category A Financial Requirement
       | Application Raised Date | 03/01/2015 |
       | Dependants              | 1          |
     Then the service displays the following result
-      | Page dynamic heading                  | Passed          |
-      | Outcome Box Individual Name           | Tony Ledo       |
-      | Outcome From Date                     | 03/07/2014      |
-      | Outcome To Date                       | 03/01/2015      |
-      | Your Search Individual Name           | Tony Ledo       |
-      | Your Search Dependants                | 1               |
-      | Your Search National Insurance Number | TL123456A       |
-      | Your Search Application Raised Date   | 03/01/2015      |
-      | Threshold                             | £128.64         |
-      | Employer0                             | ZX Spectrum 48K |
+      | Page dynamic heading | Passed                                     |
+      | Outcome Box Summary  | Tony Ledo meets the Category A requirement |
+    And the service displays the following result table
+      | Tony Ledo                |                         |
+      | Income within date range | 03/07/2014 - 03/01/2015 |
+      | Employers                | ZX Spectrum 48K         |
+    And the service displays the following search table
+      | First name                | Tony       |
+      | Surname                   | Ledo       |
+      | Date of birth             | 04/05/1980 |
+      | National Insurance number | TL123456A  |
+      | Dependants                | 1          |
+      | Application raised        | 03/01/2015 |
+
 
   Scenario: Caseworker enters the National Insurance Number with spaces
     Given the account data for TL123456A
@@ -79,16 +92,20 @@ Feature: Category A Financial Requirement
       | Application Raised Date | 03/01/2015    |
       | Dependants              | 1             |
     Then the service displays the following result
-      | Page dynamic heading                  | Passed          |
-      | Outcome Box Individual Name           | Tony Ledo       |
-      | Outcome From Date                     | 03/07/2014      |
-      | Outcome To Date                       | 03/01/2015      |
-      | Your Search Individual Name           | Tony Ledo       |
-      | Your Search Dependants                | 1               |
-      | Your Search National Insurance Number | TL123456A       |
-      | Your Search Application Raised Date   | 03/01/2015      |
-      | Threshold                             | £128.64         |
-      | Employer0                             | ZX Spectrum 48K |
+      | Page dynamic heading | Passed                                     |
+      | Outcome Box Summary  | Tony Ledo meets the Category A requirement |
+    And the service displays the following result table
+      | Tony Ledo                |                         |
+      | Income within date range | 03/07/2014 - 03/01/2015 |
+      | Employers                | ZX Spectrum 48K         |
+    And the service displays the following search table
+      | First name                | Tony       |
+      | Surname                   | Ledo       |
+      | Date of birth             | 04/05/1980 |
+      | National Insurance number | TL123456A  |
+      | Dependants                | 1          |
+      | Application raised        | 03/01/2015 |
+
 
   Scenario: Caseworker enters the Application Raised Date with single numbers for the day and month
     Given the account data for TL123456A
@@ -100,16 +117,19 @@ Feature: Category A Financial Requirement
       | Application Raised Date | 3/1/2015   |
       | Dependants              | 1          |
     Then the service displays the following result
-      | Page dynamic heading                  | Passed          |
-      | Outcome Box Individual Name           | Tony Ledo       |
-      | Outcome From Date                     | 03/07/2014      |
-      | Outcome To Date                       | 03/01/2015      |
-      | Your Search Individual Name           | Tony Ledo       |
-      | Your Search Dependants                | 1               |
-      | Your Search National Insurance Number | TL123456A       |
-      | Your Search Application Raised Date   | 03/01/2015      |
-      | Threshold                             | £128.64         |
-      | Employer0                             | ZX Spectrum 48K |
+      | Page dynamic heading | Passed                                     |
+      | Outcome Box Summary  | Tony Ledo meets the Category A requirement |
+    And the service displays the following result table
+      | Tony Ledo                |                         |
+      | Income within date range | 03/07/2014 - 03/01/2015 |
+      | Employers                | ZX Spectrum 48K         |
+    And the service displays the following search table
+      | First name                | Tony       |
+      | Surname                   | Ledo       |
+      | Date of birth             | 04/05/1980 |
+      | National Insurance number | TL123456A  |
+      | Dependants                | 1          |
+      | Application raised        | 03/01/2015 |
 
   Scenario: Caseworker enters a NINO where no records exist within the period stated
     Given no record for RK123456C
@@ -118,10 +138,16 @@ Feature: Category A Financial Requirement
       | Application Raised Date | 03/07/2015 |
       | Dependants              | 0          |
     Then the service displays the following result
-      | Page dynamic heading                  | There is no record for RK123456C with HMRC                                                     |
-      | Outcome box summary                   | We couldn't perform the financial requirement check as no income information exists with HMRC. |
-      | Your Search National Insurance Number | RK123456C                                                                                      |
-      | Your Search Application Raised Date   | 03/07/2015                                                                                     |
+      | Page dynamic heading | There is no record for RK123456C with HMRC                                                     |
+      | Page dynamic detail  | We couldn't perform the financial requirement check as no income information exists with HMRC. |
+    And the service displays the following search table
+      | First name                            | Kumar      |
+      | Surname                               | Sangakkara |
+      | Date of birth                         | 01/01/1978 |
+      | National Insurance number             | RK123456C  |
+      | Dependants                            | 0          |
+      | Application raised                    | 03/07/2015 |
+
 
   Scenario: edit search button is clicked
     Given the account data for BS123456B

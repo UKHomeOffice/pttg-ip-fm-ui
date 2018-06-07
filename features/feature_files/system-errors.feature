@@ -9,53 +9,53 @@ Feature: System errors - specify messages shown in response to (simulated) conne
 #    When the income check is performed
 #    Then the service displays the following page content within 32 seconds
 #      | Page dynamic heading | Your Keycloak session has timed out |
-#      | Outcome box summary  | The page will now reload.           |
+#      | Page dynamic detail  | The page will now reload.           |
 
   Scenario: Coping with a garbage response
     Given the api response is garbage
     When the income check is performed
     Then the service displays the following page content
       | Page dynamic heading | You can’t use this service just now. The problem will be fixed as soon as possible |
-      | Outcome box summary  | Please try again later.                                                            |
+      | Page dynamic detail  | Please try again later.                                                            |
 
   Scenario: Coping with an empty response
     Given the api response is empty
     When the income check is performed
     Then the service displays the following page content
       | Page dynamic heading | You can’t use this service just now. The problem will be fixed as soon as possible |
-      | Outcome box summary  | Please try again later.                                                            |
+      | Page dynamic detail  | Please try again later.                                                            |
 
   Scenario: Coping with an unexpected HTTP response status
     Given the api response has status 503
     When the income check is performed
     Then the service displays the following page content
       | Page dynamic heading | You can’t use this service just now. The problem will be fixed as soon as possible |
-      | Outcome box summary  | Please try again later.                                                            |
+      | Page dynamic detail  | Please try again later.                                                            |
 
   Scenario: Refresh page when KC timesout
     Given the api response has status 307
     When the income check is performed
     Then the service displays the following page content
       | Page dynamic heading | Your Keycloak session has timed out |
-      | Outcome box summary  | The page will now reload.           |
+      | Page dynamic detail  | The page will now reload.           |
 
   Scenario: Refresh page when something went wrong with the service or the API went away - eg into Maintenance Mode
     Given the api response has status 404
     When the income check is performed
     Then the service displays the following page content
       | Page dynamic heading | Incoming Proving Service Currently Unavailable |
-      | Outcome box summary  | The page will now reload.                      |
+      | Page dynamic detail  | The page will now reload.                      |
 
   Scenario: Handling API server validation errors - missing parameter
     Given the api response is a validation error - missing parameter
     When the income check is performed
     Then the service displays the following page content
       | Page dynamic heading | You can’t use this service just now. The problem will be fixed as soon as possible |
-      | Outcome box summary  | Please try again later.                                                            |
+      | Page dynamic detail  | Please try again later.                                                            |
 
   Scenario: Handling API server validation errors - invalid parameter
     Given the api response is a validation error - invalid parameter
     When the income check is performed
     Then the service displays the following page content
       | Page dynamic heading | You can’t use this service just now. The problem will be fixed as soon as possible |
-      | Outcome box summary  | Please try again later.                                                            |
+      | Page dynamic detail  | Please try again later.                                                            |

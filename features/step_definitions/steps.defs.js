@@ -1,15 +1,25 @@
 const chai = require('chai')
+const assert = chai.assert
 const chaiAsPromised = require('chai-as-promised')
 const expect = chai.expect
 const _ = require('underscore')
 const seleniumWebdriver = require('selenium-webdriver')
 const until = seleniumWebdriver.until
-const Keys = seleniumWebdriver.keys
 const By = seleniumWebdriver.By
 const {defineSupportCode} = require('cucumber')
 const mockdata = require('./mockdata')
 const request = require('request')
 chai.use(chaiAsPromised)
+
+const makePromise = (val, status) => {
+  return new Promise((resolve, reject) => {
+    if (status) {
+      resolve(val)
+    } else {
+      reject(val)
+    }
+  })
+}
 
 const urls = {
   financialstatus: 'incomeproving/v2/individual/financialstatus'
@@ -31,7 +41,7 @@ const radioElements = {
   {
     key: 'no',
     value: 'No'
-  }],
+  }]
 
 }
 
@@ -99,9 +109,8 @@ const toCamelCaseKeys = function (data) {
   return result
 }
 
-const shouldSee = function (text) {
-  const xpath = "//*[contains(text(),'" + text + "')]"
-  return seleniumWebdriver.until.elementLocated({xpath: xpath})
+const waitFind = function (d, what) {
+  return d.wait(until.elementLocated(what), 5 * 1000, 'TIMEOUT: Waiting for element #' + JSON.stringify(what, null, '  '))
 }
 
 const confirmContentById = function (d, data, timeoutLength) {
@@ -109,21 +118,22 @@ const confirmContentById = function (d, data, timeoutLength) {
   const promises = []
   _.each(data, function (val, key) {
     const expectation = new Promise(function (resolve, reject) {
-      d.wait(until.elementLocated({id: key}), timeoutLength || 5 * 1000, 'TIMEOUT: Waiting for element #' + key).then(function (el) {
+      // d.wait(until.elementLocated({id: key}), timeoutLength || 5 * 1000, 'TIMEOUT: Waiting for element #' + key).then(function (el) {
+      waitFind(d, {id: key}).then(function (el) {
         e = el
         return el.getTagName()
       }).then(function (name) {
         if (name === 'input') {
-          return expect(e.getAttribute('value')).to.eventually.equal(val)  
+          return expect(e.getAttribute('value')).to.eventually.equal(val)
         } else {
-          return expect(e.getText()).to.eventually.equal(val)  
+          return expect(e.getText()).to.eventually.equal(val)
         }
-        
       }).then(function (result) {
-                // test OK
         return resolve(result)
       }, function (err) {
-                // test failed
+        // test failed
+        console.log('FAILED', key, val)
+
         return reject(err)
       })
     })
@@ -140,16 +150,15 @@ const confirmVisible = function (d, data, visibility, timeoutLength) {
         return el.isDisplayed()
       }).then(function (result) {
         if (result === !!visibility) {
-          return resolve(result)  
+          return resolve(result)
         } else {
           return reject()
         }
-        
       }, function (err) {
         // test failed
         if (visibility === false) {
           return resolve(true)
-        } else {      
+        } else {
           return reject(err)
         }
       })
@@ -216,26 +225,22 @@ const expandFields = function (obj) {
 
 const selectRadio = function (d, key, val) {
   const rID = key + '-' + val.toLowerCase() + '-label'
-  let elem
   return d.findElement({id: rID}).then(function (el) {
-    elem = el
     return el.click()
   }).then(function (result) {
     return true
-  }, function (err) {
+  }, function () {
     return false
   })
 }
 
 const clickCheckbox = function (d, key) {
   const rID = key + '-label'
-  let elem
   return d.findElement({id: rID}).then(function (el) {
-    elem = el
     return el.click()
   }).then(function (result) {
     return true
-  }, function (err) {
+  }, function () {
     return false
   })
 }
@@ -248,8 +253,8 @@ const inputEnterText = function (d, key, val) {
   }).then(function (t) {
     if (t === 'checkbox') {
       return clickCheckbox(d, key)
-    } 
-    return el.sendKeys(val)  
+    }
+    return el.sendKeys(val)
   }).then(function (result) {
     return true
   }, function () {
@@ -270,7 +275,7 @@ const completeInputs = function (d, data) {
   _.each(data, function (val, key) {
     promises.push(completeInput(d, key, val))
   })
-  return Promise.all(promises)
+  return whenAllDone(promises)
 }
 
 const submitAction = function (d) {
@@ -283,24 +288,24 @@ const submitAction = function (d) {
   })
 }
 
-const getTableHeaders = function (d, id) {
-  return d.wait(until.elementLocated({id: id}), 5 * 1000, 'TIMEOUT: Waiting for element #' + id).then(function () {
-        // wait until driver has located the element
-    const selector = '#' + id + ' th'
-    return d.findElements(By.css(selector))
-  }).then(function (headers) {
-    const promises = []
-    _.each(headers, function (el) {
-      promises.push(el.getText())
-    })
-    return whenAllDone(promises)
-  }, function (err) {
+// const getTableHeaders = function (d, id) {
+//   return d.wait(until.elementLocated({id: id}), 5 * 1000, 'TIMEOUT: Waiting for element #' + id).then(function () {
+//         // wait until driver has located the element
+//     const selector = '#' + id + ' th'
+//     return d.findElements(By.css(selector))
+//   }).then(function (headers) {
+//     const promises = []
+//     _.each(headers, function (el) {
+//       promises.push(el.getText())
+//     })
+//     return whenAllDone(promises)
+//   }, function (err) {
 
-  })
-}
+//   })
+// }
 
 defineSupportCode(function ({Given, When, Then}) {
-   Given(/the api is unreachable/, function (callback) {
+  Given(/the api is unreachable/, function (callback) {
     mockdata.stubHealthz(503)
     mockdata.stubIt(urls.financialstatus, '', 404)
     callback()
@@ -322,7 +327,6 @@ defineSupportCode(function ({Given, When, Then}) {
   })
 
   Given(/the api response is garbage/, function (callback) {
-    console.log('stubHealthz 503')
     mockdata.stubHealthz(503)
     mockdata.stubIt(urls.financialstatus, '', 500)
     callback()
@@ -380,12 +384,18 @@ defineSupportCode(function ({Given, When, Then}) {
     return true
   })
 
-  When(/^([a-zA-Z]+) submits a query$/, {timeout: 10 * 1000}, function (name, table) {
+  When(/^([a-zA-Z]+) submits a query$/, {timeout: 10 * 1000}, function (name, tableOrCallback) {
     const d = this.driver
-    const data = expandFields(_.defaults(toCamelCaseKeys(_.object(table.rawTable)), this.defaults))
-    return completeInputs(d, data).then(function () {
-      return submitAction(d)
-    })
+    if (typeof tableOrCallback === 'function') {
+      completeInputs(d, expandFields(this.defaults)).then(function () {
+        return submitAction(d)
+      }).then(tableOrCallback())
+    } else {
+      const data = expandFields(_.defaults(toCamelCaseKeys(_.object(tableOrCallback.rawTable)), this.defaults))
+      return completeInputs(d, data).then(function () {
+        return submitAction(d)
+      })
+    }
   })
 
   Then(/^the service displays the following result$/, function (table) {
@@ -430,8 +440,59 @@ defineSupportCode(function ({Given, When, Then}) {
     return confirmContentById(this.driver, data)
   })
 
-  Then (/^the following are (visible|hidden)$/, function (showOrHide, table) {
+  Then(/^the following are (visible|hidden)$/, function (showOrHide, table) {
     const data = toCamelCaseKeys(_.object(table.rawTable))
     return confirmVisible(this.driver, data, (showOrHide === 'visible'))
+  })
+
+  const loadTable = (driver, tableRef) => {
+    return new Promise((resolve, reject) => {
+      let xpath = `//*[@id="${tableRef}"]/tbody/tr`
+      let trPromises = []
+      driver.findElements(By.xpath(xpath)).then(trs => {
+        _.each(trs, tr => {
+          trPromises.push(loadCells(tr))
+        })
+
+        whenAllDone(trPromises).then(results => {
+          return resolve(results)
+        })
+      })
+    })
+  }
+
+  const loadCells = (trElem) => {
+    return new Promise((resolve, reject) => {
+      let cellPromises = []
+      trElem.findElements(By.xpath('.//th|td')).then(cells => {
+        _.each(cells, c => {
+          cellPromises.push(c.getText())
+        })
+
+        whenAllDone(cellPromises).then(results => {
+          return resolve(results)
+        })
+      })
+    })
+  }
+
+  Then(/^the service displays the following ([a-z]+) table$/i, function (tableRef, table) {
+    const rawData = table.rawTable
+    const data = []
+    _.each(rawData, (row) => {
+      if (row[0] === '' && data.length) {
+        _.last(data)[1] += '\n' + row[1]
+      } else {
+        data.push(row)
+      }
+    })
+
+    return loadTable(this.driver, tableRef + 'Table').then(results => {
+      _.each(results, (row, i) => {
+        _.each(row, (cell, j) => {
+          expect(data[i][j]).to.equal(cell)
+        })
+      })
+    })
   })
 })

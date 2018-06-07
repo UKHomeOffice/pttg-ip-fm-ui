@@ -3,20 +3,24 @@
     "code" : "200",
     "message" : "OK"
   },
-  "individual" : {
+  "individuals" : [{
     "forename" : "Brian",
     "surname" : "Sinclair",
     "nino" : "BS123456B",
     "dob":"1970-06-06"
-  },
-  "categoryCheck" : {
+  }],
+  "categoryChecks" : [{
     "category" : "A",
     "passed" : false,
     "applicationRaisedDate" : "2015-02-10",
     "assessmentStartDate" : "2015-03-25",
     "failureReason" : "MONTHLY_VALUE_BELOW_THRESHOLD",
-    "threshold" : "999.99",
-    "employers" : ["The Home Office"]
-  }
+    "individuals": [
+      {
+        "nino": "BS123456B",
+        "employers" : ["The Home Office"]  
+      }
+    ]
+  }]
 }
 

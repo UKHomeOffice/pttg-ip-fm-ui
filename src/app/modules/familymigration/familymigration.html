@@ -13,31 +13,31 @@
 
     <hod-form name="familyDetails" submit="detailsSubmit">
       
-      <hod-text name="forename" label="First name" field="familyDetails.forename" config="conf.forename"></hod-text>
+      <hod-text name="forename" label="First name" field="applicant.forename" config="conf.forename"></hod-text>
       
-      <hod-text name="surname" label="Surname" field="familyDetails.surname" config="conf.surname"></hod-text>
+      <hod-text name="surname" label="Surname" field="applicant.surname" config="conf.surname"></hod-text>
       
-      <hod-date name="dateOfBirth" label="Date of birth" field="familyDetails.dateOfBirth" config="conf.dateOfBirth"></hod-date>
+      <hod-date name="dateOfBirth" label="Date of birth" field="applicant.dateOfBirth" config="conf.dateOfBirth"></hod-date>
 
-      <hod-text name="nino" label="National Insurance number" field="familyDetails.nino" config="conf.nino"></hod-text>
+      <hod-text name="nino" label="National Insurance number" field="applicant.nino" config="conf.nino"></hod-text>
 
       <div class="details" style="margin-bottom: 30px;">
-        <a class="summary" ng-click="showJoint=!showJoint" ng-class="{'summary--open': showJoint}" id="secondindividual">Add a second individual</a>
+        <a class="summary" ng-click="secondIndividualtoggle()" ng-class="{'summary--open': showJoint}" id="secondindividual">{{ partnerBtnText }}</a>
         <div class="panel panel-border-narrow" ng-if="showJoint">
-          <hod-text name="pForename" label="First name" field="familyDetails.partner.forename" config="conf.partner.forename"></hod-text>
+          <hod-text name="pForename" label="First name" field="partner.forename" config="conf.partner.forename"></hod-text>
       
-          <hod-text name="pSurname" label="Surname" field="familyDetails.partner.surname" config="conf.partner.surname"></hod-text>
+          <hod-text name="pSurname" label="Surname" field="partner.surname" config="conf.partner.surname"></hod-text>
           
-          <hod-date name="pDateOfBirth" label="Date of birth" field="familyDetails.partner.dateOfBirth" config="conf.partner.dateOfBirth"></hod-date>
+          <hod-date name="pDateOfBirth" label="Date of birth" field="partner.dateOfBirth" config="conf.partner.dateOfBirth"></hod-date>
 
-          <hod-text name="pNino" label="National Insurance number" field="familyDetails.partner.nino" config="conf.partner.nino"></hod-text>
+          <hod-text name="pNino" label="National Insurance number" field="partner.nino" config="conf.partner.nino"></hod-text>
         </div>  
       </div>
       
 
-      <hod-number name="dependants" label="Number of dependants" field="familyDetails.dependants" config="conf.dependants" required="false"></hod-number>
+      <hod-number name="dependants" label="Number of dependants" field="search.dependants" config="conf.dependants" required="false"></hod-number>
 
-      <hod-date name="applicationRaisedDate" label="Application raised date" field="familyDetails.applicationRaisedDate" config="conf.applicationRaisedDate"></hod-date>
+      <hod-date name="applicationRaisedDate" label="Application raised date" field="search.applicationRaisedDate" config="conf.applicationRaisedDate"></hod-date>
 
       <hod-submit value="{{ submitButton.text }}" disabled="{{ submitButton.disabled }}"></hod-submit>
 
