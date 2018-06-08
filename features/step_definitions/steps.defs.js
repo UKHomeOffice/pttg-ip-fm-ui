@@ -133,7 +133,6 @@ const confirmContentById = function (d, data, timeoutLength) {
       }, function (err) {
         // test failed
         console.log('FAILED', key, val)
-
         return reject(err)
       })
     })
@@ -216,7 +215,7 @@ const expandFields = function (obj) {
     return o
   }
 
-  _.each(['dateOfBirth', 'applicationRaisedDate'], function (key) {
+  _.each(['dateOfBirth', 'applicationRaisedDate', 'partnerDateOfBirth'], function (key) {
     obj = splitDates(obj, key)
   })
 
@@ -284,7 +283,7 @@ const submitAction = function (d) {
   }).then(function (clicked) {
     return seleniumWebdriver.until.elementLocated({id: 'outcome'})
   }).then(function (foundit) {
-    return justWait(500)
+    return justWait(200)
   })
 }
 
@@ -374,6 +373,18 @@ defineSupportCode(function ({Given, When, Then}) {
     })
   })
 
+  Given(/^the form is filled in$/, {timeout: 10 * 1000}, function (tableOrCallback) {
+    const d = this.driver
+    if (typeof tableOrCallback === 'function') {
+      completeInputs(d, expandFields(this.defaults)).then(function () {
+        tableOrCallback()
+      })
+    } else {
+      const data = expandFields(_.defaults(toCamelCaseKeys(_.object(tableOrCallback.rawTable)), this.defaults))
+      return completeInputs(d, data)
+    }
+  })
+
   Given(/^the api response is a validation error - (.+) parameter$/, function (ref, callback) {
     mockdata.stubItFile(urls.financialstatus, 'validation-error-' + ref + '.json', 400)
     callback()
@@ -403,9 +414,9 @@ defineSupportCode(function ({Given, When, Then}) {
     return confirmContentById(this.driver, data)
   })
 
-  When(/^the (.+) button is clicked$/, function (btnRef) {
+  When(/^the (.+) (button|link) is clicked$/, function (btnRef, btnOrLink) {
     return this.driver.findElement({id: toCamelCase(btnRef) + 'Btn'}).click().then(function () {
-      return justWait(200)
+      return justWait(50)
     })
   })
 

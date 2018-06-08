@@ -1,0 +1,38 @@
+{
+  "status" : {
+    "code" : "200",
+    "message" : "OK"
+  },
+  "individuals" : [
+    {
+      "forename" : "Ramsey",
+      "surname" : "Snow",
+      "nino" : "RS123456B",
+      "dob" : "1978-01-01"
+    },
+    {
+      "forename" : "Theon",
+      "surname" : "Greyjoy",
+      "nino" : "TG123456B",
+      "dob" : "1974-05-13"
+    }
+  ],
+  "categoryChecks" : [
+    {
+      "category" : "B",
+      "passed" : false,
+      "applicationRaisedDate" : "2015-07-03",
+      "assessmentStartDate" : "2015-03-25",
+      "failureReason" : "NOT_ENOUGH_RECORDS",
+      "individuals": [{
+          "nino": "RS123456B",
+          "employers" : ["Bolton"]
+        },
+        {
+          "nino": "TG123456B",
+          "employers" : ["Winterfell", "Traitor", "Sansa"]
+        }
+      ]
+    }
+  ]
+}
