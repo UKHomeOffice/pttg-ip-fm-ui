@@ -5,7 +5,6 @@ require('../../server.js')
 require('chromedriver')
 
 var mockdata = require('../step_definitions/mockdata')
-var reporter = require('cucumber-html-reporter')
 var seleniumWebdriver = require('selenium-webdriver')
 var chrome = require('selenium-webdriver/chrome')
 var {defineSupportCode} = require('cucumber')
@@ -15,9 +14,8 @@ var reportPath = path.resolve('report/')
 
 // config
 var shareBrowserInstances = true
-var browserName = 'chrome'// usePhantomJS ? 'phantomjs' : 'chrome'
+var browserName = 'chrome'
 var headless = true
-var showReport = false
 //
 
 var getNewBrowser = function (name) {
@@ -33,7 +31,6 @@ var getNewBrowser = function (name) {
   var forBrowser = builder.forBrowser(name)
 
   var driver = forBrowser.build()
-  // driver.manage().window().setSize(1280, 1024)
   return driver
 }
 
@@ -62,24 +59,6 @@ defineSupportCode(function ({setWorldConstructor}) {
 
 defineSupportCode(function ({registerHandler}) {
   registerHandler('AfterFeatures', function (features, callback) {
-    // globalDriver.close()
-    var options = {
-      theme: 'foundation',
-      jsonFile: path.resolve(path.join(reportPath, 'cucumber_report.json')),
-      output: path.resolve(path.join(reportPath, 'cucumber_report.html')),
-      reportSuiteAsScenarios: true,
-      launchReport: true,
-      metadata: {
-        // 'App Version': '0.3.2',
-        // 'Test Environment': 'STAGING',
-        'Browser': 'Chrome'
-        // 'Platform': 'Windows 10',
-        // 'Parallel': 'Scenarios',
-        // 'Executed': 'Remote'
-      }
-    }
-
-    if (showReport) reporter.generate(options)
     callback()
   })
 })
