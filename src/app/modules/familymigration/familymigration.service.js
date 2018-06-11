@@ -82,7 +82,7 @@ familymigrationModule.factory('FamilymigrationService', ['IOService', '$state', 
   }
 
   this.haveResult = function () {
-    return (_.has(lastAPIresponse.data, 'categoryChecks') && lastAPIresponse.data.categoryChecks.length >= 1)
+    return (_.has(lastAPIresponse.data, 'categoryChecks') && _.isArray(lastAPIresponse.data.categoryChecks) && lastAPIresponse.data.categoryChecks.length >= 1)
   }
 
   this.getPassingCheck = function () {
@@ -90,7 +90,7 @@ familymigrationModule.factory('FamilymigrationService', ['IOService', '$state', 
   }
 
   this.getFirstCheck = function () {
-    return _.first(lastAPIresponse.data.categoryChecks)
+    return _.first(lastAPIresponse.data.categoryChecks) || null
   }
 
   this.getEmployers = function (check, nino) {

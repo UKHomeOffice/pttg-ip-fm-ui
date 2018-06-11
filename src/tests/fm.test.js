@@ -76,20 +76,6 @@ describe('app: hod.proving', () => {
       fm.reset()
     }))
 
-    describe('getSearch', () => {
-      it('should get the details object', () => {
-        let testObj = fm.getSearch()
-        expect(testObj.applicationRaisedDate).toEqual('')
-        expect(testObj.dependants).toEqual('')
-        expect(_.isArray(testObj.individuals)).toBeTruthy()
-        expect(testObj.individuals.length).toEqual(1)
-
-        let individual = testObj.individuals[0]
-        expect(_.has(individual, 'forename')).toBeTruthy()
-        expect(_.has(individual, 'surname')).toBeTruthy()
-        expect(_.has(individual, 'nino')).toBeTruthy()
-      })
-    })
     describe('reset', () => {
       it('should be able to reset the object clearing out any data', () => {
         let testObj = fm.getSearch()
@@ -102,6 +88,21 @@ describe('app: hod.proving', () => {
         expect(testObj.dependants).toEqual('')
         expect(testObj.individuals[0].forename).toEqual('')
         expect(testObj.individuals.length).toEqual(1)
+      })
+    })
+
+    describe('getSearch', () => {
+      it('should get the details object', () => {
+        let testObj = fm.getSearch()
+        expect(testObj.applicationRaisedDate).toEqual('')
+        expect(testObj.dependants).toEqual('')
+        expect(_.isArray(testObj.individuals)).toBeTruthy()
+        expect(testObj.individuals.length).toEqual(1)
+
+        let individual = testObj.individuals[0]
+        expect(_.has(individual, 'forename')).toBeTruthy()
+        expect(_.has(individual, 'surname')).toBeTruthy()
+        expect(_.has(individual, 'nino')).toBeTruthy()
       })
     })
 
@@ -155,6 +156,16 @@ describe('app: hod.proving', () => {
       })
     })
 
+    describe('removePartner', () => {
+      it('should be able to remove the second individual it has added', () => {
+        let testObj = fm.getSearch()
+        fm.addPartner()
+        expect(testObj.individuals.length).toEqual(2)
+        fm.removePartner()
+        expect(testObj.individuals.length).toEqual(1)
+      })
+    })
+
     describe('setLastAPIresponse & getLastAPIresponse', () => {
       it('should be able to set the last API response', () => {
         fm.setLastAPIresponse({ status: 200, data: {categoryChecks: [{ passed: true }]} })
@@ -168,6 +179,27 @@ describe('app: hod.proving', () => {
         fm.setLastAPIresponse({ status: 200, data: {categoryChecks: [{ passed: false }]} })
         test = fm.getLastAPIresponse()
         expect(test.data.categoryChecks[0].passed).toEqual(false)
+      })
+    })
+
+    describe('haveResult', () => {
+      it('should be able to determine if we have data for a result', () => {
+        expect(fm.haveResult()).toBeFalsy()
+        fm.setLastAPIresponse({ })
+        expect(fm.haveResult()).toBeFalsy()
+        fm.setLastAPIresponse({ data: {} })
+        expect(fm.haveResult()).toBeFalsy()
+        fm.setLastAPIresponse({ status: 200, data: {categoryChecks: [{ passed: false }]} })
+        expect(fm.haveResult()).toBeTruthy()
+      })
+
+      it('should be able to determine if we result data is not right', () => {
+        fm.setLastAPIresponse({ status: 200, data: {categoryChecks: []} })
+        expect(fm.haveResult()).toBeFalsy()
+        fm.setLastAPIresponse({ status: 200, data: {categoryChecks: 'abc'} })
+        expect(fm.haveResult()).toBeFalsy()
+        fm.setLastAPIresponse({ status: 200, data: {categoryChecks: [{abc: 'abc'}]} })
+        expect(fm.haveResult()).toBeTruthy()
       })
     })
 
@@ -213,6 +245,26 @@ describe('app: hod.proving', () => {
         })
 
         expect(fm.getPassingCheck()).toEqual(null)
+      })
+    })
+
+    describe('getFirstCheck', () => {
+      it('should be able to return the first check or null', () => {
+        fm.setLastAPIresponse({ status: 200, data: {categoryChecks: [{ data: 'a' }, { data: 'b' }, { data: 'c' }]} })
+        let testObj = fm.getFirstCheck()
+        expect(testObj.data).toEqual('a')
+
+        fm.setLastAPIresponse({ status: 200, data: {categoryChecks: [{ data: 'b' }, { data: 'c' }]} })
+        testObj = fm.getFirstCheck()
+        expect(testObj.data).toEqual('b')
+
+        fm.setLastAPIresponse({ status: 200, data: {categoryChecks: [{ data: 'c' }]} })
+        testObj = fm.getFirstCheck()
+        expect(testObj.data).toEqual('c')
+
+        fm.setLastAPIresponse({ status: 200, data: {categoryChecks: []} })
+        testObj = fm.getFirstCheck()
+        expect(testObj).toEqual(null)
       })
     })
 
