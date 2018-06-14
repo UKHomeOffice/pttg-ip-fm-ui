@@ -44,7 +44,7 @@ familymigrationModule.controller(
     var ninoValidation = function (val) {
       if (val) {
         var v = val.replace(/[^a-zA-Z0-9]/g, '')
-        if (/^[a-zA-Z]{2}[0-9]{6}[a-dA-D]{1}$/.test(v)) {
+        if (/(^((?!(BG|GB|KN|NK|NT|TN|ZZ)|([DFIQUV])[A-Z]|[A-Z]([DFIOQUV]))[A-Z]{2})[0-9]{6}[A-D]?$)/.test(v)) {
           return true
         }
       }
