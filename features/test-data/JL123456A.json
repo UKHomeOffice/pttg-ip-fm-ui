@@ -3,18 +3,22 @@
     "code" : "200",
     "message" : "OK"
   },
-  "individual" : {
+  "individuals" : [{
     "forename" : "Jill",
     "surname" : "Lewondoski",
     "nino" : "JL123456A",
     "dob" : "1980-08-08"
-  },
-  "categoryCheck" : {
+  }],
+  "categoryChecks" : [{
     "category" : "A",
     "passed" : false,
     "applicationRaisedDate" : "2015-01-15",
     "assessmentStartDate" : "2015-03-25",
-    "failureReason" : "MONTHLY_VALUE_BELOW_THRESHOLD"
-  }
+    "failureReason" : "MONTHLY_VALUE_BELOW_THRESHOLD",
+    "individuals": [{
+      "nino": "JL123456A",
+      "employers" : ["Pizza Ltd"]
+    }]
+  }]
 }
 

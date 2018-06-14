@@ -1,71 +1,10 @@
-/* global ga angular _ moment */
+/* global ga angular moment _ */
 
 /* jshint node: true */
 
 'use strict'
 
-var familymigrationModule = angular.module('hod.familymigration', ['ui.router'])
-
-familymigrationModule.factory('FamilymigrationService', ['IOService', '$state', function (IOService, $state) {
-  var lastAPIresponse = {}
-  var familyDetails = {
-    forename: '',
-    surname: '',
-    dateOfBirth: '',
-    nino: '',
-    applicationRaisedDate: '',
-    dependants: ''
-  }
-
-  this.submit = function (fam) {
-    fam = angular.copy(fam)
-
-    IOService.post('individual/financialstatus', fam, {timeout: 30000}).then(function (res) {
-      lastAPIresponse = res
-      $state.go('familymigrationResults')
-    }, function (err) {
-      lastAPIresponse = err
-      $state.go('familymigrationResults')
-    })
-  }
-
-  this.getLastAPIresponse = function () {
-    return lastAPIresponse
-  }
-
-  this.getFamilyDetails = function () {
-    return familyDetails
-  }
-
-  this.reset = function () {
-    familyDetails = {
-      dateOfBirth: '',
-      forename: '',
-      surname: '',
-      nino: '',
-      applicationRaisedDate: '',
-      dependants: ''
-    }
-  }
-
-  this.trackFormSubmission = function (frm) {
-    var errcount = 0
-    var errcountstring = ''
-    _.each(frm.objs, function (o) {
-      if (o.error && o.error.msg) {
-        errcount++
-        ga('send', 'event', frm.name, 'validation', o.config.id)
-      }
-    })
-    errcountstring = '' + errcount
-    while (errcountstring.length < 3) {
-      errcountstring = '0' + errcountstring
-    }
-    ga('send', 'event', frm.name, 'errorcount', errcountstring)
-  }
-
-  return this
-}])
+var familymigrationModule = angular.module('hod.familymigration', [])
 
 // #### ROUTES #### //
 familymigrationModule.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
@@ -91,29 +30,54 @@ familymigrationModule.controller(
     ga('set', 'page', $state.href($state.current.name, $stateParams))
     ga('send', 'pageview')
 
-    $scope.familyDetails = FamilymigrationService.getFamilyDetails()
+    $scope.search = FamilymigrationService.getSearch()
+    $scope.applicant = FamilymigrationService.getApplicant()
+    $scope.partner = FamilymigrationService.getPartner()
+    $scope.showJoint = ($scope.partner && $scope.partner.forename.length > 0)
+    $scope.partnerBtnText = 'Add a second individual'
 
     var appRaisedDateMsg = {
       summary: 'The "Application raised date" is invalid',
       msg: 'Enter a valid "Application raised date"'
     }
 
+    var ninoValidation = function (val) {
+      if (val) {
+        var v = val.replace(/[^a-zA-Z0-9]/g, '')
+        if (/(^((?!(BG|GB|KN|NK|NT|TN|ZZ)|([DFIQUV])[A-Z]|[A-Z]([DFIOQUV]))[A-Z]{2})[0-9]{6}[A-D]?$)/.test(v)) {
+          return true
+        }
+      }
+      return false
+    }
+
     $scope.conf = {
-      forename: {
-
-      },
-      surname: {
-
-      },
+      forename: {},
+      surname: {},
       nino: {
-        validate: function (val) {
-          if (val) {
-            var v = val.replace(/[^a-zA-Z0-9]/g, '')
-            if (/^[a-zA-Z]{2}[0-9]{6}[a-dA-D]{1}$/.test(v)) {
-              return true
+        validate: ninoValidation
+      },
+      dateOfBirth: {
+        max: moment().subtract(10, 'years').format('YYYY-MM-DD'),
+        errors: {
+          max: {
+            msg: 'Enter a valid "Date of birth"'
+          }
+        }
+      },
+      partner: {
+        forename: {},
+        surname: {},
+        nino: {
+          validate: ninoValidation
+        },
+        dateOfBirth: {
+          max: moment().subtract(10, 'years').format('YYYY-MM-DD'),
+          errors: {
+            max: {
+              msg: 'Enter a valid "Date of birth"'
             }
           }
-          return false
         }
       },
       dependants: {
@@ -149,14 +113,6 @@ familymigrationModule.controller(
           invalid: appRaisedDateMsg,
           max: appRaisedDateMsg
         }
-      },
-      dateOfBirth: {
-        max: moment().subtract(10, 'years').format('YYYY-MM-DD'),
-        errors: {
-          max: {
-            msg: 'Enter a valid "Date of birth"'
-          }
-        }
       }
     }
 
@@ -165,14 +121,33 @@ familymigrationModule.controller(
       disabled: false
     }
 
+    $scope.secondIndividualtoggle = function () {
+      var partner = FamilymigrationService.getPartner()
+      if (!partner) {
+        $scope.showJoint = true
+        $scope.partner = FamilymigrationService.addPartner()
+        $scope.partnerBtnText = 'Remove second individual'
+      } else {
+        $scope.showJoint = false
+        FamilymigrationService.removePartner()
+        $scope.partner = null
+        $scope.partnerBtnText = 'Add a second individual'
+      }
+    }
+
     $scope.detailsSubmit = function (isValid, formScope) {
       FamilymigrationService.trackFormSubmission(formScope)
-      $scope.familyDetails.nino = ($scope.familyDetails.nino.replace(/[^a-zA-Z0-9]/g, '')).toUpperCase()
       if (isValid) {
+        _.each($scope.search.individuals, function (i) {
+          console.log(i.nino)
+          var n1 = i.nino
+          var n2 = n1.replace(/[^a-z0-9]*/gi, '')
+          i.nino = n2
+        })
         $scope.submitButton.text = 'Sending'
         $scope.submitButton.disabled = true
 
-        FamilymigrationService.submit($scope.familyDetails)
+        FamilymigrationService.submit($scope.search)
       }
     }
   }

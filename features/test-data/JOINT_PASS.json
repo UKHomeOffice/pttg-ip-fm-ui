@@ -1,0 +1,38 @@
+{
+  "status" : {
+    "code" : "200",
+    "message" : "OK"
+  },
+  "individuals" : [
+    {
+      "forename" : "Edard",
+      "surname" : "Stark",
+      "nino" : "ES123456A",
+      "dob" : "1978-01-01"
+    },
+    {
+      "forename" : "Jon",
+      "surname" : "Snow",
+      "nino" : "JS123456A",
+      "dob" : "1974-05-13"
+    }
+  ],
+  "categoryChecks" : [
+    {
+      "category" : "B",
+      "passed" : true,
+      "applicationRaisedDate" : "2015-07-03",
+      "assessmentStartDate" : "2015-03-25",
+      "failureReason" : "NOT_ENOUGH_RECORDS",
+      "individuals": [{
+          "nino": "ES123456A",
+          "employers" : ["Winterfell", "Kings Landing"]
+        },
+        {
+          "nino": "JS123456A",
+          "employers" : ["Winterfell", "The Knights' Watch", "Kaleesi"]
+        }
+      ]
+    }
+  ]
+}

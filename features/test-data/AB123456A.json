@@ -6,25 +6,23 @@
   "individuals" : [
     {
       "forename" : "Tony",
-      "surname" : "Ledo",
-      "nino" : "TL123456A",
-      "dob" : "1960-05-05"
+      "surname" : "Stark",
+      "nino" : "AB123456A"
     }
   ],
   "categoryChecks" : [
     {
       "category" : "A",
-      "calculationType": "salaried joint",
       "passed" : true,
+      "calculationType": "salaried joint",
       "applicationRaisedDate" : "2015-01-03",
       "assessmentStartDate" : "2014-07-03",
       "failureReason": "",
-      "threshold" : "128.64",
-      "individuals" : [
+      "individuals": [
         {
-          "nino": "TL123456A",
+          "nino": "AB123456A",
           "employers": [
-            "ZX Spectrum 48K"
+            "Company GU6XAE"
           ]
         }
       ]

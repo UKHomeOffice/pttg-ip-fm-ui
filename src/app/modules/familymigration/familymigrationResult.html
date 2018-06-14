@@ -3,12 +3,12 @@
 
     <div id="outcome" ng-if="success" class="govuk-box-highlight">
       <h1 class="heading-large" id="pageDynamicHeading" tabindex="-1">Passed</h1>
-      <p><span id="outcomeBoxIndividualName">{{ outcomeBoxIndividualName }}</span> meets the Category A requirement</p>
+      <p><span id="outcomeBoxSummary">{{ copysummary }}</span></p>
     </div>
 
     <div id="outcome" ng-if="!success">
       <h1 class="heading-large" id="pageDynamicHeading" tabindex="-1">Not passed</h1>
-      <p id="pageDynamicDetail"><span id="outcomeBoxIndividualName">{{ outcomeBoxIndividualName }}</span> doesn't meet the Category A requirement</p>
+      <p><span id="outcomeBoxSummary">{{ copysummary }}</span></p>
       <p id="pageDynamicReason">{{ reason }}</p>
     </div>
   </div>
@@ -23,8 +23,8 @@
     <h2 id="whatToDoNextHeading" class="heading-small">What to do next</h2>
     <ol class="list list-number">
 
-      <li ng-if="haveResult">Check that the name matches applicant's details</li>
-      <li>Check you have entered the correct information</li>
+      <li ng-if="haveResult">Check that the name matches the applicant's details</li>
+      <li>Check that you have entered the correct information</li>
       <li id="whatToDoNextSubHeading" ng-if="!success">You should consider if the applicant meets the financial requirement under any other category.</li>
     </ol>
   </div>
@@ -32,63 +32,83 @@
 
   <div ng-if="haveResult">
     <h2 class="heading-medium">Results</h2>
-    <table class="ng-scope">
-      <tr>
-        <th scope="row">Individual</th>
-        <td><span id="yourSearchIndividualName">{{ individual.forename}} {{ individual.surname }}</span></td>
-      </tr>
-      <tr>
-        <th scope="row">Threshold</th>
-        <td><span id="threshold">{{ threshold | currency : '£' }}</span></td>
-      </tr>
-      <tr ng-if="success">
-        <th scope="row">Income within date range</th>
-        <td><span id="outcomeFromDate">{{ outcomeFromDate | date: dFormat }}</span> - <span id="outcomeToDate">{{ outcomeToDate | date: dFormat }}</span></td>
-      </tr>
-      <tr ng-if="employers.length">
-        <th scope="row">Employers</th>
-        <td>
-          <ol class="list list-number">
-            <li ng-repeat="e in employers" id="employer{{ $index }}">{{ e }}</li>
-          </ol>
-        </td>
-      </tr>
-      <tr>
-        <th scope="row">Summary</th>
-        <td><span id="copySummary">{{ copysummary }}</span><br />
-          <input id="copyBtn" type="submit" class="button button--copy button-info" value="{{ copyToClipboardBtnText }}" />
-        </td>
-      </tr>
+    <table class="ng-scope" id="resultTable">
+      <tbody ng-repeat="i in summary.individuals">
+        <tr class="result__person extraspace--before">
+          <th colspan="2"><span id="yourSearchIndividualName{{ $index }}" class="heading-small">{{ i.forename}} {{ i.surname }}</span></th>
+        </tr>
+        
+        <tr ng-if="success">
+          <th scope="row">Income within date range</th>
+          <td><span id="outcomeFromDate{{ $index }}">{{ summary.assessmentStartDate | date: dFormat }}</span> - <span id="outcomeToDate{{ $index }}">{{ summary.applicationRaisedDate | date: dFormat }}</span></td>
+        </tr>
+
+        <tr ng-if="i.employers.length">
+          <th scope="row">Employers</th>
+          <td>
+            <ol class="list list-number">
+              <li ng-repeat="e in i.employers" id="employer_{{ i.nino | lowercase}}_{{ $index }}">{{ e }}</li>
+            </ol>
+          </td>
+        </tr>
+      </tbody>
     </table>
+    <div class="extraspace--before">
+      <input id="copyBtn" type="submit" class="button button--copy button-info" value="{{ copyToClipboardBtnText }}" />
+    </div>
   </div>
 
 
   <h2 class="heading-medium ng-scope">Your search</h2>
-  <table>
-    <tr>
-      <th scope="row">First name</th>
-      <td><span id="forename">{{ familyDetails.forename }}</span></td>
-    </tr>
-    <tr>
-      <th scope="row">Surname</th>
-      <td><span id="surname">{{ familyDetails.surname }}</span></td>
-    </tr>
-    <tr>
-      <th scope="row">Date of birth</th>
-      <td><span id="dateOfBirth">{{ familyDetails.dateOfBirth | date: dFormat }}</span></td>
-    </tr>
-    <tr>
-      <th scope="row">National Insurance number</th>
-      <td><span id="yourSearchNationalInsuranceNumber">{{ familyDetails.nino }}</span></td>
-    </tr>
-    <tr>
-      <th scope="row">Dependants</th>
-      <td><span id="yourSearchDependants">{{ familyDetails.dependants }}</span></td>
-    </tr>
-    <tr>
-      <th scope="row">Application raised</th>
-      <td><span id="yourSearchApplicationRaisedDate">{{ familyDetails.applicationRaisedDate | date: dFormat }}</span></td>
-    </tr>
+  <table id="searchTable">
+    <tbody>
+      <tr>
+        <th scope="row">First name</th>
+        <td><span id="forename">{{ applicant.forename }}</span></td>
+      </tr>
+      <tr>
+        <th scope="row">Surname</th>
+        <td><span id="surname">{{ applicant.surname }}</span></td>
+      </tr>
+      <tr>
+        <th scope="row">Date of birth</th>
+        <td><span id="dateOfBirth">{{ applicant.dateOfBirth | date: dFormat }}</span></td>
+      </tr>
+      <tr>
+        <th scope="row">National Insurance number</th>
+        <td><span id="yourSearchNationalInsuranceNumber">{{ applicant.nino }}</span></td>
+      </tr>
+    </tbody>
+
+    <tbody ng-if="showJoint">
+      <tr class="extraspace--before">
+        <th scope="row">Second individual's first name</th>
+        <td><span id="pForename">{{ partner.forename }}</span></td>
+      </tr>
+      <tr>
+        <th scope="row">Second individual's surname</th>
+        <td><span id="pSurname">{{ partner.surname }}</span></td>
+      </tr>
+      <tr>
+        <th scope="row">Second individual's date of birth</th>
+        <td><span id="pDateOfBirth">{{ partner.dateOfBirth | date: dFormat }}</span></td>
+      </tr>
+      <tr>
+        <th scope="row">Second individual's national Insurance number</th>
+        <td><span id="pYourSearchNationalInsuranceNumber">{{ partner.nino }}</span></td>
+      </tr>
+    </tbody>
+
+    <tbody>
+      <tr ng-class="{'extraspace--before': showJoint}">
+        <th scope="row">Dependants</th>
+        <td><span id="yourSearchDependants">{{ search.dependants }}</span></td>
+      </tr>
+      <tr>
+        <th scope="row">Application raised</th>
+        <td><span id="yourSearchApplicationRaisedDate">{{ search.applicationRaisedDate | date: dFormat }}</span></td>
+      </tr>
+    </tbody>
   </table>
 
 
@@ -102,16 +122,10 @@
     <h2 class="heading-medium ng-scope" id="feedbackheading">Feedback</h2>
 
     <hod-radio name="match" config="conf.match" field="feedback.match" options="yesNoOptions"></hod-radio>
+  
+    <hod-radio label="Why do you think that the paper assessment did not match the IPS result?" field="feedback.whynot" config="conf.whynot"></hod-radio>
 
-    <div class="panel panel-border-wide text" ng-show="!conf.caseref.hidden">
-      <hod-text name="caseref" label="Case ID" field="feedback.caseref" config="conf.caseref"></hod-text>
-
-      <hod-textarea name="matchComment" config="conf.matchComment" label="Why do you think that the paper assessment did not match the IPS result?" field="feedback.matchComment"></hod-textarea>
-      
-      <hod-checkboxes label="Why do you think that the paper assessment did not match the IPS result?" field="feedback.whynot" config="conf.whynot"></hod-checkboxes>
-
-      <hod-text name="matchOther" config="conf.matchOther" label="Other" field="feedback.matchOther"></hod-text>
-    </div>
+    <hod-text name="matchOther" config="conf.matchOther" label="Other" field="feedback.matchOther"></hod-text>
 
     <hod-submit value="Submit and start a new search"></hod-submit>
   </hod-form>

@@ -1,7 +1,7 @@
 var express = require('express')
 var serveStatic = require('serve-static')
 var app = express()
-var apiRoot = process.env.API_ROOT || 'http://localhost:8081'
+var apiRoot = process.env.API_ROOT || 'http://localhost:8050'
 var feedbackRoot = process.env.FEEDBACK_ROOT || 'http://localhost:8082'
 var httpauth = process.env.IP_API_AUTH || ''
 var uiBaseUrl = '/incomeproving/v2/'
