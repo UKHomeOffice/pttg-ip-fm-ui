@@ -90,17 +90,17 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
 
         if (summary.passed) {
           state = 'passed'
-          $scope.copysummary = $scope.outcomeBoxIndividualName + ' meets the Category ' + summary.category + ' requirement'
+          $scope.copysummary = $scope.outcomeBoxIndividualName + ' meets the Income Proving requirement'
           $scope.success = true
         } else {
-          $scope.copysummary = $scope.outcomeBoxIndividualName + ' does not meet either Category A or B requirements'
+          $scope.copysummary = $scope.outcomeBoxIndividualName + ' does not meet the Income Proving requirement'
           $scope.success = false
       // $scope.heading = res.data.individual.forename + ' ' + res.data.individual.surname + ' doesn\'t meet the Category A requirement';
           switch (summary.failureReason) {
             case RESULTCODES.PAY_FREQUENCY_CHANGE:
               state = 'notpassed/paymentfrequencychange'
               $scope.reason = 'Change in payment frequency.'
-              break
+              break;
 
             case RESULTCODES.MULTIPLE_EMPLOYERS:
               state = 'notpassed/multipleemployers'
@@ -154,7 +154,22 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
       };
 
       // #### FEEDBACK #### //
-
+      var options;
+      if(summary && summary.passed) {
+        options = [
+            {value: 'failed-a-salaried', label: 'Not Passed on Cat A Salaried' },
+            { value: 'failed-b-nonsalaried', label: 'Not Passed on Cat B Non-Salaried' },
+            { value: 'failed-f', label: 'Not Passed on Cat F Self Assessment (1 Year)' },
+            { value: 'failed-g', label: 'Not Passed on Cat G Self Assessment (2 Years)' }]
+      }
+      else {
+        options = [
+            { value: 'passed-a-salaried', label: 'Passed on Cat A Salaried' },
+            { value: 'passed-b-nonsalaried', label: 'Passed on Cat B Non-Salaried' },
+            { value: 'passed-f', label: 'Passed on Cat F Self Assessment (1 Year)' },
+            { value: 'passed-g', label: 'Passed on Cat G Self Assessment (2 Years)' },
+        ]
+      }
       $scope.conf = {
         match: {
           label: 'Did IPS match the paper assessment?',
@@ -165,16 +180,7 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
         },
         whynot: {
           id: 'whynot',
-          options: [
-            { value: 'passed-a-salaried', label: 'Passed on Cat A Salaried' },
-            { value: 'passed-a-nonsalaried', label: 'Passed on Cat A Non-Salaried' },
-            { value: 'passed-b-salaried', label: 'Passed on Cat B Salaried' },
-            { value: 'passed-b-nonsalaried', label: 'Passed on Cat B Non-Salaried' },
-            { value: 'failed-a-salaried', label: 'Not Passed on Cat A Salaried' },
-            { value: 'failed-a-nonsalaried', label: 'Not Passed on Cat A Non-Salaried' },
-            { value: 'failed-b-salaried', label: 'Not Passed on Cat B Salaried' },
-            { value: 'failed-b-nonsalaried', label: 'Not Passed on Cat B Non-Salaried' }
-          ]
+          options: options
         },
         matchOther: {
           classes: {'form-control-1-4': false},

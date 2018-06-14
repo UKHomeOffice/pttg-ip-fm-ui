@@ -17,7 +17,7 @@ Feature: Category A Financial Requirement
     When caseworker submits a query
     Then the service displays the following result
       | Page dynamic heading | Not passed                                                         |
-      | Outcome box summary  | Kumar Sangakkara does not meet either Category A or B requirements |
+      | Outcome box summary  | Kumar Sangakkara does not meet the Income Proving requirement |
       | Page dynamic reason  | They haven't been with their current employer for 6 months.        |
     And the service displays the following result table
       | Kumar Sangakkara |                 |
@@ -43,7 +43,7 @@ Feature: Category A Financial Requirement
       | Dependants              | 2          |
     Then the service displays the following result
       | Page dynamic heading | Not passed                                                       |
-      | Outcome box summary  | Brian Sinclair does not meet either Category A or B requirements |
+      | Outcome box summary  | Brian Sinclair does not meet the Income Proving requirement |
       | Page dynamic reason  | They haven't met the required monthly amount.                    |
     And the service displays the following result table
       | Brian Sinclair |                 |
@@ -68,7 +68,7 @@ Feature: Category A Financial Requirement
       | Dependants              | 1          |
     Then the service displays the following result
       | Page dynamic heading | Passed                                     |
-      | Outcome Box Summary  | Tony Ledo meets the Category A requirement |
+      | Outcome Box Summary  | Tony Ledo meets the Income Proving requirement |
     And the service displays the following result table
       | Tony Ledo                |                         |
       | Income within date range | 03/07/2014 - 03/01/2015 |
@@ -93,7 +93,7 @@ Feature: Category A Financial Requirement
       | Dependants              | 1             |
     Then the service displays the following result
       | Page dynamic heading | Passed                                     |
-      | Outcome Box Summary  | Tony Ledo meets the Category A requirement |
+      | Outcome Box Summary  | Tony Ledo meets the Income Proving requirement |
     And the service displays the following result table
       | Tony Ledo                |                         |
       | Income within date range | 03/07/2014 - 03/01/2015 |
@@ -118,7 +118,7 @@ Feature: Category A Financial Requirement
       | Dependants              | 1          |
     Then the service displays the following result
       | Page dynamic heading | Passed                                     |
-      | Outcome Box Summary  | Tony Ledo meets the Category A requirement |
+      | Outcome Box Summary  | Tony Ledo meets the Income Proving requirement |
     And the service displays the following result table
       | Tony Ledo                |                         |
       | Income within date range | 03/07/2014 - 03/01/2015 |
