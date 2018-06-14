@@ -48,7 +48,7 @@ Feature: Joint applicants
       | Partner nino          | JS123456A  |
     Then the service displays the following result
       | Page dynamic heading | Passed                                       |
-      | Outcome box summary  | Edard Stark meets the Category B requirement |
+      | Outcome box summary  | Edard Stark meets the Income Proving requirement |
     And the service displays the following result table
       | Edard Stark              |                         |
       | Income within date range | 25/03/2015 - 03/07/2015 |
@@ -86,7 +86,7 @@ Feature: Joint applicants
       | Dependants            | 0          |
     Then the service displays the following result
       | Page dynamic heading | Not passed                                                    |
-      | Outcome box summary  | Ramsey Snow does not meet either Category A or B requirements |
+      | Outcome box summary  | Ramsey Snow does not meet the Income Proving requirement |
     And the service displays the following result table
       | Ramsey Snow   |            |
       | Employers     | Bolton     |
