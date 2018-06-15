@@ -144,7 +144,7 @@ familymigrationModule.factory('FamilymigrationService', ['IOService', '$state', 
     ga('send', 'event', frm.name, 'errorcount', errcountstring)
   }
 
-  this.getCopyPasteSummary = function () {
+  this.getCopyPasteSummary = function (asArray) {
     var search = this.getSearch()
     var summ = this.getResultSummary()
     var copyText = ''
@@ -155,7 +155,7 @@ familymigrationModule.factory('FamilymigrationService', ['IOService', '$state', 
 
       if (summ.passed) {
         lines.push('PASSED')
-        lines.push(individual.forename + ' ' + individual.surname + ' meets the Category A requirement')
+        lines.push(individual.forename + ' ' + individual.surname + ' meets the Income Proving requirement')
       } else {
         lines.push('NOT PASSED')
         lines.push(summ.failureReason)
@@ -167,12 +167,13 @@ familymigrationModule.factory('FamilymigrationService', ['IOService', '$state', 
 
       _.each(summ.individuals, function (i) {
         lines.push(i.forename + ' ' + i.surname)
-        lines.push(['Income within date range: ', moment(summ.assessmentStartDate).format(fmt) + ' - ' + moment(summ.applicationRaisedDate).format(fmt)])
+        lines.push(['Income within date range:', moment(summ.assessmentStartDate).format(fmt) + ' - ' + moment(summ.applicationRaisedDate).format(fmt)])
         _.each(i.employers, function (e, n) {
           if (n === 0) {
-            lines.push('Employers:')
+            lines.push(['Employers:', e])
+          } else {
+            lines.push(['', e])
           }
-          lines.push(['', e])
         })
       })
     } else {
@@ -187,15 +188,19 @@ familymigrationModule.factory('FamilymigrationService', ['IOService', '$state', 
 
     _.each(search.individuals, function (ind, n) {
       lines.push(n === 0 ? 'APPLICANT:' : 'PARTNER:')
-      lines.push(['First name: ', ind.forename])
-      lines.push(['Surname: ', ind.surname])
-      lines.push(['Date of birth: ', moment(ind.dateOfBirth).format(fmt)])
-      lines.push(['National Insurance number: ', ind.nino])
+      lines.push(['First name:', ind.forename])
+      lines.push(['Surname:', ind.surname])
+      lines.push(['Date of birth:', moment(ind.dateOfBirth).format(fmt)])
+      lines.push(['National Insurance number:', ind.nino])
       lines.push(BLANK)
     })
 
-    lines.push(['Dependants: ', search.dependants])
-    lines.push(['Application raised: ', moment(search.applicationRaisedDate).format(fmt)])
+    lines.push(['Dependants:', search.dependants])
+    lines.push(['Application raised:', moment(search.applicationRaisedDate).format(fmt)])
+
+    if (asArray) {
+      return lines
+    }
 
     _.each(lines, function (l) {
       if (_.isArray(l)) {

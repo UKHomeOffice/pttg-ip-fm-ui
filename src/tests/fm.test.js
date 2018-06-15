@@ -7,7 +7,7 @@ const getTestIndividual = (n) => {
         forename: 'Bilbo',
         surname: 'Baggins',
         nino: 'BB123456B',
-        dob: '1970-05-13',
+        dateOfBirth: '1970-05-13',
         employers: ['Bag End', 'The Dwarves', 'Rivendell']
       }
     case 'Gandalf':
@@ -15,7 +15,7 @@ const getTestIndividual = (n) => {
         forename: 'Gandalf',
         surname: 'Mithrandir',
         nino: 'GG123456G',
-        dob: '1920-06-01',
+        dateOfBirth: '1920-06-01',
         employers: ['The Dwarves', 'The Fellowship of the Ring']
       }
     case 'Gollum':
@@ -23,7 +23,7 @@ const getTestIndividual = (n) => {
         forename: 'Gollum',
         surname: 'Smeegol',
         nino: 'GO123456M',
-        dob: '1800-01-01',
+        dateOfBirth: '1800-01-01',
         employers: ['The Ring']
       }
   }
@@ -44,12 +44,6 @@ const getTestCheck = (pass, cat, type) => {
         employers: [
           'ZX Spectrum 48K'
         ]
-      },
-      {
-        nino: 'BB123456R',
-        employers: [
-          'ZX Spectrum 48K'
-        ]
       }
     ]
   }
@@ -65,24 +59,48 @@ const getSearchIndividuals = (applicant, partner) => {
 }
 
 const getTestResponse = (applicant, partner) => {
+  let applicantObj = getTestIndividual(applicant)
+  let partnerObj = partner ? getTestIndividual(partner) : null
   let data = {
-    data: {
-      individuals: [
-        getTestIndividual(applicant)
-      ],
-      categoryChecks: [
-        getTestCheck(false, 'B', 'non-salaried'),
-        getTestCheck(true, 'A', 'salaried'),
-        getTestCheck(false, 'B', 'joint salaried')
-      ]
+    individuals: [
+      applicantObj
+    ],
+    categoryChecks: [
+      getTestCheck(false, 'B', 'non-salaried'),
+      getTestCheck(true, 'A', 'salaried'),
+      getTestCheck(false, 'B', 'joint salaried')
+    ]
+  }
+
+  _.each(data.categoryChecks, (c) => {
+    c.individuals[0] = {
+      nino: applicantObj.nino,
+      employers: applicantObj.employers
     }
+
+    if (partnerObj) {
+      c.individuals[1] = {
+        nino: partnerObj.nino,
+        employers: partnerObj.employers
+      }
+    }
+  })
+
+  if (partnerObj) {
+    data.individuals.push(partnerObj)
   }
 
-  if (partner) {
-    data.individuals.push(getTestIndividual(partner))
-  }
+  return { data }
+}
 
-  return data
+const getTestSearchAndResponse = (fm, applicant, partner) => {
+  let testObj = fm.getSearch()
+  testObj.applicationRaisedDate = '2018-05-13'
+  testObj.dependants = 2
+  testObj.individuals = getSearchIndividuals('Bilbo', 'Gollum')
+
+  fm.setLastAPIresponse(getTestResponse('Bilbo', 'Gollum'))
+  return testObj
 }
 
 describe('app: hod.proving', () => {
@@ -291,7 +309,7 @@ describe('app: hod.proving', () => {
 
     describe('getResultSummary', () => {
       it('should get the passing result summary', () => {
-        var res = getTestResponse()
+        var res = getTestResponse('Bilbo')
         fm.setLastAPIresponse(res)
 
         var test = fm.getResultSummary()
@@ -300,17 +318,77 @@ describe('app: hod.proving', () => {
     })
 
     describe('getCopyPasteSummary', () => {
-      it('should get an appropriate text summary when copy function is used', () => {
-        let testObj = fm.getSearch()
-        testObj.applicationRaisedDate = '2018-05-13'
-        testObj.dependants = 2
-        testObj.individuals = getSearchIndividuals('Bilbo', 'Gollum')
+      beforeEach(() => {
+        getTestSearchAndResponse(fm, 'Bilbo', 'Gollum')
+      })
 
-        var res = getTestResponse()
-        fm.setLastAPIresponse(res)
-
+      it('should get a text summary when copy function is used', () => {
         let txt = fm.getCopyPasteSummary()
+        expect(typeof txt).toEqual('string')
         console.log(txt)
+      })
+
+      it('should summarise the application result', () => {
+        let txt = fm.getCopyPasteSummary(true)
+        expect(typeof txt).toEqual('object')
+        expect(txt[0]).toEqual('PASSED')
+        expect(txt[1]).toEqual('Bilbo Baggins meets the Income Proving requirement')
+        expect(txt[3]).toEqual('RESULTS')
+      })
+
+      it('should summarise the main applicant', () => {
+        let txt = fm.getCopyPasteSummary(true)
+        expect(txt[4]).toEqual('Bilbo Baggins')
+        expect(txt[5][0]).toEqual('Income within date range:')
+        expect(txt[5][1]).toEqual('03/07/2014 - 03/01/2015')
+        expect(txt[6][0]).toEqual('Employers:')
+        expect(txt[6][1]).toEqual('Bag End')
+        expect(txt[7][1]).toEqual('The Dwarves')
+        expect(txt[8][1]).toEqual('Rivendell')
+      })
+
+      it('should summarise the partner', () => {
+        let txt = fm.getCopyPasteSummary(true)
+        expect(txt[9]).toEqual('Gollum Smeegol')
+        expect(txt[10][0]).toEqual('Income within date range:')
+        expect(txt[10][1]).toEqual('03/07/2014 - 03/01/2015')
+        expect(txt[11][0]).toEqual('Employers:')
+        expect(txt[11][1]).toEqual('The Ring')
+      })
+
+      it('should summarise the search criteria: applicant', () => {
+        let txt = fm.getCopyPasteSummary(true)
+        expect(txt[14]).toEqual('SEARCH CRITERIA')
+        expect(txt[15]).toEqual('APPLICANT:')
+        expect(txt[16][0]).toEqual('First name:')
+        expect(txt[16][1]).toEqual('Bilbo')
+        expect(txt[17][0]).toEqual('Surname:')
+        expect(txt[17][1]).toEqual('Baggins')
+        expect(txt[18][0]).toEqual('Date of birth:')
+        expect(txt[18][1]).toEqual('13/05/1970')
+        expect(txt[19][0]).toEqual('National Insurance number:')
+        expect(txt[19][1]).toEqual('BB123456B')
+      })
+
+      it('should summarise the search criteria: partner', () => {
+        let txt = fm.getCopyPasteSummary(true)
+        expect(txt[21]).toEqual('PARTNER:')
+        expect(txt[22][0]).toEqual('First name:')
+        expect(txt[22][1]).toEqual('Gollum')
+        expect(txt[23][0]).toEqual('Surname:')
+        expect(txt[23][1]).toEqual('Smeegol')
+        expect(txt[24][0]).toEqual('Date of birth:')
+        expect(txt[24][1]).toEqual('01/01/1800')
+        expect(txt[25][0]).toEqual('National Insurance number:')
+        expect(txt[25][1]).toEqual('GO123456M')
+      })
+
+      it('should summarise the basic search criteria', () => {
+        let txt = fm.getCopyPasteSummary(true)
+        expect(txt[27][0]).toEqual('Dependants:')
+        expect(txt[27][1]).toEqual(2)
+        expect(txt[28][0]).toEqual('Application raised:')
+        expect(txt[28][1]).toEqual('13/05/2018')
       })
     })
   })
