@@ -1,0 +1,148 @@
+
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: IP FM UI to IP Service
+  license:
+    name: MIT
+servers:
+  - url: http://127.0.0.1:8050
+paths:
+  /incomeproving/v2/individual/financialstatus:
+    post:
+      summary: perform the income proving test
+      requestBody:
+        description: supply details of the applicant and partner to be tested, the applicant is always the first individual in both request and response, partner is always the second if there is one
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IndividualRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ipResponse'
+components:
+  schemas:
+    statusCode:
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+        message: 
+          type: string
+    IndividualRequest:
+      required:
+        - applicationRaisedDate
+        - dependants
+        - individuals
+      properties:
+        applicationRaisedDate:
+          type: string
+          example: '2018-06-18'
+        dependants:
+          type: integer
+          example: 2
+        individuals:
+          type: array
+          items:
+            $ref: '#/components/schemas/Individual'
+    Individual:
+      required:
+        - forename
+        - surname
+        - nino
+        - dateOfBirth
+      properties:
+        forename:
+          type: string
+          example: 'Bilbo'
+        surname:
+          type: string
+          example: 'Baggins'
+        nino:
+          type: string
+          example: 'BB123456B'
+        dateOfBirth:
+          type: string
+          example: '1800-05-13'
+    ipResponse:
+      required:
+        - status
+        - individuals
+        - categoryChecks
+      properties:
+        status:
+          $ref: '#/components/schemas/statusCode'
+        individuals:
+          type: array
+          items:
+            $ref: '#/components/schemas/Individual'
+        categoryChecks:
+          type: array
+          items:
+            $ref: '#/components/schemas/CategoryChecks'
+    CategoryChecks:
+      required:
+        - category
+        - calculationType
+        - passed
+        - applicationRaisedDate
+        - assessmentStartDate
+        - failureReason
+        - threshold
+        - individuals
+      properties:
+        category:
+          type: string
+        calculationType:
+          type: string
+          enum:
+            - A
+            - B
+            - F
+            - G
+          example: 'A'
+        passed:
+          type: boolean
+          example: true
+        applicationRaisedDate:
+          type: string
+          example: '2018-06-18'
+        assessmentStartDate:
+          type: string
+          example: '2018-06-10'
+        failureReason:
+          type: string
+          example: 'Something went wrong'
+        threshold:
+          type: string
+          example: "1550.00"
+        individuals:
+          type: array
+          items:
+            $ref: '#/components/schemas/catIndividuals'
+    catIndividuals:
+      required:
+        - nino
+        - employers
+      properties:
+        nino:
+          type: string
+          example: 'BB123456B'
+        employers:
+          type: array
+          items:
+            type: string
+            example: 'Pizza Hut'
+
+
+
+
+
+
