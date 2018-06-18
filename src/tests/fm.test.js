@@ -97,9 +97,9 @@ const getTestSearchAndResponse = (fm, applicant, partner) => {
   let testObj = fm.getSearch()
   testObj.applicationRaisedDate = '2018-05-13'
   testObj.dependants = 2
-  testObj.individuals = getSearchIndividuals('Bilbo', 'Gollum')
+  testObj.individuals = getSearchIndividuals(applicant, partner)
 
-  fm.setLastAPIresponse(getTestResponse('Bilbo', 'Gollum'))
+  fm.setLastAPIresponse(getTestResponse(applicant, partner))
   return testObj
 }
 
@@ -317,7 +317,7 @@ describe('app: hod.proving', () => {
       })
     })
 
-    describe('getCopyPasteSummary', () => {
+    describe('getCopyPasteSummary JOINT', () => {
       beforeEach(() => {
         getTestSearchAndResponse(fm, 'Bilbo', 'Gollum')
       })
@@ -325,7 +325,6 @@ describe('app: hod.proving', () => {
       it('should get a text summary when copy function is used', () => {
         let txt = fm.getCopyPasteSummary()
         expect(typeof txt).toEqual('string')
-        console.log(txt)
       })
 
       it('should summarise the application result', () => {
@@ -389,6 +388,19 @@ describe('app: hod.proving', () => {
         expect(txt[27][1]).toEqual(2)
         expect(txt[28][0]).toEqual('Application raised:')
         expect(txt[28][1]).toEqual('13/05/2018')
+      })
+    })
+
+    describe('getCopyPasteSummary SINGLE', () => {
+      beforeEach(() => {
+        getTestSearchAndResponse(fm, 'Gandalf')
+        let txt = fm.getCopyPasteSummary()
+      })
+
+      it('should get a text summary when copy function is used', () => {
+        let txt = fm.getCopyPasteSummary(true)
+        expect(txt[10]).toEqual('SEARCH CRITERIA')
+        expect(txt[17][0]).toEqual('Dependants:')
       })
     })
   })
