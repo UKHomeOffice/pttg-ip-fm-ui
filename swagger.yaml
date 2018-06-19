@@ -11,6 +11,10 @@ paths:
   /incomeproving/v2/individual/financialstatus:
     post:
       summary: perform the income proving test
+      consumes: 
+        - "application/json"
+      produces:
+        - "application/json"
       requestBody:
         description: supply details of the applicant and partner to be tested, the applicant is always the first individual in both request and response, partner is always the second if there is one
         required: true
