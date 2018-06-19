@@ -100,7 +100,7 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
             case RESULTCODES.PAY_FREQUENCY_CHANGE:
               state = 'notpassed/paymentfrequencychange'
               $scope.reason = 'Change in payment frequency.'
-              break;
+              break
 
             case RESULTCODES.MULTIPLE_EMPLOYERS:
               state = 'notpassed/multipleemployers'
@@ -154,20 +154,19 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
       };
 
       // #### FEEDBACK #### //
-      var options;
-      if(summary && summary.passed) {
+      var options
+      if (summary && summary.passed) {
         options = [
             {value: 'failed-a-salaried', label: 'Not Passed on Cat A Salaried' },
             { value: 'failed-b-nonsalaried', label: 'Not Passed on Cat B Non-Salaried' },
             { value: 'failed-f', label: 'Not Passed on Cat F Self Assessment (1 Year)' },
             { value: 'failed-g', label: 'Not Passed on Cat G Self Assessment (2 Years)' }]
-      }
-      else {
+      } else {
         options = [
             { value: 'passed-a-salaried', label: 'Passed on Cat A Salaried' },
             { value: 'passed-b-nonsalaried', label: 'Passed on Cat B Non-Salaried' },
             { value: 'passed-f', label: 'Passed on Cat F Self Assessment (1 Year)' },
-            { value: 'passed-g', label: 'Passed on Cat G Self Assessment (2 Years)' },
+            { value: 'passed-g', label: 'Passed on Cat G Self Assessment (2 Years)' }
         ]
       }
       $scope.conf = {
