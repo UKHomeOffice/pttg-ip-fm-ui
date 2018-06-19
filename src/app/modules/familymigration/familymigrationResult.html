@@ -116,24 +116,7 @@
       <input id="editSearchBtn" type="submit" class="button button--editSearch button-info" value="Edit" ng-click="editSearch()">
   </div>
 
-  
-
-  <hod-form name="feedback" config="conf.feedback" submit="feedbackSubmit" ng-show="showFeedbackForm">
-    <h2 class="heading-medium ng-scope" id="feedbackheading">Feedback</h2>
-
-    <hod-radio name="match" config="conf.match" field="feedback.match" options="yesNoOptions"></hod-radio>
-  
-    <hod-radio label="Why do you think that the paper assessment did not match the IPS result?" field="feedback.whynot" config="conf.whynot"></hod-radio>
-
-    <hod-text name="matchOther" config="conf.matchOther" label="Other" field="feedback.matchOther"></hod-text>
-
-    <hod-submit value="Submit and start a new search"></hod-submit>
-  </hod-form>
-
-  <div class="form-group" ng-if="showFeedbackThanks">
-    <h2 class="heading-medium ng-scope" id="feedbackthankyouheading">Feedback</h2>
-    <p id="feedbackthanks">Thank you for supplying feedback on this service.</p>
-  </div>
+  <fm-feedback passed="true" callback="feedbackDone" ng-show="showFeedbackForm"></fm-feedback>
 
   <input id="newSearchBtn" type="submit" class="button button--newSearch" value="Begin a new check" ng-click="newSearch()" ng-if="showNewSearchButton" />
 
