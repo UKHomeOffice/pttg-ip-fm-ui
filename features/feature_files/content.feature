@@ -39,5 +39,5 @@ Feature: Page content
   Scenario: Input Page checks for Category A financial text write up
     Then the service displays the following result
       | Page sub title | Individual's details                                                                            |
-      | Page sub text  | You can check an individual meets the Category A requirement using a National Insurance number. |
+      | Page sub text  | You can check an individual meets the Income Proving requirement using a National Insurance number. |
 
