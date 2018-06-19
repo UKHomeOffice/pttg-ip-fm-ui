@@ -86,10 +86,16 @@ familymigrationModule.factory('FamilymigrationService', ['IOService', '$state', 
   }
 
   this.getPassingCheck = function () {
+    if (!this.haveResult()) {
+      return null
+    }
     return _.findWhere(lastAPIresponse.data.categoryChecks, {passed: true}) || null
   }
 
   this.getFirstCheck = function () {
+    if (!this.haveResult()) {
+      return null
+    }
     return _.first(lastAPIresponse.data.categoryChecks) || null
   }
 
@@ -138,51 +144,71 @@ familymigrationModule.factory('FamilymigrationService', ['IOService', '$state', 
     ga('send', 'event', frm.name, 'errorcount', errcountstring)
   }
 
-  this.getCopyPasteSummary = function () {
+  this.getCopyPasteSummary = function (asArray) {
     var search = this.getSearch()
     var summ = this.getResultSummary()
+    var copyText = ''
+    var BLANK = ''
+    var lines = []
     if (summ) {
       var individual = _.first(summ.individuals)
 
-      var copyText = ''
       if (summ.passed) {
-        copyText += 'PASSED\n'
-        copyText += individual.forename + ' ' + individual.surname + ' meets the Category A requirement\n\n'
+        lines.push('PASSED')
+        lines.push(individual.forename + ' ' + individual.surname + ' meets the Income Proving requirement')
       } else {
-        copyText += 'NOT PASSED\n'
-        copyText += summ.failureReason + '\n\n'
+        lines.push('NOT PASSED')
+        lines.push(summ.failureReason)
       }
 
-      copyText += 'RESULTS\n'
+      lines.push(BLANK)
+
+      lines.push('RESULTS')
 
       _.each(summ.individuals, function (i) {
-        copyText += i.forename + ' ' + i.surname + '\n\n'
-        copyText += lineLength('Income within date range: ', 36) + moment(summ.assessmentStartDate).format(fmt) + ' - ' + moment(summ.applicationRaisedDate).format(fmt) + '\n'
+        lines.push(i.forename + ' ' + i.surname)
+        lines.push(['Income within date range:', moment(summ.assessmentStartDate).format(fmt) + ' - ' + moment(summ.applicationRaisedDate).format(fmt)])
         _.each(i.employers, function (e, n) {
           if (n === 0) {
-            copyText += lineLength('Employers: ', 36)
+            lines.push(['Employers:', e])
           } else {
-            copyText += lineLength('', 36)
+            lines.push(['', e])
           }
-          copyText += e + '\n'
         })
       })
     } else {
-      copyText += 'ERROR\n'
-      copyText += 'There is no record for ' + _.first(search.individuals).nino + ' with HMRC\n'
+      lines.push('ERROR')
+      lines.push('There is no record for ' + _.first(search.individuals).nino + ' with HMRC')
     }
 
-    copyText += '\n\nSEARCH CRITERIA\n'
+    lines.push(BLANK)
+    lines.push(BLANK)
+
+    lines.push('SEARCH CRITERIA')
 
     _.each(search.individuals, function (ind, n) {
-      copyText += lineLength('First name: ', 36) + ind.forename + '\n'
-      copyText += lineLength('Surname: ', 36) + ind.surname + '\n'
-      copyText += lineLength('Date of birth: ', 36) + moment(ind.dateOfBirth).format(fmt) + '\n'
-      copyText += lineLength('National Insurance number: ', 36) + ind.nino + '\n\n'
+      lines.push(n === 0 ? 'APPLICANT:' : 'PARTNER:')
+      lines.push(['First name:', ind.forename])
+      lines.push(['Surname:', ind.surname])
+      lines.push(['Date of birth:', moment(ind.dateOfBirth).format(fmt)])
+      lines.push(['National Insurance number:', ind.nino])
+      lines.push(BLANK)
     })
 
-    copyText += lineLength('Dependants: ', 36) + search.dependants + '\n'
-    copyText += lineLength('Application raised: ', 36) + moment(search.applicationRaisedDate).format(fmt) + '\n'
+    lines.push(['Dependants:', search.dependants])
+    lines.push(['Application raised:', moment(search.applicationRaisedDate).format(fmt)])
+
+    if (asArray) {
+      return lines
+    }
+
+    _.each(lines, function (l) {
+      if (_.isArray(l)) {
+        copyText += lineLength(l[0], 36) + l[1] + '\n'
+      } else {
+        copyText += l + '\n'
+      }
+    })
 
     return copyText
   }
