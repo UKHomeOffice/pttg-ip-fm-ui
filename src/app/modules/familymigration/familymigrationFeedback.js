@@ -14,9 +14,6 @@ fm.directive('fmFeedback', ['IOService', function (IOService) {
       return function ($scope, element, attrs) {
         $scope.showForm = true
         $scope.showThanks = false
-        $scope.feedback = {}
-        $scope.yesNoOptions = [{ value: 'yes', label: 'Yes' }, { value: 'no', label: 'No' }]
-
         $scope.feedback = { whynot: {} }
 
         var options
@@ -40,13 +37,20 @@ fm.directive('fmFeedback', ['IOService', function (IOService) {
           match: {
             label: 'Did IPS match the paper assessment?',
             inline: true,
+            options: [{ value: 'yes', label: 'Yes' }, { value: 'no', label: 'No' }],
             onClick: function (opt, scope) {
               setFeedbackVisibility(opt.value)
             }
           },
           whynot: {
             id: 'whynot',
-            options: options
+            options: options,
+            validate: function (v, sc) {
+              var n = _.reduce($scope.feedback.whynot, function (memo, bool) { return (bool) ? memo + 1 : memo }, 0)
+              console.log('validate', n, $scope.feedback)
+              if (n || $scope.feedback.matchOther) return true
+              return { summary: 'The "Why do you think that the paper assessment did not match the IPS result?" is blank', msg: 'Select one or more from below' }
+            }
           },
           matchOther: {
             classes: {'form-control-1-4': false},
@@ -75,11 +79,7 @@ fm.directive('fmFeedback', ['IOService', function (IOService) {
             }
           })
 
-        // #### END FEEDBACK ####
-
-        // var lastCheckDetails = FamilymigrationService.getFamilyDetails()
-        // details.nino = lastCheckDetails.nino
-          // details.nino = _.pluck(res.data.individuals, 'nino').join(',')
+          details.nino = attrs.nino
 
           var feedbackDone = function (ok) {
           // track
