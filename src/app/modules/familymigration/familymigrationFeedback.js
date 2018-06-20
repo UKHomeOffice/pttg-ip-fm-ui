@@ -46,9 +46,8 @@ fm.directive('fmFeedback', ['IOService', function (IOService) {
             id: 'whynot',
             options: options,
             validate: function (v, sc) {
-              var n = _.reduce($scope.feedback.whynot, function (memo, bool) { return (bool) ? memo + 1 : memo }, 0)
-              console.log('validate', n, $scope.feedback)
-              if (n || $scope.feedback.matchOther) return true
+              var numselected = _.reduce($scope.feedback.whynot, function (memo, bool) { return (bool) ? memo + 1 : memo }, 0)
+              if (numselected || $scope.feedback.matchOther) return true
               return { summary: 'The "Why do you think that the paper assessment did not match the IPS result?" is blank', msg: 'Select one or more from below' }
             }
           },
