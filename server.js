@@ -2,7 +2,7 @@ var express = require('express')
 var serveStatic = require('serve-static')
 var app = express()
 var apiRoot = process.env.API_ROOT || 'http://localhost:8050'
-var feedbackRoot = process.env.FEEDBACK_ROOT || 'http://localhost:8082'
+var feedbackRoot = process.env.FEEDBACK_ROOT || 'http://localhost:8050'
 var httpauth = process.env.IP_API_AUTH || ''
 var uiBaseUrl = '/incomeproving/v2/'
 var apiBaseUrl = apiRoot + '/incomeproving/v2/'
@@ -15,7 +15,6 @@ var PROXY_REDIRECTION_URL = process.env.PROXY_REDIRECTION_URL || ''
 var moment = require('moment')
 var uuid = require('uuid/v4')
 var fs = require('fs')
-var _ = require('underscore')
 var bodyParser = require('body-parser')
 app.use(bodyParser.json())
 
@@ -41,7 +40,7 @@ var stdRelay = function (req, res, uri, qs, postdata) {
   }
 
   if (httpauth) {
-    headers['Authorization'] = 'Basic ' + new Buffer(httpauth).toString('base64')
+    headers['Authorization'] = 'Basic ' + Buffer.from(httpauth).toString('base64')
   }
 
   headers['x-correlation-id'] = uuid()
@@ -148,14 +147,4 @@ function addCaCertsForHttps (opts, headers) {
     opts.strictSSL = false
   }
   return opts
-}
-
-function log (message, headers) {
-  var logMessage = {
-    message: message,
-    'x-correlation-id': headers['x-correlation-id'],
-    'x-auth-userid': headers['x-auth-userid']
-  }
-
-  console.log(JSON.stringify(logMessage))
 }

@@ -43,40 +43,24 @@ Feature: Feedback form
     Then the service displays the following result
       | feedbackthanks | Thank you for supplying feedback on this service. |
 
-#  Scenario Outline: Invalid Case IDs
-#    Given the account data for TL123456A
-#    And the income check is performed
-#    And the feedback form is completed
-#      | match   | No    |
-#      | caseref | <ref> |
-#    When the submit button is clicked
-#    Then the service displays the following result
-#      | caseref-error | Enter a valid "Case ID" |
-#    Examples:
-#      | ref        |
-#      | 1234567    |
-#      | 123456789  |
-#      | 222        |
-#      | 2222222T   |
-#      | eightchr   |
-#      | 01234567   |
-#      | 02345678   |
-#      | 012345678  |
-#      | 0234567666 |
-#      | 23456789 ! |
-#
-#  Scenario Outline: Valid Case IDs
-#    Given the account data for TL123456A
-#    And the income check is performed
-#    And the feedback form is completed
-#      | match   | No    |
-#      | caseref | <ref> |
-#    When the submit button is clicked
-#    Then the following are hidden
-#      | caseref-error |
-#    Examples:
-#      | ref       |
-#      | 23456789  |
-#      | 29876543  |
-#      | 023456789 |
-#      | 029876543 |
+  Scenario: If No match then a reason must be supplied
+    Given the account data for TL123456A
+    And the income check is performed
+    When the feedback form is completed
+      | match | No |
+    And the submit button is clicked
+    Then the service displays the following result
+      | whynot-error | Select an option |
+
+
+Scenario: If No match then a reason OR other must be completed
+    Given the account data for TL123456A
+    And the income check is performed
+    When the feedback form is completed
+      | match       | No    |
+      | match other | hello |
+    And the submit button is clicked
+    Then the service displays the following result
+      | feedbackthanks | Thank you for supplying feedback on this service. |
+
+    

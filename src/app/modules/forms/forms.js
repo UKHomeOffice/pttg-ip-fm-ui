@@ -476,7 +476,7 @@ formsModule.directive('hodRadio', ['FormsService', function (FormsService) {
           // options: [{label: 'Please select', value: 0}],
           errors: {
             required: {
-              summary: 'The ' + inQ(scope.label) + ' option is invalid',
+              summary: 'The ' + inQ(scope.label || scope.config.label) + ' option is invalid',
               msg: 'Select an option'
             }
           }
@@ -490,7 +490,11 @@ formsModule.directive('hodRadio', ['FormsService', function (FormsService) {
 
         scope.validfunc = function (val) {
           var selected = scope.getSelectedOption(val)
+
           var validate = function () {
+            if (_.isObject(scope.config.validate)) {
+              return scope.config.validate(scope.config.options, scope)
+            }
             if (scope.config.required && _.isUndefined(selected)) {
               // it is required (do this test before val is still a string)
               scope.getInput().$valid = false
