@@ -22,7 +22,7 @@ const makePromise = (val, status) => {
 }
 
 const urls = {
-  financialstatus: 'incomeproving/v2/individual/financialstatus'
+  financialstatus: 'incomeproving/v3/individual/financialstatus'
 }
 
 const radioElements = {

@@ -8,32 +8,29 @@ var app = angular.module('hod.proving', [
   'hod.io',
   'hod.availability'
 
-]);
-
+])
 
 app.constant('CONFIG', {
-  api: '/incomeproving/v2/'
-});
+  api: '/incomeproving/v3/'
+})
 
-
-app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
-  $urlRouterProvider.otherwise('/familymigration');
+app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
+  $urlRouterProvider.otherwise('/familymigration')
 
   $stateProvider.state({
     name: 'default',
     title: 'HOD',
     views: {
       'content': {
-      },
-    },
-  });
-}]);
+      }
+    }
+  })
+}])
 
-
-app.run(['$location', '$rootScope', '$window', '$timeout', 'AvailabilityService', '$rootElement', function($location, $rootScope, $window, $timeout, AvailabilityService, $rootElement) {
+app.run(['$location', '$rootScope', '$window', '$timeout', 'AvailabilityService', '$rootElement', function ($location, $rootScope, $window, $timeout, AvailabilityService, $rootElement) {
   // see http://simplyaccessible.com/article/spangular-accessibility/
 
-  AvailabilityService.setURL('availability');
+  AvailabilityService.setURL('availability')
 
   var focusOnH1 = function () {
     // http://stackoverflow.com/questions/25596399/set-element-focus-in-angular-way
@@ -53,6 +50,4 @@ app.run(['$location', '$rootScope', '$window', '$timeout', 'AvailabilityService'
   $rootScope.$on('$viewContentLoaded', function (e) {
     focusOnH1()
   })
-}]);
-
-
+}])
