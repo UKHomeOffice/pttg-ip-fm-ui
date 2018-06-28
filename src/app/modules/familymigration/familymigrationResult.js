@@ -76,7 +76,6 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
       }
 
       var summary = FamilymigrationService.getResultSummary()
-      console.log(summary)
       $scope.success = summary && summary.passed
       if (summary) {
         $scope.summary = summary
