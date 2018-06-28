@@ -139,7 +139,6 @@ familymigrationModule.controller(
       FamilymigrationService.trackFormSubmission(formScope)
       if (isValid) {
         _.each($scope.search.individuals, function (i) {
-          console.log(i.nino)
           var n1 = i.nino
           var n2 = n1.replace(/[^a-z0-9]*/gi, '')
           i.nino = n2
