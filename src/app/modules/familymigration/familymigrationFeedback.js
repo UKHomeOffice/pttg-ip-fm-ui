@@ -1,4 +1,4 @@
-/* global angular _ ga */
+/* global angular _ */
 
 var fm = angular.module('hod.familymigration')
 
@@ -87,13 +87,12 @@ fm.directive('fmFeedback', ['IOService', function (IOService) {
             $scope.showForm = false
             $scope.showThanks = true
             $scope.$applyAsync()
-            console.log('feedbackDone', $scope.showThanks)
             if (typeof $scope.callback === 'function') {
               $scope.callback(ok)
             }
           }
 
-          IOService.post('feedback', details).then(function (res) {
+          IOService.post('/feedback', details).then(function (res) {
             feedbackDone(true)
           }, function (err) {
             console.log('ERROR', err)

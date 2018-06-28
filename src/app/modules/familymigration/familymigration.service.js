@@ -33,7 +33,7 @@ familymigrationModule.factory('FamilymigrationService', ['IOService', '$state', 
     fam = angular.copy(fam)
 
     var me = this
-    IOService.post('individual/financialstatus', fam, {timeout: 30000}).then(function (res) {
+    IOService.post('/financialstatus', fam, {timeout: 30000}).then(function (res) {
       me.setLastAPIresponse(res)
       $state.go('familymigrationResults')
     }, function (err) {

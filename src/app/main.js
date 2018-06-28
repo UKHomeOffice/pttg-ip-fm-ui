@@ -1,3 +1,5 @@
+/* global angular */
+
 var app = angular.module('hod.proving', [
   'ui.router',
   'ngAria',
@@ -9,10 +11,6 @@ var app = angular.module('hod.proving', [
   'hod.availability'
 
 ])
-
-app.constant('CONFIG', {
-  api: '/incomeproving/v3/'
-})
 
 app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
   $urlRouterProvider.otherwise('/familymigration')
@@ -29,8 +27,6 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $u
 
 app.run(['$location', '$rootScope', '$window', '$timeout', 'AvailabilityService', '$rootElement', function ($location, $rootScope, $window, $timeout, AvailabilityService, $rootElement) {
   // see http://simplyaccessible.com/article/spangular-accessibility/
-
-  AvailabilityService.setURL('availability')
 
   var focusOnH1 = function () {
     // http://stackoverflow.com/questions/25596399/set-element-focus-in-angular-way

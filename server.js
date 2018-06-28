@@ -2,11 +2,14 @@ var express = require('express')
 var serveStatic = require('serve-static')
 var app = express()
 var apiRoot = process.env.API_ROOT || 'http://localhost:8050'
+var apiBaseUrl = apiRoot + '/incomeproving/v3/'
+
 var feedbackRoot = process.env.FEEDBACK_ROOT || 'http://localhost:8050'
+var feedbackUrl = feedbackRoot + '/feedback'
+
 var httpauth = process.env.IP_API_AUTH || ''
 var uiBaseUrl = '/incomeproving/v3/'
-var apiBaseUrl = apiRoot + '/incomeproving/v3/'
-var feedbackBaseUrl = feedbackRoot + '/feedback'
+
 var request = require('request')
 var port = process.env.SERVER_PORT || '8000'
 // PROXY_DISCOVERY_URL eg https://sso.digital.homeoffice.gov.uk/auth/realms/pttg-qa or pttg-production
@@ -112,16 +115,16 @@ app.get('/healthz', function (req, res) {
   res.send({env: process.env.ENV, status: 'OK'})
 })
 
-app.get(uiBaseUrl + 'availability', function (req, res) {
+app.get('/availability', function (req, res) {
   stdRelay(req, res, apiRoot + '/healthz', '')
 })
 
-app.post(uiBaseUrl + 'individual/financialstatus', function (req, res) {
+app.post('/financialstatus', function (req, res) {
   stdRelay(req, res, apiBaseUrl + 'individual/financialstatus', '', req.body)
 })
 
-app.post(uiBaseUrl + 'feedback', function (req, res) {
-  stdRelay(req, res, feedbackBaseUrl, '', req.body)
+app.post('/feedback', function (req, res) {
+  stdRelay(req, res, feedbackUrl, '', req.body)
 })
 
 app.all('*', function (req, res, next) {
