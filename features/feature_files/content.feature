@@ -19,9 +19,8 @@ Feature: Page content
       | Last name     | Lew        |
       | date of birth | 08/08/1980 |
     Then the service displays the following result
-      | Outcome box summary         | Jill Lewondoski does not meet the Income Proving requirement                              |
-      | Page dynamic reason         | They haven't met the required monthly amount.                                                  |
-      | What to do next heading     | What to do next                                                                                |
+      | Outcome box summary         | Jill Lewondoski does not meet the Income Proving requirement |
+      | What to do next heading     | What to do next                                              |
       | What to do next sub heading | You should consider if the applicant meets the financial requirement under any other category. |
 
   Scenario: Page checks for appendix link
