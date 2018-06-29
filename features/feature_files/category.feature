@@ -18,7 +18,6 @@ Feature: Category A Financial Requirement
     Then the service displays the following result
       | Page dynamic heading | Not passed                                                         |
       | Outcome box summary  | Kumar Sangakkara does not meet the Income Proving requirement |
-      | Page dynamic reason  | They haven't been with their current employer for 6 months.        |
     And the service displays the following result table
       | Kumar Sangakkara |                 |
       | Employers        | Pizza Ltd       |
@@ -44,7 +43,6 @@ Feature: Category A Financial Requirement
     Then the service displays the following result
       | Page dynamic heading | Not passed                                                       |
       | Outcome box summary  | Brian Sinclair does not meet the Income Proving requirement |
-      | Page dynamic reason  | They haven't met the required monthly amount.                    |
     And the service displays the following result table
       | Brian Sinclair |                 |
       | Employers      | The Home Office |
