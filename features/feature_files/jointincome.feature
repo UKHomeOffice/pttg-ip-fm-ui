@@ -47,7 +47,7 @@ Feature: Joint applicants
       | Partner date of birth | 13/05/2002 |
       | Partner nino          | JS123456A  |
     Then the service displays the following result
-      | Page dynamic heading | Passed                                       |
+      | Page dynamic heading | Passed                                           |
       | Outcome box summary  | Edard Stark meets the Income Proving requirement |
     And the service displays the following result table
       | Edard Stark              |                         |
@@ -85,7 +85,7 @@ Feature: Joint applicants
       | Partner nino          | TG123456A  |
       | Dependants            | 0          |
     Then the service displays the following result
-      | Page dynamic heading | Not passed                                                    |
+      | Page dynamic heading | Not passed                                               |
       | Outcome box summary  | Ramsey Snow does not meet the Income Proving requirement |
     And the service displays the following result table
       | Ramsey Snow   |            |
