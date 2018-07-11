@@ -287,22 +287,22 @@ describe('app: hod.proving', () => {
       })
     })
 
-    describe('getFirstCheck', () => {
+    describe('getCheckWithMostApplicants', () => {
       it('should be able to return the first check or null', () => {
-        fm.setLastAPIresponse({ status: 200, data: {categoryChecks: [{ data: 'a' }, { data: 'b' }, { data: 'c' }]} })
-        let testObj = fm.getFirstCheck()
+        fm.setLastAPIresponse({ status: 200, data: {categoryChecks: [ {data: 'a', individuals: [{p: '1'}, {p: '2'}]}, {data: 'b', individuals: [{ p: '1'}]}, {data: 'c', individuals: [{p: '1'}]} ]} })
+        let testObj = fm.getCheckWithMostApplicants()
         expect(testObj.data).toEqual('a')
 
-        fm.setLastAPIresponse({ status: 200, data: {categoryChecks: [{ data: 'b' }, { data: 'c' }]} })
-        testObj = fm.getFirstCheck()
-        expect(testObj.data).toEqual('b')
+        fm.setLastAPIresponse({ status: 200, data: {categoryChecks: [ {data: 'b', individuals: [{ p: '1'}]}, {data: 'c', individuals: [{ p: '1'}, {p: '2'}]}]} })
+        testObj = fm.getCheckWithMostApplicants()
+        expect(testObj.data).toEqual('c')
 
         fm.setLastAPIresponse({ status: 200, data: {categoryChecks: [{ data: 'c' }]} })
-        testObj = fm.getFirstCheck()
+        testObj = fm.getCheckWithMostApplicants()
         expect(testObj.data).toEqual('c')
 
         fm.setLastAPIresponse({ status: 200, data: {categoryChecks: []} })
-        testObj = fm.getFirstCheck()
+        testObj = fm.getCheckWithMostApplicants()
         expect(testObj).toEqual(null)
       })
     })
