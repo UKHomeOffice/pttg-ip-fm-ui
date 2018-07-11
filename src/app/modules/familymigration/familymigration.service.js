@@ -92,11 +92,21 @@ familymigrationModule.factory('FamilymigrationService', ['IOService', '$state', 
     return _.findWhere(lastAPIresponse.data.categoryChecks, {passed: true}) || null
   }
 
-  this.getFirstCheck = function () {
+  this.getCheckWithMostApplicants = function () {
     if (!this.haveResult()) {
       return null
     }
-    return _.first(lastAPIresponse.data.categoryChecks) || null
+    var checkWithMostApplicants = null
+    _.forEach(lastAPIresponse.data.categoryChecks, function (catCheck) {
+      if (checkWithMostApplicants == null) {
+        checkWithMostApplicants = catCheck
+      } else {
+        if (catCheck.individuals.length > checkWithMostApplicants.individuals.length) {
+          checkWithMostApplicants = catCheck
+        }
+      }
+    })
+    return checkWithMostApplicants
   }
 
   this.getEmployers = function (check, nino) {
@@ -109,7 +119,7 @@ familymigrationModule.factory('FamilymigrationService', ['IOService', '$state', 
 
   this.getResultSummary = function () {
     var me = this
-    var check = this.getPassingCheck() || this.getFirstCheck()
+    var check = this.getPassingCheck() || this.getCheckWithMostApplicants()
 
     if (!check) {
       return null

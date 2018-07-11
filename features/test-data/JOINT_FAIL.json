@@ -1,36 +1,60 @@
 {
-  "status" : {
-    "code" : "200",
-    "message" : "OK"
+  "status": {
+    "code": "200",
+    "message": "OK"
   },
-  "individuals" : [
+  "individuals": [
     {
-      "forename" : "Ramsey",
-      "surname" : "Snow",
-      "nino" : "RS123456B",
-      "dob" : "1978-01-01"
+      "forename": "Ramsey",
+      "surname": "Snow",
+      "nino": "RS123456B",
+      "dob": "1978-01-01"
     },
     {
-      "forename" : "Theon",
-      "surname" : "Greyjoy",
-      "nino" : "TG123456B",
-      "dob" : "1974-05-13"
+      "forename": "Theon",
+      "surname": "Greyjoy",
+      "nino": "TG123456B",
+      "dob": "1974-05-13"
     }
   ],
-  "categoryChecks" : [
+  "categoryChecks": [
     {
-      "category" : "B",
-      "passed" : false,
-      "applicationRaisedDate" : "2015-07-03",
-      "assessmentStartDate" : "2015-03-25",
-      "failureReason" : "NOT_ENOUGH_RECORDS",
-      "individuals": [{
+      "category": "A",
+      "calculationType": "Category A Monthly Salary",
+      "passed": false,
+      "applicationRaisedDate": "2018-07-07",
+      "assessmentStartDate": "2018-01-06",
+      "failureReason": "NOT_ENOUGH_RECORDS",
+      "threshold": "1550.00",
+      "individuals": [
+        {
+          "nino": "TC057040B",
+          "employers": [
+            "Company VRXPY3"
+          ]
+        }
+      ]
+    },
+    {
+      "category": "B",
+      "passed": false,
+      "applicationRaisedDate": "2015-07-03",
+      "assessmentStartDate": "2015-03-25",
+      "failureReason": "NOT_ENOUGH_RECORDS",
+      "individuals": [
+        {
           "nino": "RS123456B",
-          "employers" : ["Bolton"]
+          "employers": [
+            "Bolton"
+          ]
         },
         {
           "nino": "TG123456B",
-          "employers" : ["Winterfell", "Traitor", "Sansa"]
+          "employers": [
+            "Winterfell",
+            "Traitor",
+            "Sansa"
+          ]
         }
       ]
     }
