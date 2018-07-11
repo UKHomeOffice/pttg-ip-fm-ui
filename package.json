@@ -4,6 +4,7 @@
   "description": "migration family case worker tool",
   "scripts": {
     "init": "npm install",
+    "build": "gulp build",
     "test": "gulp test",
     "test:all": "npm run test:unit && npm run test:bdd",
     "test:unit": "gulp test",
