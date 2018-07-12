@@ -506,4 +506,8 @@ defineSupportCode(function ({Given, When, Then}) {
       })
     })
   })
+
+  Then(/^the feedback form is not displayed$/i, function () {
+    return confirmVisible(this.driver, {'hodForm': 'na'}, false, 0)
+  })
 })

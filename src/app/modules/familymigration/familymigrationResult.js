@@ -120,12 +120,12 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
       } else {
         console.log('ERROR', res)
         console.log($scope.applicant)
+        $scope.showFeedbackForm = false
+        $scope.showFeedbackThanks = false
         if (res.status === 404 && res.data && res.data.status && res.data.status.code === '0009') {
           state = 'failure/norecord'
           $scope.heading = 'There is no record for ' + $scope.applicant.nino + ' with HMRC'
           $scope.reason = 'We couldn\'t perform the financial requirement check as no income information exists with HMRC.'
-          $scope.showFeedbackForm = false
-          $scope.showFeedbackThanks = false
           $scope.showNewSearchButton = true
         } else if (res.status === 404) {
           $scope.heading = 'Incoming Proving Service Currently Unavailable'
