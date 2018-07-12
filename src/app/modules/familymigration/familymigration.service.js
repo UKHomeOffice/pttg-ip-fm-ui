@@ -222,6 +222,19 @@ familymigrationModule.factory('FamilymigrationService', ['IOService', '$state', 
 
     return copyText
   }
+  this.getNotFoundNino = function (notFoundErrorMessage, applicantNino, partnerNino) {
+    var redactedNinoRegex = /.*([A-Z]{2}[0-9]{3}).*/
+    var returnedNino = notFoundErrorMessage.match(redactedNinoRegex)[1]
+    var failedNino = ''
+    if (returnedNino === applicantNino.substr(0, 5)) {
+      failedNino = applicantNino
+    } else if (returnedNino === partnerNino.substr(0, 5)) {
+      failedNino = partnerNino
+    } else {
+      failedNino = applicantNino
+    }
+    return failedNino
+  }
 
   this.reset()
   return this

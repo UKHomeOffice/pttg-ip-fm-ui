@@ -321,7 +321,7 @@ defineSupportCode(function ({Given, When, Then}) {
   })
 
   Given(/the api response is delayed for (\d+) seconds/, {timeout: -1}, function (int, callback) {
-    mockdata.stubItFile(urls.financialstatus, 'notfound.json', 200, int * 1000)
+    mockdata.stubItFile(urls.financialstatus, 'notfoundRK123456C.json', 200, int * 1000)
     callback()
   })
 
@@ -353,7 +353,7 @@ defineSupportCode(function ({Given, When, Then}) {
   })
 
   Given(/^no record for ([0-9a-zA-Z]+)$/, function (nino, callback) {
-    mockdata.stubItFile(urls.financialstatus, 'notfound.json', 404)
+    mockdata.stubItFile(urls.financialstatus, 'notfound' + nino + '.json', 404)
     callback()
   })
 
