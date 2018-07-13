@@ -135,7 +135,7 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
           $timeout(function () {
             $window.location.reload()
           }, 2000)
-        } else if (res.status === 307) {
+        } else if (res.status === 307 || res.status === 405) {
           $scope.heading = 'Your Keycloak session has timed out'
           $scope.reason = 'The page will now reload.'
           state = 'failure'
