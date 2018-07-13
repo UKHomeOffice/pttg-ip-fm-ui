@@ -231,7 +231,7 @@ familymigrationModule.factory('FamilymigrationService', ['IOService', '$state', 
     } else if (returnedNino === partnerNino.substr(0, 5)) {
       failedNino = partnerNino
     } else {
-      failedNino = applicantNino
+      console.error('Unexpected nino found in error message: ' + notFoundErrorMessage)
     }
     return failedNino
   }
