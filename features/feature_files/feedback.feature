@@ -63,4 +63,10 @@ Scenario: If No match then a reason OR other must be completed
     Then the service displays the following result
       | feedbackthanks | Thank you for supplying feedback on this service. |
 
-    
+  Scenario: If the service errors then the feedback form is not displayed
+    Given the api response is garbage
+    When Caseworker submits a query
+      | NINO                    | RK123456C  |
+      | Application Raised Date | 03/07/2015 |
+      | Dependants              | 0          |
+    Then the feedback form is not displayed
