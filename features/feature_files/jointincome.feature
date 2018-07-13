@@ -105,3 +105,30 @@ Feature: Joint applicants
       | Second individual's national Insurance number | TG123456A  |
       | Dependants                                    | 0          |
       | Application raised                            | 03/07/2015 |
+
+  Scenario: Partner nino not found
+    Given no record for TG123456A
+    And the second individual link is clicked
+    When applicant submits a query
+      | Forename              | Ramsey     |
+      | Surname               | Snow       |
+      | Date of birth         | 01/01/1974 |
+      | Nino                  | RS123456A  |
+      | Partner forename      | Theon      |
+      | Partner surname       | Greyjoy    |
+      | Partner date of birth | 13/05/1974 |
+      | Partner nino          | TG123456A  |
+      | Dependants            | 0          |
+    Then the service displays the following result
+      | Page dynamic heading | There is no record for TG123456A with HMRC |
+    And the service displays the following search table
+      | First name                                    | Ramsey     |
+      | Surname                                       | Snow       |
+      | Date of birth                                 | 01/01/1974 |
+      | National Insurance number                     | RS123456A  |
+      | Second individual's first name                | Theon      |
+      | Second individual's surname                   | Greyjoy    |
+      | Second individual's date of birth             | 13/05/1974 |
+      | Second individual's national Insurance number | TG123456A  |
+      | Dependants                                    | 0          |
+      | Application raised                            | 03/07/2015 |

@@ -403,5 +403,14 @@ describe('app: hod.proving', () => {
         expect(txt[17][0]).toEqual('Dependants:')
       })
     })
+
+    describe('getNotFoundNino', () => {
+      it('should return the correct nino', () => {
+        expect(fm.getNotFoundNino('Resource not found: RK123****', 'RK123456C', 'AB123456A')).toEqual('RK123456C')
+        expect(fm.getNotFoundNino('Resource not found: AB123****', 'RK123456C', 'AB123456A')).toEqual('AB123456A')
+        expect(fm.getNotFoundNino('Resource not found: XX123****', 'RK123456C', 'AB123456A')).toEqual('')
+        expect(fm.getNotFoundNino('Resource not found: RK123****', 'RK123456C', '')).toEqual('RK123456C')
+      })
+    })
   })
 })
