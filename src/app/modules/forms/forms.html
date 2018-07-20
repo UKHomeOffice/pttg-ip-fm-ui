@@ -6,7 +6,7 @@
 
     <ul class="error-summary-list" id="error-summary-list">
       <li ng-repeat="obj in errorList" ng-if="obj.msg">
-        <a href="" ng-click="errorClicked(obj.anchor)">{{ obj.msg }}</a>
+        <a ng-click="errorClicked(obj.anchor)">{{ obj.msg }}</a>
       </li>
     </ul>
   </div>
