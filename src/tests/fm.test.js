@@ -108,7 +108,7 @@ describe('app: hod.proving', () => {
   beforeEach(module('hod.familymigration'))
 
   describe('FamilymigrationService', () => {
-    let fm, $compile, $rootScope
+    let fm
 
     beforeEach(inject(function (FamilymigrationService) {
       fm = FamilymigrationService
