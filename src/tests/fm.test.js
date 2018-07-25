@@ -108,8 +108,7 @@ describe('app: hod.proving', () => {
   beforeEach(module('hod.familymigration'))
 
   describe('FamilymigrationService', () => {
-    let fm, $compile, $rootScope
-
+    let fm
     beforeEach(inject(function (FamilymigrationService) {
       fm = FamilymigrationService
       fm.reset()
@@ -425,14 +424,14 @@ describe('app: hod.proving', () => {
         //if user is passed
         var element = $compile('<fm-feedback passed="true" callback="feedbackDone" nino="applicant" ng-show="showFeedbackForm"></fm-feedback>')($rootScope);
         $rootScope.$digest()
-        expect(element.html()).toContain("Not Passed on Cat A Salaried");
+        expect(element.html()).toContain("Not Passed on Cat A Salaried", "Not Passed on Cat B Non-Salaried", "Not Passed on Cat F Self Assessment (1 Year)", "Not Passed on Cat G Self Assessment (2 Years)");
       })
 
       it('should display passed feedback options determined by not passed result', () => {
         //if user is not passed
         var element = $compile('<fm-feedback passed="false" callback="feedbackDone" nino="applicant" ng-show="showFeedbackForm"></fm-feedback>')($rootScope);
         $rootScope.$digest();
-        expect(element.html()).toContain("Passed on Cat A Salaried");
+        expect(element.html()).toContain("Passed on Cat A Salaried", "Passed on Cat B Non-Salaried", "Passed on Cat F Self Assessment (1 Year)", "Passed on Cat G Self Assessment (2 Years)");
       })
     })
   })
