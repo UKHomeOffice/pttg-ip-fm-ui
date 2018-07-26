@@ -67,7 +67,7 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
       $scope.feedback = {}
       $scope.yesNoOptions = [{ value: 'yes', label: 'Yes' }, { value: 'no', label: 'No' }]
 
-      $scope.feedback = { whynot: {} }
+      $scope.feedback = { reasonForNotMatch: {} }
       $scope.dFormat = 'dd/MM/yyyy'
 
       if (!res.status) {
@@ -96,7 +96,7 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
               state = 'notpassed/paymentfrequencychange'
               $scope.reason = 'Change in payment frequency.'
               break
-
+              
             case RESULTCODES.MULTIPLE_EMPLOYERS:
               state = 'notpassed/multipleemployers'
               $scope.reason = 'Payments from multiple employers.'
