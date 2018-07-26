@@ -50,7 +50,7 @@ Feature: Feedback form
       | match | No |
     And the submit button is clicked
     Then the service displays the following result
-      | whynot-error | Select an option |
+      | reason For Not Match-error | Select an option |
 
 
 Scenario: If No match then a reason OR other must be completed

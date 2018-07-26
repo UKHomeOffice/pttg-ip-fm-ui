@@ -109,6 +109,10 @@ describe('app: hod.proving', () => {
 
   describe('FamilymigrationService', () => {
     let fm
+<<<<<<< HEAD
+=======
+
+>>>>>>> 733f75135dcb7bc6b922a26a64034db82727739d
     beforeEach(inject(function (FamilymigrationService) {
       fm = FamilymigrationService
       fm.reset()
