@@ -8,7 +8,7 @@ var aResponse = jswiremocklib.a_response
 var fs = require('fs')
 
 exports = module.exports = {
-  jswm: new Jswiremock(8050),
+  jswm: new Jswiremock(8081),
   stubHealthz: function (code) {
     var res = aResponse()
     res.withStatus(code)
