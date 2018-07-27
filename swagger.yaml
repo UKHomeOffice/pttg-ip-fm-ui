@@ -6,7 +6,7 @@ info:
   license:
     name: MIT
 servers:
-  - url: http://127.0.0.1:8050
+  - url: http://127.0.0.1:8081
 paths:
   /incomeproving/v2/individual/financialstatus:
     post:
