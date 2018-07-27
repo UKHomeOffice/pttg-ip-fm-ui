@@ -8,6 +8,7 @@ var feedbackRoot = process.env.FEEDBACK_ROOT || 'http://localhost:8050'
 var feedbackUrl = feedbackRoot + '/feedback'
 
 var httpauth = process.env.IP_API_AUTH || ''
+var feedbackHttpauth = process.env.FEEDBACK_AUTH || ''
 var uiBaseUrl = '/incomeproving/v3/'
 
 var request = require('request')
@@ -29,9 +30,9 @@ var addSecureHeaders = function (res) {
   res.setHeader('Cache-control', 'no-store, no-cache')
 }
 
-var stdRelay = function (req, res, uri, qs, postdata) {
+var stdRelay = function (req, res, uri, qs, postdata, auth) {
   var headers = {}
-
+  auth = auth || httpauth
   addSecureHeaders(res)
 
   if (req.headers['x-auth-userid']) {
@@ -42,8 +43,8 @@ var stdRelay = function (req, res, uri, qs, postdata) {
     headers['kc-access'] = req.headers['kc-access']
   }
 
-  if (httpauth) {
-    headers['Authorization'] = 'Basic ' + Buffer.from(httpauth).toString('base64')
+  if (auth) {
+    headers['Authorization'] = 'Basic ' + Buffer.from(auth).toString('base64')
   }
 
   headers['x-correlation-id'] = uuid()
@@ -124,7 +125,7 @@ app.post('/financialstatus', function (req, res) {
 })
 
 app.post('/feedback', function (req, res) {
-  stdRelay(req, res, feedbackUrl, '', req.body)
+  stdRelay(req, res, feedbackUrl, '', req.body, feedbackHttpauth)
 })
 
 app.all('*', function (req, res, next) {
