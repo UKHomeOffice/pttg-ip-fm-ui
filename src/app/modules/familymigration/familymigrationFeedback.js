@@ -21,39 +21,39 @@ fm.directive('fmFeedback', ['IOService', function (IOService) {
         var options
         if ($scope.passed) {
           options = [{
-              value: 'failed-a-salaried',
-              label: 'Not Passed on Cat A Salaried'
-            },
-            {
-              value: 'failed-b-nonsalaried',
-              label: 'Not Passed on Cat B Non-Salaried'
-            },
-            {
-              value: 'failed-f',
-              label: 'Not Passed on Cat F Self Assessment (1 Year)'
-            },
-            {
-              value: 'failed-g',
-              label: 'Not Passed on Cat G Self Assessment (2 Years)'
-            }
+            value: 'failed-a-salaried',
+            label: 'Not Passed on Cat A Salaried'
+          },
+          {
+            value: 'failed-b-nonsalaried',
+            label: 'Not Passed on Cat B Non-Salaried'
+          },
+          {
+            value: 'failed-f',
+            label: 'Not Passed on Cat F Self Assessment (1 Year)'
+          },
+          {
+            value: 'failed-g',
+            label: 'Not Passed on Cat G Self Assessment (2 Years)'
+          }
           ]
         } else {
           options = [{
-              value: 'passed-a-salaried',
-              label: 'Passed on Cat A Salaried'
-            },
-            {
-              value: 'passed-b-nonsalaried',
-              label: 'Passed on Cat B Non-Salaried'
-            },
-            {
-              value: 'passed-f',
-              label: 'Passed on Cat F Self Assessment (1 Year)'
-            },
-            {
-              value: 'passed-g',
-              label: 'Passed on Cat G Self Assessment (2 Years)'
-            }
+            value: 'passed-a-salaried',
+            label: 'Passed on Cat A Salaried'
+          },
+          {
+            value: 'passed-b-nonsalaried',
+            label: 'Passed on Cat B Non-Salaried'
+          },
+          {
+            value: 'passed-f',
+            label: 'Passed on Cat F Self Assessment (1 Year)'
+          },
+          {
+            value: 'passed-g',
+            label: 'Passed on Cat G Self Assessment (2 Years)'
+          }
           ]
         }
 
@@ -97,13 +97,16 @@ fm.directive('fmFeedback', ['IOService', function (IOService) {
         var setFeedbackVisibility = function (didMatch) {
           $scope.conf.reasonForNotMatch.hidden = true
           $scope.conf.matchOther.hidden = true
-          if (didMatch === 'no' && $scope.passed) {
-            $scope.conf.reasonForNotMatch.hidden = false
+
+          if (didMatch) {
             $scope.conf.matchOther.hidden = false
-          } else if (didMatch === 'no' && !$scope.passed) {
+          }
+
+          if (didMatch === 'no') {
             $scope.conf.reasonForNotMatch.hidden = false
           }
         }
+
         setFeedbackVisibility();
 
         $scope.feedbackSubmit = function (valid) {
