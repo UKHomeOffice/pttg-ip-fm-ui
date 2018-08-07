@@ -62,14 +62,16 @@ fm.directive('fmFeedback', ['IOService', function (IOService) {
             label: 'Did IPS match the paper assessment?',
             inline: true,
             options: [{
-              value: 'yes',
+              value: true,
               label: 'Yes'
             }, {
-              value: 'no',
+              value: false,
               label: 'No'
             }],
             onClick: function (options) {
-              setFeedbackVisibility(options.value)
+              var isCorrectResult = options.value
+              $scope.conf.matchOther.hidden = false
+              $scope.conf.reasonForNotMatch.hidden = isCorrectResult
             }
           },
           reasonForNotMatch: {
@@ -94,20 +96,12 @@ fm.directive('fmFeedback', ['IOService', function (IOService) {
           }
         }
 
-        var setFeedbackVisibility = function (didMatch) {
-          $scope.conf.reasonForNotMatch.hidden = true
-          $scope.conf.matchOther.hidden = true
-
-          if (didMatch) {
-            $scope.conf.matchOther.hidden = false
-          }
-
-          if (didMatch === 'no') {
-            $scope.conf.reasonForNotMatch.hidden = false
-          }
+        var hideFeedbackFields = function() {
+            $scope.conf.reasonForNotMatch.hidden = true
+            $scope.conf.matchOther.hidden = true
         }
 
-        setFeedbackVisibility();
+        hideFeedbackFields()
 
         $scope.feedbackSubmit = function (valid) {
           if (!valid) return
