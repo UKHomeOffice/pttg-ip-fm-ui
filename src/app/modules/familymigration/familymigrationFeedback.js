@@ -21,39 +21,39 @@ fm.directive('fmFeedback', ['IOService', function (IOService) {
         var options
         if ($scope.passed) {
           options = [{
-              value: 'failed-a-salaried',
-              label: 'Not Passed on Cat A Salaried'
-            },
-            {
-              value: 'failed-b-nonsalaried',
-              label: 'Not Passed on Cat B Non-Salaried'
-            },
-            {
-              value: 'failed-f',
-              label: 'Not Passed on Cat F Self Assessment (1 Year)'
-            },
-            {
-              value: 'failed-g',
-              label: 'Not Passed on Cat G Self Assessment (2 Years)'
-            }
+            value: 'failed-a-salaried',
+            label: 'Not Passed on Cat A Salaried'
+          },
+          {
+            value: 'failed-b-nonsalaried',
+            label: 'Not Passed on Cat B Non-Salaried'
+          },
+          {
+            value: 'failed-f',
+            label: 'Not Passed on Cat F Self Assessment (1 Year)'
+          },
+          {
+            value: 'failed-g',
+            label: 'Not Passed on Cat G Self Assessment (2 Years)'
+          }
           ]
         } else {
           options = [{
-              value: 'passed-a-salaried',
-              label: 'Passed on Cat A Salaried'
-            },
-            {
-              value: 'passed-b-nonsalaried',
-              label: 'Passed on Cat B Non-Salaried'
-            },
-            {
-              value: 'passed-f',
-              label: 'Passed on Cat F Self Assessment (1 Year)'
-            },
-            {
-              value: 'passed-g',
-              label: 'Passed on Cat G Self Assessment (2 Years)'
-            }
+            value: 'passed-a-salaried',
+            label: 'Passed on Cat A Salaried'
+          },
+          {
+            value: 'passed-b-nonsalaried',
+            label: 'Passed on Cat B Non-Salaried'
+          },
+          {
+            value: 'passed-f',
+            label: 'Passed on Cat F Self Assessment (1 Year)'
+          },
+          {
+            value: 'passed-g',
+            label: 'Passed on Cat G Self Assessment (2 Years)'
+          }
           ]
         }
 
@@ -69,7 +69,8 @@ fm.directive('fmFeedback', ['IOService', function (IOService) {
               label: 'No'
             }],
             onClick: function (options) {
-              setFeedbackVisibility(options.value)
+              $scope.conf.matchOther.hidden = false
+              $scope.conf.reasonForNotMatch.hidden = (options.value === 'yes')
             }
           },
           reasonForNotMatch: {
@@ -94,17 +95,12 @@ fm.directive('fmFeedback', ['IOService', function (IOService) {
           }
         }
 
-        var setFeedbackVisibility = function (didMatch) {
-          $scope.conf.reasonForNotMatch.hidden = true
-          $scope.conf.matchOther.hidden = true
-          if (didMatch === 'no' && $scope.passed) {
-            $scope.conf.reasonForNotMatch.hidden = false
-            $scope.conf.matchOther.hidden = false
-          } else if (didMatch === 'no' && !$scope.passed) {
-            $scope.conf.reasonForNotMatch.hidden = false
-          }
+        var hideFeedbackFields = function() {
+            $scope.conf.reasonForNotMatch.hidden = true
+            $scope.conf.matchOther.hidden = true
         }
-        setFeedbackVisibility();
+
+        hideFeedbackFields()
 
         $scope.feedbackSubmit = function (valid) {
           if (!valid) return
