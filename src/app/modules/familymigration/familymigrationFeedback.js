@@ -62,16 +62,15 @@ fm.directive('fmFeedback', ['IOService', function (IOService) {
             label: 'Did IPS match the paper assessment?',
             inline: true,
             options: [{
-              value: true,
+              value: 'yes',
               label: 'Yes'
             }, {
-              value: false,
+              value: 'no',
               label: 'No'
             }],
             onClick: function (options) {
-              var isCorrectResult = options.value
               $scope.conf.matchOther.hidden = false
-              $scope.conf.reasonForNotMatch.hidden = isCorrectResult
+              $scope.conf.reasonForNotMatch.hidden = (options.value === 'yes')
             }
           },
           reasonForNotMatch: {
