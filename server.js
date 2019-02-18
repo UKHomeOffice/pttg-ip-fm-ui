@@ -4,11 +4,7 @@ var app = express()
 var apiRoot = process.env.API_ROOT || 'http://localhost:8081'
 var apiBaseUrl = apiRoot + '/incomeproving/v3/'
 
-var feedbackRoot = process.env.FEEDBACK_ROOT || 'http://localhost:8081'
-var feedbackUrl = feedbackRoot + '/feedback'
-
 var httpauth = process.env.IP_API_AUTH || ''
-var feedbackHttpauth = process.env.FEEDBACK_AUTH || ''
 var uiBaseUrl = '/incomeproving/v3/'
 
 var request = require('request')
@@ -122,10 +118,6 @@ app.get('/availability', function (req, res) {
 
 app.post('/financialstatus', function (req, res) {
   stdRelay(req, res, apiBaseUrl + 'individual/financialstatus', '', req.body)
-})
-
-app.post('/feedback', function (req, res) {
-  stdRelay(req, res, feedbackUrl, '', req.body, feedbackHttpauth)
 })
 
 app.all('*', function (req, res, next) {
