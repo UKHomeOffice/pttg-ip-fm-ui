@@ -418,22 +418,5 @@ describe('app: hod.proving', () => {
         expect(fm.getNotFoundNino('Resource not found: RK123****', 'RK123456C', '')).toEqual('RK123456C')
       })
     })
-
-    describe('showFeedbackOptions', () => {
-
-      it('should display not passed feedback options determined by passed result', () => {
-        //if user is passed
-        var element = $compile('<fm-feedback passed="true" callback="feedbackDone" nino="applicant" ng-show="showFeedbackForm"></fm-feedback>')($rootScope);
-        $rootScope.$digest()
-        expect(element.html()).toContain("Not Passed on Cat A Salaried", "Not Passed on Cat B Non-Salaried", "Not Passed on Cat F Self Assessment (1 Year)", "Not Passed on Cat G Self Assessment (2 Years)");
-      })
-
-      it('should display passed feedback options determined by not passed result', () => {
-        //if user is not passed
-        var element = $compile('<fm-feedback passed="false" callback="feedbackDone" nino="applicant" ng-show="showFeedbackForm"></fm-feedback>')($rootScope);
-        $rootScope.$digest();
-        expect(element.html()).toContain("Passed on Cat A Salaried", "Passed on Cat B Non-Salaried", "Passed on Cat F Self Assessment (1 Year)", "Passed on Cat G Self Assessment (2 Years)");
-      })
-    })
   })
 })
