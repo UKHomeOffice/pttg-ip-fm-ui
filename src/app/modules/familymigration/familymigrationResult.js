@@ -6,7 +6,7 @@ familymigrationModule.constant('RESULTCODES', {
   PAY_FREQUENCY_CHANGE: 'PAY_FREQUENCY_CHANGE',
   MULTIPLE_EMPLOYERS: 'MULTIPLE_EMPLOYERS',
   UNKNOWN_PAY_FREQUENCY: 'UNKNOWN_PAY_FREQUENCY',
-  NOT_ENOUGH_RECORDS: 'NOT_ENOUGH_RECORDS'
+  NOT_ENOUGH_RECORDS: 'NOT_ENOUGH_RECORDS',
 })
 
 // #### ROUTES #### //
@@ -84,9 +84,17 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
         $scope.outcomeBoxIndividualName = $scope.individual.forename + ' ' + $scope.individual.surname
 
         if (summary.passed) {
-          state = 'passed'
-          $scope.copysummary = $scope.outcomeBoxIndividualName + ' meets the Income Proving requirement'
-          $scope.success = true
+          // Check if Category F for Self-Assessment Income
+          if (summary.category === 'F') {
+            state = 'passed'
+            $scope.selfEmployment = true
+            $scope.copysummary = 'Check for evidence of current self employment'
+            $scope.success = true
+          } else {
+            state = 'passed'
+            $scope.copysummary = $scope.outcomeBoxIndividualName + ' meets the Income Proving requirement'
+            $scope.success = true
+          }
         } else {
           $scope.copysummary = $scope.outcomeBoxIndividualName + ' does not meet the Income Proving requirement'
           $scope.success = false
@@ -96,7 +104,7 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
               state = 'notpassed/paymentfrequencychange'
               $scope.reason = 'Change in payment frequency.'
               break
-              
+
             case RESULTCODES.MULTIPLE_EMPLOYERS:
               state = 'notpassed/multipleemployers'
               $scope.reason = 'Payments from multiple employers.'
