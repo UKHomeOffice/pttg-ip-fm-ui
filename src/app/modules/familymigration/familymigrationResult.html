@@ -1,8 +1,8 @@
 <div id="page2" class="ng-scope">
   <div ng-if="haveResult">
 
-    <div id="outcome" ng-if="success" class="govuk-box-highlight">
-      <h1 class="heading-large" id="pageDynamicHeading" tabindex="-1">Passed</h1>
+    <div id="outcome" ng-if="success" class="govuk-box-highlight {{selfEmployment ? 'potential-pass': ''}}">
+      <h1 class="heading-large" id="pageDynamicHeading" tabindex="-1">{{selfEmployment ? 'Potential Pass' : 'Passed'}}</h1>
       <p><span id="outcomeBoxSummary">{{ copysummary }}</span></p>
     </div>
 
@@ -36,7 +36,7 @@
         <tr class="result__person extraspace--before">
           <th colspan="2"><span id="yourSearchIndividualName{{ $index }}" class="heading-small">{{ i.forename}} {{ i.surname }}</span></th>
         </tr>
-        
+
         <tr ng-if="success">
           <th scope="row">Income within date range</th>
           <td><span id="outcomeFromDate{{ $index }}">{{ summary.assessmentStartDate | date: dFormat }}</span> - <span id="outcomeToDate{{ $index }}">{{ summary.applicationRaisedDate | date: dFormat }}</span></td>
