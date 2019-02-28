@@ -6,7 +6,7 @@ familymigrationModule.constant('RESULTCODES', {
   PAY_FREQUENCY_CHANGE: 'PAY_FREQUENCY_CHANGE',
   MULTIPLE_EMPLOYERS: 'MULTIPLE_EMPLOYERS',
   UNKNOWN_PAY_FREQUENCY: 'UNKNOWN_PAY_FREQUENCY',
-  NOT_ENOUGH_RECORDS: 'NOT_ENOUGH_RECORDS',
+  NOT_ENOUGH_RECORDS: 'NOT_ENOUGH_RECORDS'
 })
 
 // #### ROUTES #### //
@@ -89,6 +89,7 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
             state = 'passed'
             $scope.selfEmployment = true
             $scope.copysummary = 'Check for evidence of current self employment'
+            $scope.assessmentEndDate = calculateEndOfTaxYear(summary.assessmentStartDate)
             $scope.success = true
           } else {
             state = 'passed'
@@ -126,8 +127,6 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
           }
         }
       } else {
-        console.log('ERROR', res)
-        console.log($scope.applicant)
         $scope.showFeedbackForm = false
         $scope.showFeedbackThanks = false
         if (res.status === 404 && res.data && res.data.status && res.data.status.code === '0009') {
@@ -181,6 +180,12 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
           return copyText
         }
       })
+
+      function calculateEndOfTaxYear (assessmentStartDate) {
+        var assessmentStartDateSplit = assessmentStartDate.split('-')
+        var assessmentStartDateYear = parseInt(assessmentStartDateSplit[0])
+        return '05/04/' + (assessmentStartDateYear + 1)
+      }
 
       var timeoutResetButtonText = function () {
         $timeout(function () {

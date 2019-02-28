@@ -24,7 +24,8 @@
 
       <li ng-if="haveResult">Check that the name matches the applicant's details</li>
       <li>Check that you have entered the correct information</li>
-      <li id="whatToDoNextSubHeading" ng-if="!success">You should consider if the applicant meets the financial requirement under any other category.</li>
+      <li id="whatToDoNextSubHeading" ng-if="!success">You should consider if the applicant meets the financial requirement under any other category</li>
+      <li ng-if="selfEmployment">Check for evidence of current Self Employment activity</li>
     </ol>
   </div>
 
@@ -39,7 +40,7 @@
 
         <tr ng-if="success">
           <th scope="row">Income within date range</th>
-          <td><span id="outcomeFromDate{{ $index }}">{{ summary.assessmentStartDate | date: dFormat }}</span> - <span id="outcomeToDate{{ $index }}">{{ summary.applicationRaisedDate | date: dFormat }}</span></td>
+          <td><span id="outcomeFromDate{{ $index }}">{{ summary.assessmentStartDate | date: dFormat }}</span> - <span id="outcomeToDate{{ $index }}">{{ selfEmployment ? assessmentEndDate : summary.applicationRaisedDate | date: dFormat }}</span></td>
         </tr>
 
         <tr ng-if="i.employers.length">
