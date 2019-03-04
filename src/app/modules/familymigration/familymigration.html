@@ -22,7 +22,7 @@
       <hod-text name="nino" label="National Insurance number" field="applicant.nino" config="conf.nino"></hod-text>
 
       <div class="details" style="margin-bottom: 30px;">
-        <a class="summary" ng-click="secondIndividualtoggle()" ng-class="{'summary--open': showJoint}" id="secondIndividualBtn">{{ partnerBtnText }}</a>
+        <a href="" title="Add a second individual" class="summary" ng-click="secondIndividualtoggle()" ng-class="{'summary--open': showJoint}" id="secondIndividualBtn">{{ partnerBtnText }}</a>
         <div class="panel panel-border-narrow" ng-if="showJoint">
           <hod-text name="partnerForename" label="First name" field="partner.forename" config="conf.partner.forename"></hod-text>
       

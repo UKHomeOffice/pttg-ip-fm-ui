@@ -123,16 +123,16 @@ familymigrationModule.controller(
 
     $scope.secondIndividualtoggle = function () {
       var partner = FamilymigrationService.getPartner()
-      if (!partner) {
-        $scope.showJoint = true
-        $scope.partner = FamilymigrationService.addPartner()
-        $scope.partnerBtnText = 'Remove second individual'
-      } else {
-        $scope.showJoint = false
-        FamilymigrationService.removePartner()
-        $scope.partner = null
-        $scope.partnerBtnText = 'Add a second individual'
-      }
+        if (!partner) {
+          $scope.showJoint = true
+          $scope.partner = FamilymigrationService.addPartner()
+          $scope.partnerBtnText = 'Remove second individual'
+        } else {
+            $scope.showJoint = false
+            FamilymigrationService.removePartner()
+            $scope.partner = null
+            $scope.partnerBtnText = 'Add a second individual'
+          }
     }
 
     $scope.detailsSubmit = function (isValid, formScope) {
