@@ -61,13 +61,8 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
       $scope.showJoint = ($scope.partner)
       $scope.haveResult = FamilymigrationService.haveResult()
 
-      $scope.showFeedbackForm = true
-      $scope.showFeedbackThanks = false
-      $scope.showNewSearchButton = false
-      $scope.feedback = {}
-      $scope.yesNoOptions = [{ value: 'yes', label: 'Yes' }, { value: 'no', label: 'No' }]
+      $scope.showNewSearchButton = true
 
-      $scope.feedback = { reasonForNotMatch: {} }
       $scope.dFormat = 'dd/MM/yyyy'
 
       if (!res.status) {
@@ -134,7 +129,6 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
           var partnerNino = $scope.partner ? $scope.partner.nino : ''
           $scope.heading = 'There is no record for ' + FamilymigrationService.getNotFoundNino(res.data.status.message, $scope.applicant.nino, partnerNino) + ' with HMRC'
           $scope.reason = 'We couldn\'t perform the financial requirement check as no income information exists with HMRC.'
-          $scope.showNewSearchButton = true
         } else if (res.status === 404) {
           $scope.heading = 'Incoming Proving Service Currently Unavailable'
           $scope.reason = 'The page will now reload.'
@@ -155,10 +149,6 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
           state = 'failure'
         }
       };
-
-      $scope.feedbackDone = function () {
-        $scope.showNewSearchButton = true
-      }
 
       $scope.newSearch = function () {
         $window.location.reload()

@@ -1,5 +1,4 @@
 const chai = require('chai')
-const assert = chai.assert
 const chaiAsPromised = require('chai-as-promised')
 const expect = chai.expect
 const _ = require('underscore')
@@ -10,16 +9,6 @@ const {defineSupportCode} = require('cucumber')
 const mockdata = require('./mockdata')
 const request = require('request')
 chai.use(chaiAsPromised)
-
-const makePromise = (val, status) => {
-  return new Promise((resolve, reject) => {
-    if (status) {
-      resolve(val)
-    } else {
-      reject(val)
-    }
-  })
-}
 
 const urls = {
   financialstatus: 'incomeproving/v3/individual/financialstatus'
@@ -365,14 +354,6 @@ defineSupportCode(function ({Given, When, Then}) {
     })
   })
 
-  Given(/^the feedback form is completed$/, {timeout: 10 * 1000}, function (table) {
-    const d = this.driver
-    const data = toCamelCaseKeys(_.object(table.rawTable))
-    return completeInputs(d, data).then(function () {
-      return submitAction(d)
-    })
-  })
-
   Given(/^the form is filled in$/, {timeout: 10 * 1000}, function (tableOrCallback) {
     const d = this.driver
     if (typeof tableOrCallback === 'function') {
@@ -505,9 +486,5 @@ defineSupportCode(function ({Given, When, Then}) {
         })
       })
     })
-  })
-
-  Then(/^the feedback form is not displayed$/i, function () {
-    return confirmVisible(this.driver, {'hodForm': 'na'}, false, 0)
   })
 })
