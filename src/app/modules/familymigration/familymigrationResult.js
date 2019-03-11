@@ -122,6 +122,8 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
           }
         }
       } else {
+        console.log('ERROR', res)
+        console.log($scope.applicant)
         $scope.showFeedbackForm = false
         $scope.showFeedbackThanks = false
         if (res.status === 404 && res.data && res.data.status && res.data.status.code === '0009') {

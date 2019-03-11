@@ -37,12 +37,10 @@
         <tr class="result__person extraspace--before">
           <th colspan="2"><span id="yourSearchIndividualName{{ $index }}" class="heading-small">{{ i.forename}} {{ i.surname }}</span></th>
         </tr>
-
         <tr ng-if="success">
           <th scope="row">Income within date range</th>
           <td><span id="outcomeFromDate{{ $index }}">{{ summary.assessmentStartDate | date: dFormat }}</span> - <span id="outcomeToDate{{ $index }}">{{ selfEmployment ? assessmentEndDate : summary.applicationRaisedDate | date: dFormat }}</span></td>
         </tr>
-
         <tr ng-if="i.employers.length">
           <th scope="row">Employers</th>
           <td>
