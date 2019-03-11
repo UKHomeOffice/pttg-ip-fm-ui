@@ -89,7 +89,7 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
             state = 'passed'
             $scope.selfEmployment = true
             $scope.copysummary = 'Check for evidence of current self employment'
-            $scope.assessmentEndDate = calculateEndOfTaxYear(summary.assessmentStartDate)
+            $scope.assessmentEndDate = FamilymigrationService.calculateEndOfTaxYear(summary.assessmentStartDate)
             $scope.success = true
           } else {
             state = 'passed'
@@ -180,12 +180,6 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
           return copyText
         }
       })
-
-      function calculateEndOfTaxYear (assessmentStartDate) {
-        var assessmentStartDateSplit = assessmentStartDate.split('-')
-        var assessmentStartDateYear = parseInt(assessmentStartDateSplit[0])
-        return '05/04/' + (assessmentStartDateYear + 1)
-      }
 
       var timeoutResetButtonText = function () {
         $timeout(function () {
