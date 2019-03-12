@@ -26,6 +26,7 @@ familymigrationModule.config(['$stateProvider', '$urlRouterProvider', function (
 familymigrationModule.controller(
 'FamilymigrationDetailsCtrl', ['$rootScope', '$scope', '$state', '$stateParams', 'FamilymigrationService', 'IOService', '$window', '$timeout',
   function ($rootScope, $scope, $state, $stateParams, FamilymigrationService, IOService, $window) {
+    $window.document.title = 'Search - Income Proving Service'
     // track that we're now on the main form details page
     ga('set', 'page', $state.href($state.current.name, $stateParams))
     ga('send', 'pageview')
