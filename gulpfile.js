@@ -52,6 +52,7 @@ var config = {
 
 gulp.task('assets', function () {
   gulp.src([sourcePath + 'assets/**/*']).pipe(gulp.dest(target + 'assets'))
+  gulp.src(['node_modules/details-element-polyfill/dist/*']).pipe(gulp.dest(target + 'assets'))
 })
 
 gulp.task('sassjs', function () {
