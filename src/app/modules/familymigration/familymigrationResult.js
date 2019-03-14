@@ -54,7 +54,7 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
     ) {
       var state = 'error'
       var res = FamilymigrationService.getLastAPIresponse()
-
+      $window.document.title = 'Result - Income Proving Service'
       $scope.search = FamilymigrationService.getSearch()
       $scope.applicant = FamilymigrationService.getApplicant()
       $scope.partner = FamilymigrationService.getPartner()
