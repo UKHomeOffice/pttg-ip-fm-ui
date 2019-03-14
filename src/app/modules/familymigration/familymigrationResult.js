@@ -79,9 +79,15 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
         $scope.outcomeBoxIndividualName = $scope.individual.forename + ' ' + $scope.individual.surname
 
         if (summary.passed) {
-          state = 'passed'
-          $scope.copysummary = $scope.outcomeBoxIndividualName + ' meets the Income Proving requirement'
           $scope.success = true
+          state = 'passed'
+          if (isSelfAssessment(summary.category)) {
+            $scope.selfEmployment = true
+            $scope.copysummary = 'Check for evidence of current self employment'
+            $scope.assessmentEndDate = FamilymigrationService.calculateEndOfTaxYear(summary.assessmentStartDate)
+          } else {
+            $scope.copysummary = $scope.outcomeBoxIndividualName + ' meets the Income Proving requirement'
+          }
         } else {
           $scope.copysummary = $scope.outcomeBoxIndividualName + ' does not meet the Income Proving requirement'
           $scope.success = false
@@ -91,7 +97,7 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
               state = 'notpassed/paymentfrequencychange'
               $scope.reason = 'Change in payment frequency.'
               break
-              
+
             case RESULTCODES.MULTIPLE_EMPLOYERS:
               state = 'notpassed/multipleemployers'
               $scope.reason = 'Payments from multiple employers.'
@@ -115,6 +121,8 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
       } else {
         console.log('ERROR', res)
         console.log($scope.applicant)
+        $scope.showFeedbackForm = false
+        $scope.showFeedbackThanks = false
         if (res.status === 404 && res.data && res.data.status && res.data.status.code === '0009') {
           state = 'failure/norecord'
           var partnerNino = $scope.partner ? $scope.partner.nino : ''
@@ -167,6 +175,10 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
           $scope.copyToClipboardBtnText = RESULT_TEXT.copybtn
           $scope.$applyAsync()
         }, 2000)
+      }
+
+      function isSelfAssessment (summaryCategory) {
+        return summaryCategory === 'F'
       }
 
       clipboard.on('success', function (e) {

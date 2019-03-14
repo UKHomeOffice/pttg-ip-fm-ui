@@ -236,6 +236,12 @@ familymigrationModule.factory('FamilymigrationService', ['IOService', '$state', 
     return failedNino
   }
 
+  this.calculateEndOfTaxYear = function (assessmentStartDate) {
+    var assessmentStartDateSplit = assessmentStartDate.split('-')
+    var assessmentStartDateYear = parseInt(assessmentStartDateSplit[0])
+    return '05/04/' + (assessmentStartDateYear + 1)
+  }
+
   this.reset()
   return this
 }])

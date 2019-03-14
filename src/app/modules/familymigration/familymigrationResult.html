@@ -1,8 +1,8 @@
 <div id="page2" class="ng-scope">
   <div ng-if="haveResult">
 
-    <div id="outcome" ng-if="success" class="govuk-box-highlight">
-      <h1 class="heading-large" id="pageDynamicHeading" tabindex="-1">Passed</h1>
+    <div id="outcome" ng-if="success" class="govuk-box-highlight {{selfEmployment ? 'potential-pass': ''}}">
+      <h1 class="heading-large" id="pageDynamicHeading" tabindex="-1">{{selfEmployment ? 'Potential Pass' : 'Passed'}}</h1>
       <p><span id="outcomeBoxSummary">{{ copysummary }}</span></p>
     </div>
 
@@ -24,7 +24,8 @@
 
       <li ng-if="haveResult">Check that the name matches the applicant's details</li>
       <li>Check that you have entered the correct information</li>
-      <li id="whatToDoNextSubHeading" ng-if="!success">You should consider if the applicant meets the financial requirement under any other category.</li>
+      <li id="whatToDoNextSubHeading" ng-if="!success">You should consider if the applicant meets the financial requirement under any other category</li>
+      <li ng-if="selfEmployment">Check for evidence of current Self Employment activity</li>
     </ol>
   </div>
 
@@ -36,12 +37,10 @@
         <tr class="result__person extraspace--before">
           <th colspan="2"><span id="yourSearchIndividualName{{ $index }}" class="heading-small">{{ i.forename}} {{ i.surname }}</span></th>
         </tr>
-        
         <tr ng-if="success">
           <th scope="row">Income within date range</th>
-          <td><span id="outcomeFromDate{{ $index }}">{{ summary.assessmentStartDate | date: dFormat }}</span> - <span id="outcomeToDate{{ $index }}">{{ summary.applicationRaisedDate | date: dFormat }}</span></td>
+          <td><span id="outcomeFromDate{{ $index }}">{{ summary.assessmentStartDate | date: dFormat }}</span> - <span id="outcomeToDate{{ $index }}">{{ selfEmployment ? assessmentEndDate : summary.applicationRaisedDate | date: dFormat }}</span></td>
         </tr>
-
         <tr ng-if="i.employers.length">
           <th scope="row">Employers</th>
           <td>
