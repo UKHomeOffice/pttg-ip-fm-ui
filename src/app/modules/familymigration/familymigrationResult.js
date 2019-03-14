@@ -79,17 +79,14 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
         $scope.outcomeBoxIndividualName = $scope.individual.forename + ' ' + $scope.individual.surname
 
         if (summary.passed) {
-          // Check if Category F for Self-Assessment Income
-          if (summary.category === 'F') {
-            state = 'passed'
+          $scope.success = true
+          state = 'passed'
+          if (isSelfAssessment(summary.category)) {
             $scope.selfEmployment = true
             $scope.copysummary = 'Check for evidence of current self employment'
             $scope.assessmentEndDate = FamilymigrationService.calculateEndOfTaxYear(summary.assessmentStartDate)
-            $scope.success = true
           } else {
-            state = 'passed'
             $scope.copysummary = $scope.outcomeBoxIndividualName + ' meets the Income Proving requirement'
-            $scope.success = true
           }
         } else {
           $scope.copysummary = $scope.outcomeBoxIndividualName + ' does not meet the Income Proving requirement'
@@ -178,6 +175,10 @@ familymigrationModule.controller('FamilymigrationResultCtrl',
           $scope.copyToClipboardBtnText = RESULT_TEXT.copybtn
           $scope.$applyAsync()
         }, 2000)
+      }
+
+      function isSelfAssessment (summaryCategory) {
+        return summaryCategory === 'F'
       }
 
       clipboard.on('success', function (e) {
