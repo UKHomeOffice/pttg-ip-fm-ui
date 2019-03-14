@@ -17,7 +17,7 @@
       
       <hod-text name="surname" label="Surname" field="applicant.surname" config="conf.surname"></hod-text>
       
-      <hod-date name="dateOfBirth" label="Date of birth" field="applicant.dateOfBirth" config="conf.dateOfBirth"></hod-date>
+      <hod-date name="dateOfBirth" label="Date of birth" field="applicant.dateOfBirth" config="conf.dateOfBirth" hint="For example, '11 12 2001'"></hod-date>
 
       <hod-text name="nino" label="National Insurance number" field="applicant.nino" config="conf.nino"></hod-text>
 
@@ -28,7 +28,7 @@
       
           <hod-text name="partnerSurname" label="Surname" field="partner.surname" config="conf.partner.surname"></hod-text>
           
-          <hod-date name="partnerDateOfBirth" label="Date of birth" field="partner.dateOfBirth" config="conf.partner.dateOfBirth"></hod-date>
+          <hod-date name="partnerDateOfBirth" label="Date of birth" field="partner.dateOfBirth" config="conf.partner.dateOfBirth" hint="For example, '11 12 2001'"></hod-date>
 
           <hod-text name="partnerNino" label="National Insurance number" field="partner.nino" config="conf.partner.nino"></hod-text>
         </div>  
@@ -37,7 +37,7 @@
 
       <hod-number name="dependants" label="Number of dependants" field="search.dependants" config="conf.dependants" required="false"></hod-number>
 
-      <hod-date name="applicationRaisedDate" label="Application raised date" field="search.applicationRaisedDate" config="conf.applicationRaisedDate"></hod-date>
+      <hod-date name="applicationRaisedDate" label="Application raised date" field="search.applicationRaisedDate" config="conf.applicationRaisedDate" hint="For example, '11 12 2018'"></hod-date>
 
       <hod-submit value="{{ submitButton.text }}" disabled="{{ submitButton.disabled }}"></hod-submit>
 
