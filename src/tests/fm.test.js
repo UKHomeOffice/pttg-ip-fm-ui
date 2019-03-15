@@ -418,10 +418,10 @@ describe('app: hod.proving', () => {
       })
     })
 
-    // describe('shouldCalculateEndOfAssessmentTaxYear', () => {
-    //   it('should return the correct end date for the tax year', () => {
-    //     expect(fm.calculateEndOfTaxYear('2018-04-07')).toEqual('05/04/2019')
-    //   })
-    // })
+    describe('shouldCalculateEndOfAssessmentTaxYear', () => {
+      it('should return the correct end date for the tax year', () => {
+        expect(fm.calculateEndOfTaxYear('2018-04-07')).toEqual('05/04/2019')
+      })
+    })
   })
 })
