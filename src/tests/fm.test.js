@@ -73,9 +73,9 @@ const getTestResponse = (applicant, partner) => {
   }
 
   _.each(data.categoryChecks, (c) => {
-    c.individuals[0] = {
-      nino: applicantObj.nino,
-      employers: applicantObj.employers
+     c.individuals[0] = {
+       nino: applicantObj.nino,
+       employers: applicantObj.employers
     }
 
     if (partnerObj) {
