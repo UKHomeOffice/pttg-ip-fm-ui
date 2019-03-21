@@ -50,12 +50,13 @@ var config = {
   }
 }
 
-gulp.task('assets', function () {
+gulp.task('assets', function (done) {
   gulp.src([sourcePath + 'assets/**/*']).pipe(gulp.dest(target + 'assets'))
   gulp.src(['node_modules/details-element-polyfill/dist/*']).pipe(gulp.dest(target + 'assets'))
+  done();
 })
 
-gulp.task('sassjs', function () {
+gulp.task('sassjs', function (done) {
   sassjs.render({
     file: config.sass.src,
     includePaths: ['node_modules/govuk-elements-sass/public/sass',
@@ -75,6 +76,7 @@ gulp.task('sassjs', function () {
       })
     }
   })
+  done();
 })
 
 gulp.task('minifyHtml', function () {
@@ -126,8 +128,8 @@ gulp.task('vendor', function () {
   .pipe(gulp.dest(target + 'app'))
 })
 
-gulp.task('templateAndUglify', function () {
-  async.series([
+gulp.task('templateAndUglify', function (done) {
+  gulp.series([
     function (done) {
       run(['angTemplates'], function () {
         done()
@@ -141,6 +143,7 @@ gulp.task('templateAndUglify', function () {
   ], function () {
     console.log('templateAndUglify done')
   })
+  done();
 })
 
 gulp.task('startwatch', function () {
@@ -154,10 +157,10 @@ gulp.task('startwatch', function () {
     ignore: ['node_modules/**'],
     watch: ['server.js']
   })
-  gulp.watch(sourcePath + '*.html', ['minifyHtml'])
-  gulp.watch(sourcePath + 'app/modules/**/*.html', ['templateAndUglify'])
-  gulp.watch([sourcePath + 'app/main.js', sourcePath + 'app/modules/**/*.js'], ['uglify'])
-  gulp.watch(sourcePath + 'styles/*.scss', ['sassjs'])
+  gulp.watch(sourcePath + '*.html', gulp.series('minifyHtml'))
+  gulp.watch(sourcePath + 'app/modules/**/*.html', gulp.series('templateAndUglify'))
+  gulp.watch([sourcePath + 'app/main.js', sourcePath + 'app/modules/**/*.js'], gulp.series('uglify'))
+  gulp.watch(sourcePath + 'styles/*.scss', gulp.series('sassjs'))
 })
 
 gulp.task('test', function (done) {
@@ -166,7 +169,6 @@ gulp.task('test', function (done) {
   server.start()
 })
 
-gulp.task('build', ['assets', 'sassjs', 'minifyHtml', 'vendor', 'templateAndUglify'])
-gulp.task('watch', ['startwatch', 'vendor'])
-gulp.task('default', ['build'])
-gulp.task('inline', ['default', 'inlineHTML'])
+gulp.task('build', gulp.series('assets', 'sassjs', 'minifyHtml', 'vendor', 'templateAndUglify'))
+gulp.task('watch', gulp.series('startwatch', 'vendor'))
+gulp.task('default', gulp.series('build'))
