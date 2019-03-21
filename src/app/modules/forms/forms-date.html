@@ -6,17 +6,20 @@
 
     <div class="form-group form-group-day">
       <label for="{{ config.id }}Day">Day</label>
-      <input class="form-control" name="{{ name }}Day" id="{{ config.id }}Day" type="text" ng-model="data.day" ng-change="dateChanged()" autocomplete="off" maxlength="2" />
+      <input class="form-control" name="{{ name }}Day" id="{{ config.id }}Day" type="text" ng-model="data.day" 
+          ng-change="dateChanged()" autocomplete="off" maxlength="2" aria-label="Date. For example, '11 12 2018', Day"/>
     </div>
 
     <div class="form-group form-group-month">
       <label for="{{ config.id }}Month">Month</label>
-      <input class="form-control" name="{{ name }}Month" id="{{ config.id }}Month" type="text" ng-model="data.month" ng-change="dateChanged()" autocomplete="off" maxlength="2" />
+      <input class="form-control" name="{{ name }}Month" id="{{ config.id }}Month" type="text" ng-model="data.month"
+           ng-change="dateChanged()" autocomplete="off" maxlength="2"/>
     </div>
 
     <div class="form-group form-group-year">
       <label for="{{ config.id }}Year">Year</label>
-      <input class="form-control" name="{{ name }}Year" id="{{ config.id }}Year" type="text" ng-model="data.year" ng-change="dateChanged()" autocomplete="off" maxlength="4" />
+      <input class="form-control" name="{{ name }}Year" id="{{ config.id }}Year" type="text" ng-model="data.year" 
+          ng-change="dateChanged()" autocomplete="off" maxlength="4"/>
     </div>
   </div>
 </fieldset>
