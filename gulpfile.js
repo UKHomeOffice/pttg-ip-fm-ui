@@ -2,9 +2,6 @@ var target = 'public/'
 var sourcePath = 'src/'
 
 var gulp = require('gulp')
-var async = require('async')
-var run = require('run-sequence')
-var fs = require('fs')
 var uglify = require('gulp-uglify')
 var templateCache = require('gulp-angular-templatecache')
 var concat = require('gulp-concat')
@@ -12,7 +9,6 @@ var plumber = require('gulp-plumber')
 var gutil = require('gulp-util')
 var mkdirp = require('mkdirp')
 
-var autoprefixer = require('gulp-autoprefixer')
 var htmlmin = require('gulp-htmlmin')
 var sourcemaps = require('gulp-sourcemaps')
 var sassjs = require('sass')
