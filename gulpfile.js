@@ -8,6 +8,7 @@ var concat = require('gulp-concat')
 var plumber = require('gulp-plumber')
 var gutil = require('gulp-util')
 var mkdirp = require('mkdirp')
+var fs = require('fs')
 
 var htmlmin = require('gulp-htmlmin')
 var sourcemaps = require('gulp-sourcemaps')
