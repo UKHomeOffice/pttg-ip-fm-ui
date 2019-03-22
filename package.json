@@ -10,7 +10,9 @@
     "test:unit": "gulp test",
     "test:bdd": "./node_modules/.bin/cucumber.js",
     "postinstall": "gulp",
-    "watch": "gulp watch"
+    "watch": "gulp watch",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "dependencies": {
     "angular": "^1.6.5",
@@ -25,12 +27,12 @@
     "govuk-elements-sass": "^2.2.1",
     "govuk_frontend_toolkit": "^5.2.0",
     "graceful-fs": "^4.1.11",
-    "gulp": "^3.9.1",
+    "gulp": "^4.0.0",
     "gulp-angular-templatecache": "^2.0.0",
     "gulp-autoprefixer": "^3.1.1",
     "gulp-compass": "^2.1.0",
     "gulp-concat": "^2.6.1",
-    "gulp-htmlmin": "^2.0.0",
+    "gulp-htmlmin": "^3.0.0",
     "gulp-inject": "^3.0.0",
     "gulp-load-plugins": "^1.5.0",
     "gulp-plumber": "^1.1.0",
@@ -46,7 +48,8 @@
     "sass": "^1.5.1",
     "serve-static": "^1.13.0",
     "underscore": "^1.8.3",
-    "uuid": "^3.1.0"
+    "uuid": "^3.1.0",
+    "snyk": "^1.143.0"
   },
   "optionalDependencies": {
     "fsevents": "1.2.2"
@@ -69,5 +72,6 @@
     "karma-spec-reporter": "0.0.26",
     "selenium-webdriver": "^3.4.0",
     "standard": "^10.0.2"
-  }
+  },
+  "snyk": true
 }
