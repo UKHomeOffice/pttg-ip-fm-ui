@@ -46,7 +46,6 @@ This project is licensed under the MIT License - see the [LICENCE.md]
 file for details.
 
 
-
 [contributors]:                     https://github.com/UKHomeOffice/pttg-ip-fm-ui/graphs/contributors
 [pttg-ip-api]:                      https://github.com/UKHomeOffice/pttg-ip-api
 [Quay.io]:                          https://quay.io/repository/ukhomeofficedigital/pttg-ip-fm-ui
