@@ -51,6 +51,7 @@ pipeline:
     image: plugins/git
     commands:
       - git clone https://github.com/UKHomeOffice/kube-pttg-ip-fm-ui.git
+      - git branch -b EE-12142-proxy-timeout
     when:
       event: [push, deployment, tag]
 
