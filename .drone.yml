@@ -66,6 +66,8 @@ pipeline:
       - pttg_ip_dev
     commands:
       - cd kube-pttg-ip-fm-ui
+      - git branch
+      - git checkout -b EE-12142-proxy-timeout
       - ./deploy.sh
     when:
       branch: [master, EE-12142-timeout-response]
