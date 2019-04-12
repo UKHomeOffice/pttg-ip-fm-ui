@@ -12,11 +12,11 @@
     </div>
 
     <hod-form name="familyDetails" submit="detailsSubmit">
-      
+
       <hod-text name="forename" label="First name" field="applicant.forename" config="conf.forename"></hod-text>
-      
+
       <hod-text name="surname" label="Surname" field="applicant.surname" config="conf.surname"></hod-text>
-      
+
       <hod-date name="dateOfBirth" label="Date of birth" field="applicant.dateOfBirth" config="conf.dateOfBirth" hint="For example, '11 12 2001'"></hod-date>
 
       <hod-text name="nino" label="National Insurance number" field="applicant.nino" config="conf.nino"></hod-text>
@@ -25,15 +25,15 @@
         <a href="" title="Add a second individual" class="summary" ng-click="secondIndividualtoggle()" ng-class="{'summary--open': showJoint}" id="secondIndividualBtn">{{ partnerBtnText }}</a>
         <div class="panel panel-border-narrow" ng-if="showJoint">
           <hod-text name="partnerForename" label="First name" field="partner.forename" config="conf.partner.forename"></hod-text>
-      
+
           <hod-text name="partnerSurname" label="Surname" field="partner.surname" config="conf.partner.surname"></hod-text>
-          
+
           <hod-date name="partnerDateOfBirth" label="Date of birth" field="partner.dateOfBirth" config="conf.partner.dateOfBirth" hint="For example, '11 12 2001'"></hod-date>
 
           <hod-text name="partnerNino" label="National Insurance number" field="partner.nino" config="conf.partner.nino"></hod-text>
-        </div>  
+        </div>
       </div>
-      
+
 
       <hod-number name="dependants" label="Number of dependants" field="search.dependants" config="conf.dependants" required="false"></hod-number>
 
