@@ -41,15 +41,8 @@ Note that the UI needs a back-end to talk to, which is provided by [pttg-ip-api]
 
 ## Dependencies
 
-The full suite of components in the whole Income Proving service are:
+This service depends upon:
 * [pttg-ip-api]
-* [pttg-ip-hmrc]
-* [pttg-ip-hmrc-access-code]
-* [pttg-ip-audit]
-* [pttg-feedback]
-* [pttg-feedback-export]
-* [pttg-postgres]
-* [pttg-ip-stats-ui]
 
 ## Find Us
 
@@ -78,10 +71,3 @@ This project is licensed under the MIT License - see the [LICENCE.md] file for d
 [LICENCE.md]:                       LICENCE.md
 [GitHub]:                           https://github.com/orgs/UKHomeOffice/teams/pttg
 [pttg-ip-api]:                      https://github.com/UKHomeOffice/pttg-ip-api
-[pttg-ip-hmrc]:                     https://github.com/UKHomeOffice/pttg-ip-hmrc
-[pttg-ip-hmrc-access-code]:         https://github.com/UKHomeOffice/pttg-ip-hmrc-access-code
-[pttg-ip-audit]:                    https://github.com/UKHomeOffice/pttg-ip-audit
-[pttg-feedback]:                    https://github.com/UKHomeOffice/pttg-feedback
-[pttg-feedback-export]:             https://github.com/UKHomeOffice/pttg-feedback-export
-[pttg-postgres]:                    https://github.com/UKHomeOffice/pttg-postgres
-[pttg-ip-stats-ui]:                 https://github.com/UKHomeOffice/pttg-ip-stats-ui
