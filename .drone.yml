@@ -7,7 +7,7 @@ pipeline:
     commands:
       - docker build -t pttg-ip-fm-ui .
     when:
-      branch: [EE-20643, master]
+      branch: master
       event: push
 
   test:
@@ -31,7 +31,7 @@ pipeline:
       - docker tag pttg-ip-fm-ui quay.io/ukhomeofficedigital/pttg-ip-fm-ui:build-$${DRONE_BUILD_NUMBER}
       - docker push quay.io/ukhomeofficedigital/pttg-ip-fm-ui:build-$${DRONE_BUILD_NUMBER}
     when:
-      branch: [EE-20643, master]
+      branch: master
       event: push
 
   tag-docker-image-with-git-tag:
@@ -67,7 +67,7 @@ pipeline:
       - cd kube-pttg-ip-fm-ui
       - ./deploy.sh
     when:
-      branch: [EE-20643, master]
+      branch: master
       event: [push, tag]
 
   deployment:
