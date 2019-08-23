@@ -1,5 +1,16 @@
 pipeline:
 
+  update-version:
+    image: quay.io/ukhomeofficedigital/docker-openjdk8-git:v1.5.0
+    secrets:
+      - github_ssh_key
+    commands:
+      - sh /root/git-utilities/set-up-github-user.sh "$${GITHUB_SSH_KEY}"
+      - ./gradlew release -Prelease.useAutomaticVersion=true -x runBuildTasks -s -i
+    when:
+      branch: [master]
+      event: [push]
+
   build-docker-image:
     image: docker:17.09.1
     environment:
