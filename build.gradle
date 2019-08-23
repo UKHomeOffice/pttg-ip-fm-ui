@@ -1,0 +1,14 @@
+buildscript {
+}
+
+plugins {
+    id 'net.researchgate.release' version '2.6.0'
+}
+
+task build() {}
+
+release {
+    preTagCommitMessage = '[Gradle Release Plugin] (EE-21422) [CI SKIP] - pre tag commit: '
+    tagCommitMessage = '[Gradle Release Plugin] (EE-21422) - creating tag: '
+    newVersionCommitMessage = '[Gradle Release Plugin] (EE-21422) [CI SKIP] - new version commit: '
+}
