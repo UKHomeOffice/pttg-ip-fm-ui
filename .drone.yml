@@ -66,7 +66,7 @@ pipeline:
       event: [push, deployment, tag]
 
   deploy-to-dev-from-build-number:
-    image: quay.io/ukhomeofficedigital/kd:v0.8.0
+    image: quay.io/ukhomeofficedigital/kd:v1.14.0
     environment:
       - KUBE_NAMESPACE=pttg-ip-dev
       - ENVIRONMENT=dev
@@ -83,7 +83,7 @@ pipeline:
       event: [push, tag]
 
   deployment:
-    image: quay.io/ukhomeofficedigital/kd:v0.8.0
+    image: quay.io/ukhomeofficedigital/kd:v1.14.0
     environment:
       - KUBE_NAMESPACE=pttg-ip-${DRONE_DEPLOY_TO}
       - ENVIRONMENT=${DRONE_DEPLOY_TO}
@@ -100,7 +100,7 @@ pipeline:
       environment: [dev, test, preprod]
 
   deploy-to-prod:
-    image: quay.io/ukhomeofficedigital/kd:v0.8.0
+    image: quay.io/ukhomeofficedigital/kd:v1.14.0
     environment:
       - KUBE_NAMESPACE=pttg-ip-pr
       - ENVIRONMENT=pr
