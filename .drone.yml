@@ -55,7 +55,7 @@ pipeline:
       - docker tag pttg-ip-fm-ui quay.io/ukhomeofficedigital/pttg-ip-fm-ui:${DRONE_BRANCH}
       - docker push quay.io/ukhomeofficedigital/pttg-ip-fm-ui:${DRONE_BRANCH}
     when:
-      branch: EE-20414
+      branch:
         exclude: master
       event: push
 
