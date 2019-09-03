@@ -16,6 +16,7 @@ var moment = require('moment')
 var uuid = require('uuid/v4')
 var fs = require('fs')
 var bodyParser = require('body-parser')
+var logger = require('./logger')
 app.use(bodyParser.json())
 
 // required when running BDDs to force to root directory
@@ -68,7 +69,7 @@ var stdRelay = function (req, res, uri, qs, postdata, auth) {
     }
 
     console.log(moment().toISOString(), 'RESPONSE', headers['x-correlation-id'], opts.method, opts.uri, status, error)
-    console.log(body)
+    logger.info(body)
 
     res.setHeader('Content-Type', 'application/json')
     res.status(status)
