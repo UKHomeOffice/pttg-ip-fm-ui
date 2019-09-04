@@ -1,11 +1,7 @@
 const winston = require('winston');
 const { format } = require('logform');
-
 const { combine, timestamp, json } = format;
 
-const transports = [
-    new winston.transports.Console(),
-];
 
 const logger = winston.createLogger({
     level: 'info',
@@ -13,10 +9,12 @@ const logger = winston.createLogger({
         timestamp({ alias: '@timestamp' }),
         json(),
     ),
-    transports,
+    transports: [
+        new winston.transports.Console()
+    ],
     defaultMeta: {
         appName: 'pttg-ip-fm-ui',
     },
-});
+})
 
 module.exports = logger;
