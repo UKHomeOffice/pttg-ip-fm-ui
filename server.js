@@ -69,7 +69,7 @@ var stdRelay = function (req, res, uri, qs, postdata, auth) {
     }
 
     console.log(moment().toISOString(), 'RESPONSE', headers['x-correlation-id'], opts.method, opts.uri, status, error)
-    console.log(redactedResponse(body));
+    console.log(redactedResponse(body).toString());
 
     res.setHeader('Content-Type', 'application/json')
     res.status(status)
