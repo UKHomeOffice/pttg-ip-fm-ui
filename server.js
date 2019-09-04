@@ -72,8 +72,8 @@ var stdRelay = function (req, res, uri, qs, postdata, auth) {
     console.log(redactedResponse(body));
 
     res.setHeader('Content-Type', 'application/json')
-    res.status(status)
-    res.send(body)
+    res.status(status);
+    res.send(body);
 
     if (error) {
       console.log(headers['x-correlation-id'], body)
