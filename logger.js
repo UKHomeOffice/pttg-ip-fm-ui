@@ -3,15 +3,9 @@ const { format } = require('logform');
 
 const { combine, timestamp, json } = format;
 
-const logFile = process.env.LOGFILE || 'pttg-ip-fm-ui.log';
-const VERBOSE = process.env.VERBOSE === 'true';
-
 const transports = [
-    new winston.transports.File({ filename: logFile }),
+    new winston.transports.Console(),
 ];
-if (VERBOSE) {
-    transports.push(new winston.transports.Console());
-}
 
 const logger = winston.createLogger({
     level: 'info',
