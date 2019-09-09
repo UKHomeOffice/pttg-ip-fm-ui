@@ -1,9 +1,9 @@
 const jsonCopy = (src) => {
     return !src ? src : JSON.parse(JSON.stringify(src));
-}
+};
 
 const redactedResponse = (body) => {
-    const logOutput = jsonCopy(body)
+    const logOutput = jsonCopy(body);
 
     if (logOutput) {
         if (logOutput.categoryChecks) {
@@ -14,6 +14,6 @@ const redactedResponse = (body) => {
         }
     }
     return JSON.stringify(logOutput);
-}
+};
 
 module.exports = redactedResponse;
