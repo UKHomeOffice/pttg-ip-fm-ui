@@ -9,7 +9,7 @@ pipeline:
       - ./gradlew release -Prelease.useAutomaticVersion=true -x runBuildTasks -s -i
       - git describe --abbrev=0 --tags > ./tagSemver
     when:
-      branch: [master, EE-20414]
+      branch: master
       event: [push]
 
   build-docker-image:
@@ -74,7 +74,7 @@ pipeline:
       - docker tag pttg-ip-fm-ui quay.io/ukhomeofficedigital/pttg-ip-fm-ui:$(cat ./tagSemver)
       - docker push quay.io/ukhomeofficedigital/pttg-ip-fm-ui:$(cat ./tagSemver)
     when:
-      branch: [master, EE-20414]
+      branch: master
       event: push
 
   tag-docker-image-with-git-tag:
@@ -115,7 +115,7 @@ pipeline:
       - cd kube-pttg-ip-fm-ui
       - ./deploy.sh
     when:
-      branch: [master, EE-20414]
+      branch: master
       event: [push, tag]
 
   deployment-to-non-prod:
