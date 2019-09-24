@@ -1,0 +1,24 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.13.5
+ignore: {}
+# patches apply the minimum changes required to fix a vulnerability
+patch:
+  'npm:extend:20180424':
+    - gulp > liftoff > extend:
+        patched: '2019-09-24T07:27:18.848Z'
+  SNYK-JS-LODASH-450202:
+    - async > lodash:
+        patched: '2019-09-24T07:27:18.848Z'
+    - gulp-uglify > lodash:
+        patched: '2019-09-24T07:27:18.848Z'
+    - prod > async > lodash:
+        patched: '2019-09-24T07:27:18.848Z'
+    - prod > async-mixin > async > lodash:
+        patched: '2019-09-24T07:27:18.848Z'
+  'npm:minimatch:20160620':
+    - gulp > vinyl-fs > glob-stream > minimatch:
+        patched: '2019-09-24T07:27:18.848Z'
+    - gulp > vinyl-fs > glob-watcher > gaze > globule > minimatch:
+        patched: '2019-09-24T07:27:18.848Z'
+    - gulp > vinyl-fs > glob-watcher > gaze > globule > glob > minimatch:
+        patched: '2019-09-24T07:27:18.848Z'
