@@ -13,14 +13,12 @@ pipeline:
       event: [push]
 
   npm-audit:
-    image: docker:17.09.1
-    environment:
-      - DOCKER_HOST=tcp://172.17.0.1:2375
+    image: node:12
     commands:
       - npm audit --audit-level=moderate --only=prod
     when:
       event: push
-      
+
   build-docker-image:
     image: docker:17.09.1
     environment:
