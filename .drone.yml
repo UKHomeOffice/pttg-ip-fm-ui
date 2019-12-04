@@ -21,6 +21,15 @@ pipeline:
     when:
       event: push
 
+  npm-audit:
+    image: docker:17.09.1
+    environment:
+      - DOCKER_HOST=tcp://172.17.0.1:2375
+    commands:
+      - npm audit --audit-level=moderate --only=prod
+    when:
+      event: push
+
   scan:
     image: quay.io/ukhomeofficedigital/anchore-submission:latest
     dockerfile: Dockerfile
@@ -28,6 +37,8 @@ pipeline:
     local_image: true
     tolerate: low
     show_all_vulnerabilities: true
+    when:
+      event: push
 
   test:
     image: docker:17.09.1
