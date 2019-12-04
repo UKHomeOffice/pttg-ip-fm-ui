@@ -94,6 +94,14 @@ pipeline:
     when:
       event: tag
 
+  scan:
+    image: quay.io/ukhomeofficedigital/anchore-submission:latest
+    dockerfile: Dockerfile
+    image_name: quay.io/ukhomeofficedigital/pttg-ip-fm-ui:${DRONE_COMMIT_SHA:0:8}
+    local_image: true
+    tolerate: low
+    show_all_vulnerabilities: true
+
   trigger-e2e-tests:
     image: quay.io/ukhomeofficedigital/drone-trigger:v0.3.0
     secrets:
