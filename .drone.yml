@@ -21,6 +21,14 @@ pipeline:
     when:
       event: push
 
+  scan:
+    image: quay.io/ukhomeofficedigital/anchore-submission:latest
+    dockerfile: Dockerfile
+    image_name: pttg-ip-fm-ui
+    local_image: true
+    tolerate: low
+    show_all_vulnerabilities: true
+
   test:
     image: docker:17.09.1
     environment:
@@ -93,14 +101,6 @@ pipeline:
       - docker push quay.io/ukhomeofficedigital/pttg-ip-fm-ui:$(cat ./tagSemver)
     when:
       event: tag
-
-  scan:
-    image: quay.io/ukhomeofficedigital/anchore-submission:latest
-    dockerfile: Dockerfile
-    image_name: quay.io/ukhomeofficedigital/pttg-ip-fm-ui:${DRONE_COMMIT_SHA:0:8}
-    local_image: true
-    tolerate: low
-    show_all_vulnerabilities: true
 
   trigger-e2e-tests:
     image: quay.io/ukhomeofficedigital/drone-trigger:v0.3.0
