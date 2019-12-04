@@ -1,4 +1,4 @@
-FROM quay.io/ukhomeofficedigital/nodejs-base:v8.11.1
+FROM quay.io/ukhomeofficedigital/node-8:latest
 
 ENV PTTG_API_ENDPOINT localhost
 ENV USER pttg
