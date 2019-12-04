@@ -10,8 +10,8 @@ ARG VERSION
 
 WORKDIR /app
 
-RUN groupadd -r ${GROUP} && \
-    useradd -u ${USER_ID} -g ${GROUP} ${USER} -d /app && \
+RUN addgroup -S ${GROUP} && \
+    adduser -u ${USER_ID} -G ${GROUP} -d /app ${USER} && \
     mkdir -p /app && \
     chown -R ${USER}:${GROUP} /app
 
