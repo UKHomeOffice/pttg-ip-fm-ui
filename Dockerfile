@@ -11,7 +11,7 @@ ARG VERSION
 WORKDIR /app
 
 RUN addgroup -S ${GROUP} && \
-    adduser -u ${USER_ID} -G ${GROUP} -d /app ${USER} && \
+    adduser -u ${USER_ID} -G ${GROUP} -h /app ${USER} && \
     mkdir -p /app && \
     chown -R ${USER}:${GROUP} /app
 
