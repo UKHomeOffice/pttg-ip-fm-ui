@@ -33,7 +33,7 @@ pipeline:
     dockerfile: Dockerfile
     image_name: pttg-ip-fm-ui
     local_image: true
-    tolerate: medium
+    tolerate: low
     show_all_vulnerabilities: true
     when:
       event: push
