@@ -15,7 +15,7 @@ pipeline:
   npm-audit:
     image: node:12
     commands:
-      - npm audit --audit-level=moderate --only=prod
+      - npm audit --audit-level=moderate --production
     when:
       event: push
 
