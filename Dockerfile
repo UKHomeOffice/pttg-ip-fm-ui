@@ -1,4 +1,4 @@
-FROM quay.io/ukhomeofficedigital/node-8:latest
+FROM quay.io/ukhomeofficedigital/node-10:latest
 
 ENV PTTG_API_ENDPOINT localhost
 ENV USER_ID 1000
