@@ -1,6 +1,7 @@
-FROM digitalpatterns/node:latest
+FROM quay.io/ukhomeofficedigital/nodejs-base:v8.11.1
 
 ENV PTTG_API_ENDPOINT localhost
+ENV USER pttg
 ENV USER_ID 1000
 ENV GROUP pttg
 ENV NAME pttg-ip-fm-ui
@@ -9,8 +10,10 @@ ARG VERSION
 
 WORKDIR /app
 
-RUN mkdir -p /app && \
-    chown -R node /app
+RUN groupadd -r ${GROUP} && \
+    useradd -u ${USER_ID} -g ${GROUP} ${USER} -d /app && \
+    mkdir -p /app && \
+    chown -R ${USER}:${GROUP} /app
 
 COPY . /app
 RUN npm --loglevel warn install --only=prod
