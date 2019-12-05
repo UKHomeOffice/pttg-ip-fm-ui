@@ -34,7 +34,7 @@ pipeline:
     image_name: pttg-ip-fm-ui
     local_image: true
     tolerate: low
-    show_all_vulnerabilities: true
+    show_all_vulnerabilities: false # TODO EE-29635 Remove this when current vulnerabilities are resolved
     when:
       event: push
 
