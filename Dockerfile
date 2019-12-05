@@ -1,4 +1,4 @@
-FROM quay.io/ukhomeofficedigital/egar-node-8:latest
+FROM digitalpatterns/node:latest
 
 ENV PTTG_API_ENDPOINT localhost
 ENV USER_ID 1000
