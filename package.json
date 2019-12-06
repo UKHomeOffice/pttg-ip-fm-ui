@@ -13,7 +13,7 @@
     "watch": "gulp watch"
   },
   "dependencies": {
-    "angular": "^1.6.5",
+    "angular": "^1.7.9",
     "angular-aria": "^1.6.5",
     "angular-ui-router": "^0.3.2",
     "angular-ui-validate": "^1.2.3",
@@ -70,6 +70,6 @@
     "karma-spec-reporter": "0.0.26",
     "selenium-webdriver": "^3.4.0",
     "standard": "^10.0.2",
-    "tar": "^4.4.11"
+    "tar": "^4.4.13"
   }
 }
