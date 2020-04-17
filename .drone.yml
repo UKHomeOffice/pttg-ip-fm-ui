@@ -35,7 +35,7 @@ pipeline:
     local_image: true
     tolerate: low
     show_all_vulnerabilities: true
-    fail_on_detection: false # TODO EE-29635 Remove this when current vulnerabilities are resolved
+    fail_on_detection: true
     when:
       event: push
 
