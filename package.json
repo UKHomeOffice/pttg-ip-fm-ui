@@ -10,7 +10,9 @@
     "test:unit": "gulp test",
     "test:bdd": "./node_modules/.bin/cucumber.js",
     "postinstall": "gulp",
-    "watch": "gulp watch"
+    "watch": "gulp watch",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "dependencies": {
     "angular": "^1.7.9",
@@ -46,7 +48,8 @@
     "sass": "^1.26.3",
     "serve-static": "^1.13.0",
     "underscore": "^1.8.3",
-    "uuid": "^3.1.0"
+    "uuid": "^3.1.0",
+    "snyk": "^1.316.1"
   },
   "optionalDependencies": {
     "fsevents": "2.1.2"
@@ -76,5 +79,6 @@
     "selenium-webdriver": "^3.4.0",
     "standard": "^14.3.3",
     "tar": "^6.0.1"
-  }
+  },
+  "snyk": true
 }
