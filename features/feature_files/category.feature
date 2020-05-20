@@ -12,7 +12,7 @@ Feature: Category A Financial Requirement
       | Date Of Birth           | 01/01/1978 |
 
 
-  Scenario: Does not meet the Category A employment duration Requirement (with current employer for only 3 months)
+  Scenario: Does not meet the Category A employment duration requirement (with current employer for only 3 months)
     Given the account data for KS123456C
     When caseworker submits a query
     Then the service displays the following result
