@@ -1,0 +1,182 @@
+pipeline:
+
+  update-semver:
+    image: quay.io/ukhomeofficedigital/docker-openjdk8-git:v1.5.0
+    secrets:
+      - github_ssh_key
+    commands:
+      - sh /root/git-utilities/set-up-github-user.sh "$${GITHUB_SSH_KEY}"
+      - ./gradlew release -Prelease.useAutomaticVersion=true -x runBuildTasks -s -i
+      - git describe --abbrev=0 --tags > ./tagSemver
+    when:
+      branch: master
+      event: [push]
+
+  npm-audit:
+    image: node:12
+    commands:
+      - npm audit --audit-level=moderate --production
+    when:
+      event: push
+
+  build-docker-image:
+    image: docker:17.09.1
+    environment:
+      - DOCKER_HOST=tcp://172.17.0.1:2375
+    commands:
+      - docker build -t pttg-ip-fm-ui .
+    when:
+      event: push
+
+  scan:
+    image: quay.io/ukhomeofficedigital/anchore-submission:latest
+    dockerfile: Dockerfile
+    image_name: pttg-ip-fm-ui
+    local_image: true
+    tolerate: low
+    show_all_vulnerabilities: true
+    fail_on_detection: false # TODO EE-29635 Remove this when current vulnerabilities are resolved
+    when:
+      event: push
+
+  test:
+    image: docker:17.09.1
+    environment:
+      - DOCKER_HOST=tcp://172.17.0.1:2375
+    commands:
+      - docker build -f Dockerfile_test -t pttg-ip-fm-ui-test .
+      - docker run pttg-ip-fm-ui-test
+    when:
+      event: push
+
+  install-docker-image-with-githash-tag:
+    image: docker:17.09.1
+    environment:
+      - DOCKER_HOST=tcp://172.17.0.1:2375
+    secrets:
+      - docker_password
+    commands:
+      - docker login -u="ukhomeofficedigital+pttg" -p=$${DOCKER_PASSWORD} quay.io
+      - docker tag pttg-ip-fm-ui quay.io/ukhomeofficedigital/pttg-ip-fm-ui:${DRONE_COMMIT_SHA:0:8}
+      - docker push quay.io/ukhomeofficedigital/pttg-ip-fm-ui:${DRONE_COMMIT_SHA:0:8}
+    when:
+      event: push
+
+  install-docker-image-from-feature-branch:
+    image: docker:17.09.1
+    environment:
+      - DOCKER_HOST=tcp://172.17.0.1:2375
+    secrets:
+      - docker_password
+    commands:
+      - docker login -u="ukhomeofficedigital+pttg" -p=$${DOCKER_PASSWORD} quay.io
+      - docker tag pttg-ip-fm-ui quay.io/ukhomeofficedigital/pttg-ip-fm-ui:${DRONE_BRANCH}
+      - docker push quay.io/ukhomeofficedigital/pttg-ip-fm-ui:${DRONE_BRANCH}
+    when:
+      branch:
+        exclude: master
+      event: push
+
+  install-docker-image-from-master-branch-build:
+    image: docker:17.09.1
+    environment:
+      - DOCKER_HOST=tcp://172.17.0.1:2375
+    secrets:
+      - docker_password
+    commands:
+      - docker login -u="ukhomeofficedigital+pttg" -p=$${DOCKER_PASSWORD} quay.io
+      - docker tag pttg-ip-fm-ui quay.io/ukhomeofficedigital/pttg-ip-fm-ui:latest
+      - docker push quay.io/ukhomeofficedigital/pttg-ip-fm-ui:latest
+      - docker tag pttg-ip-fm-ui quay.io/ukhomeofficedigital/pttg-ip-fm-ui:build-$${DRONE_BUILD_NUMBER}
+      - docker push quay.io/ukhomeofficedigital/pttg-ip-fm-ui:build-$${DRONE_BUILD_NUMBER}
+      - docker tag pttg-ip-fm-ui quay.io/ukhomeofficedigital/pttg-ip-fm-ui:$(cat ./tagSemver)
+      - docker push quay.io/ukhomeofficedigital/pttg-ip-fm-ui:$(cat ./tagSemver)
+    when:
+      branch: master
+      event: push
+
+  tag-docker-image-with-git-tag:
+    image: docker:17.09.1
+    environment:
+      - DOCKER_HOST=tcp://172.17.0.1:2375
+    secrets:
+      - docker_password
+    commands:
+      - docker login -u="ukhomeofficedigital+pttg" -p=$${DOCKER_PASSWORD} quay.io
+      - docker tag pttg-ip-fm-ui quay.io/ukhomeofficedigital/pttg-ip-fm-ui:$${DRONE_TAG}
+      - docker push quay.io/ukhomeofficedigital/pttg-ip-fm-ui:$${DRONE_TAG}
+      - docker tag pttg-ip-fm-ui quay.io/ukhomeofficedigital/pttg-ip-fm-ui:${DRONE_COMMIT_SHA:0:8}
+      - docker push quay.io/ukhomeofficedigital/pttg-ip-fm-ui:${DRONE_COMMIT_SHA:0:8}
+      - docker tag pttg-ip-fm-ui quay.io/ukhomeofficedigital/pttg-ip-fm-ui:$(cat ./tagSemver)
+      - docker push quay.io/ukhomeofficedigital/pttg-ip-fm-ui:$(cat ./tagSemver)
+    when:
+      event: tag
+
+  trigger-e2e-tests:
+    image: quay.io/ukhomeofficedigital/drone-trigger:v0.3.0
+    secrets:
+      - DRONE_TOKEN
+    drone_server: https://drone.acp.homeoffice.gov.uk
+    repo: UKHomeOffice/pttg-ip-e2e-tests
+    branch: master
+    when:
+      branch: [master]
+      event: push
+
+  clone-kube-project:
+    image: plugins/git
+    commands:
+      - git clone https://github.com/UKHomeOffice/kube-pttg-ip-fm-ui.git
+    when:
+      event: [push, deployment, tag]
+
+  deploy-to-dev-from-build-number:
+    image: quay.io/ukhomeofficedigital/kd:v1.16.0
+    environment:
+      - KUBE_NAMESPACE=pttg-ip-dev
+      - ENVIRONMENT=dev
+      - VERSION=build-${DRONE_BUILD_NUMBER}
+      - KUBE_SERVER=https://kube-api-notprod.notprod.acp.homeoffice.gov.uk
+      - WHITELIST=62.25.109.196/32,52.48.127.150/32,52.48.127.151/32,52.48.127.152/32,52.48.127.153/32,52.209.62.128/25,52.56.62.128/25,185.22.224.96,185.22.224.96/32,185.22.226.96/32,213.251.23.180/30,213.251.23.184/30,213.251.23.188/30,148.253.134.213/32,167.98.162.0/25,167.98.158.128/25,147.147.212.42,86.183.58.16
+    secrets:
+      - pttg_ip_dev
+    commands:
+      - cd kube-pttg-ip-fm-ui
+      - ./deploy.sh
+    when:
+      branch: master
+      event: [push, tag]
+
+  deployment-to-non-prod:
+    image: quay.io/ukhomeofficedigital/kd:v1.16.0
+    environment:
+      - KUBE_NAMESPACE=pttg-ip-${DRONE_DEPLOY_TO}
+      - ENVIRONMENT=${DRONE_DEPLOY_TO}
+      - KUBE_SERVER=https://kube-api-notprod.notprod.acp.homeoffice.gov.uk
+      - VERSION=${IMAGE_VERSION}
+      - WHITELIST=62.25.109.196/32,52.48.127.150/32,52.48.127.151/32,52.48.127.152/32,52.48.127.153/32,52.209.62.128/25,52.56.62.128/25,185.22.224.96,185.22.224.96/32,185.22.226.96/32,213.251.23.180/30,213.251.23.184/30,213.251.23.188/30,148.253.134.213/32,167.98.162.0/25,167.98.158.128/25,147.147.212.42,86.183.58.16
+    secrets:
+      - pttg_ip_dev
+    commands:
+      - cd kube-pttg-ip-fm-ui
+      - ./deploy.sh
+    when:
+      event: deployment
+      environment: [dev, test, feat1, feat2, feat3, preprod]
+
+  deploy-to-prod:
+    image: quay.io/ukhomeofficedigital/kd:v1.16.0
+    environment:
+      - KUBE_NAMESPACE=pttg-ip-${DRONE_DEPLOY_TO}
+      - ENVIRONMENT=${DRONE_DEPLOY_TO}
+      - VERSION=${IMAGE_VERSION}
+      - KUBE_SERVER=https://kube-api-prod.prod.acp.homeoffice.gov.uk
+      - WHITELIST=62.25.109.196/32,52.48.127.150/32,52.48.127.151/32,52.48.127.152/32,52.48.127.153/32,52.209.62.128/25,52.56.62.128/25,185.22.224.96,185.22.224.96/32,185.22.226.96/32
+    secrets:
+      - pttg_ip_pr
+    commands:
+      - cd kube-pttg-ip-fm-ui
+      - ./deploy.sh
+    when:
+      event: deployment
+      environment: pr
