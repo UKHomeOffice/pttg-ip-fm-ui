@@ -68,12 +68,11 @@ steps:
     - push
 
 - name: install-docker-image-with-githash-tag
-  pull: if-not-exists
-  image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/dind
-  commands:
-  - docker login -u=$${DOCKER_USERNAME} -p=$${DOCKER_PASSWORD} quay.io
-  - docker tag pttg-ip-fm-ui quay.io/ukhomeofficedigital/pttg-ip-fm-ui:${DRONE_COMMIT_SHA:0:8}
-  - docker push quay.io/ukhomeofficedigital/pttg-ip-fm-ui:${DRONE_COMMIT_SHA:0:8}
+  image: plugins/docker
+  settings:
+    registry: quay.io
+    repo: quay.io/ukhomeofficedigital/pttg-ip-fm-ui
+    tags: ${DRONE_COMMIT_SHA}
   environment:
     DOCKER_USERNAME: ukhomeofficedigital+pttg
     DOCKER_PASSWORD:
