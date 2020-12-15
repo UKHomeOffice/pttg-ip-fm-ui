@@ -25,14 +25,14 @@ steps:
     event:
     - push
 
-- name: npm-audit
-  pull: if-not-exists
-  image: node:12
-  commands:
-  - npm audit --audit-level=moderate --production
-  when:
-    event:
-    - push
+#- name: npm-audit
+#  pull: if-not-exists
+#  image: node:12
+#  commands:
+#  - npm audit --audit-level=moderate --production
+#  when:
+#    event:
+#    - push
 
 - name: build-docker-image
   pull: if-not-exists
