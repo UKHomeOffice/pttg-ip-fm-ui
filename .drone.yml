@@ -49,11 +49,11 @@ steps:
     event:
     - push
 
-- name: scan
+- name: anchore-scan
   pull: always
   image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/anchore-submission:latest
   environment:
-    IMAGE_NAME: test:${DRONE_COMMIT_SHA}
+    IMAGE_NAME: pttg-ip-fm-ui
   when:
     event:
     - push
@@ -237,7 +237,7 @@ services:
   - name: docker-in-docker
     image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/dind
 
-  - name: anchore-submission-server
+  - name: anchore-server
     image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/anchore-submission:latest
     pull: always
     commands:
