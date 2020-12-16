@@ -42,7 +42,9 @@ steps:
   - n=0; while [ "$n" -lt 60 ] && [ ! docker stats --no-stream ]; do n=$(( n + 1 )); sleep 1; done
   - docker build -t pttg-ip-fm-ui .
   environment:
-    DOCKER_HOST: tcp://172.17.0.1:2375
+    DOCKER_USERNAME: ukhomeofficedigital+pttg
+    DOCKER_PASSWORD:
+      from_secret: docker_password
   when:
     event:
     - push
@@ -62,7 +64,6 @@ steps:
   commands:
   - docker build -f Dockerfile_test -t pttg-ip-fm-ui-test .
   - docker run pttg-ip-fm-ui-test
-  environment:
   when:
     event:
     - push
@@ -233,7 +234,7 @@ steps:
     - pr
 
 services:
-  - name: docker
+  - name: docker-in-docker
     image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/dind
 
   - name: anchore-submission-server
