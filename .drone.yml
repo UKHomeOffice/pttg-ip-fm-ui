@@ -25,14 +25,14 @@ steps:
     event:
     - push
 
-#- name: npm-audit
-#  pull: if-not-exists
-#  image: node:12
-#  commands:
-#  - npm audit --audit-level=moderate --production
-#  when:
-#    event:
-#    - push
+- name: npm-audit
+  pull: if-not-exists
+  image: node:12
+  commands:
+  - npm audit --audit-level=moderate --production
+  when:
+    event:
+    - push
 
 - name: build-docker-image
   pull: if-not-exists
@@ -45,14 +45,14 @@ steps:
     event:
     - push
 
-- name: scan-image
-  pull: always
-  image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/anchore-submission:latest
-  environment:
-    IMAGE_NAME: pttg-ip-fm-ui
-  when:
-    event:
-    - push
+#- name: anchore-scan
+#  pull: always
+#  image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/anchore-submission:latest
+#  environment:
+#    IMAGE_NAME: pttg-ip-fm-ui
+#  when:
+#    event:
+#    - push
 
 - name: test
   pull: if-not-exists
