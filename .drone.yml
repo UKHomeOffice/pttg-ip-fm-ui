@@ -50,6 +50,7 @@ steps:
   image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/anchore-submission:latest
   environment:
     IMAGE_NAME: pttg-ip-fm-ui
+    FAIL_ON_DETECTION: false
   when:
     event:
     - push
