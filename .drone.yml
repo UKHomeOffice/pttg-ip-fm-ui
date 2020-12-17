@@ -79,12 +79,11 @@ steps:
     - push
 
 - name: install-docker-image-from-feature-branch
-  pull: if-not-exists
-  image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/dind
-  commands:
-  - docker login -u=$${DOCKER_USERNAME} -p=$${DOCKER_PASSWORD} quay.io
-  - docker tag pttg-ip-fm-ui quay.io/ukhomeofficedigital/pttg-ip-fm-ui:${DRONE_BRANCH}
-  - docker push quay.io/ukhomeofficedigital/pttg-ip-fm-ui:${DRONE_BRANCH}
+  image: plugins/docker
+  settings:
+    registry: quay.io
+    repo: quay.io/ukhomeofficedigital/pttg-ip-fm-ui
+    tags: ${DRONE_BRANCH}
   environment:
     DOCKER_USERNAME: ukhomeofficedigital+pttg
     DOCKER_PASSWORD:
@@ -204,9 +203,6 @@ steps:
     target:
     - dev
     - test
-    - feat1
-    - feat2
-    - feat3
     - preprod
 
 - name: deploy-to-prod
