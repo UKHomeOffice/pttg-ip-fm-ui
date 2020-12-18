@@ -117,20 +117,20 @@ steps:
     event:
     - push
 
-- name: trigger-e2e-tests
-  image: plugins/downstream
-  settings:
-    server: https://drone-gh.acp.homeoffice.gov.uk
-    token:
-      from_secret: DRONE_TOKEN
-    fork: true
-    repositories:
-      - UKHomeOffice/pttg-ip-e2e-tests
-  when:
-    branch:
-      - master
-    event:
-      - push
+#- name: trigger-e2e-tests
+#  image: plugins/downstream
+#  settings:
+#    server: https://drone-gh.acp.homeoffice.gov.uk
+#    token:
+#      from_secret: DRONE_TOKEN
+#    fork: true
+#    repositories:
+#      - UKHomeOffice/pttg-ip-e2e-tests
+#  when:
+#    branch:
+#      - master
+#    event:
+#      - push
 
 - name: clone-kube-project
   pull: if-not-exists
