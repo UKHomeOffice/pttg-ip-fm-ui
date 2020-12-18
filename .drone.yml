@@ -117,40 +117,20 @@ steps:
     event:
     - push
 
-- name: tag-docker-image-with-git-tag
-  pull: if-not-exists
-  image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/dind
-  commands:
-  - docker login -u=$${DOCKER_USERNAME} -p=$${DOCKER_PASSWORD} quay.io
-  - docker tag pttg-ip-fm-ui quay.io/ukhomeofficedigital/pttg-ip-fm-ui:$${DRONE_TAG}
-  - docker push quay.io/ukhomeofficedigital/pttg-ip-fm-ui:$${DRONE_TAG}
-  - docker tag pttg-ip-fm-ui quay.io/ukhomeofficedigital/pttg-ip-fm-ui:${DRONE_COMMIT_SHA:0:8}
-  - docker push quay.io/ukhomeofficedigital/pttg-ip-fm-ui:${DRONE_COMMIT_SHA:0:8}
-  - docker tag pttg-ip-fm-ui quay.io/ukhomeofficedigital/pttg-ip-fm-ui:$(cat ./tagSemver)
-  - docker push quay.io/ukhomeofficedigital/pttg-ip-fm-ui:$(cat ./tagSemver)
-  environment:
-    DOCKER_USERNAME: ukhomeofficedigital+pttg
-    DOCKER_PASSWORD:
-      from_secret: docker_password
-  when:
-    event:
-    - tag
-
 - name: trigger-e2e-tests
-  pull: if-not-exists
-  image: quay.io/ukhomeofficedigital/drone-trigger:v0.3.0
+  image: plugins/downstream
   settings:
-    branch: master
-    drone_server: https://drone.acp.homeoffice.gov.uk
-    repo: UKHomeOffice/pttg-ip-e2e-tests
-  environment:
-    DRONE_TOKEN:
+    server: https://drone-gh.acp.homeoffice.gov.uk
+    token:
       from_secret: DRONE_TOKEN
+    fork: true
+    repositories:
+      - UKHomeOffice/pttg-ip-e2e-tests
   when:
     branch:
-    - master
+      - master
     event:
-    - push
+      - push
 
 - name: clone-kube-project
   pull: if-not-exists
