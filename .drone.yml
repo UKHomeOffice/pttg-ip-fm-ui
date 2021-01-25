@@ -140,8 +140,8 @@ steps:
   when:
     event:
     - push
-    - promote
     - tag
+    - promote
 
 - name: deploy-to-dev-from-build-number
   pull: if-not-exists
@@ -162,7 +162,6 @@ steps:
     - master
     event:
     - push
-    - tag
 
 - name: promote-to-non-prod
   pull: if-not-exists
