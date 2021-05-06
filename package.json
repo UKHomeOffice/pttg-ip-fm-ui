@@ -47,7 +47,7 @@
     "run-sequence": "^1.2.2",
     "sass": "^1.26.3",
     "serve-static": "^1.13.0",
-    "underscore": "^1.8.3",
+    "underscore": "^1.12.1",
     "uuid": "^3.1.0",
     "snyk": "^1.316.1"
   },
