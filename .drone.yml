@@ -29,7 +29,7 @@ steps:
   pull: if-not-exists
   image: node:12
   commands:
-  - npm audit --audit-level=moderate --production
+  - npm audit --audit-level=high --production
   when:
     event:
     - push
