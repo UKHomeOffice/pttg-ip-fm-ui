@@ -19,7 +19,7 @@
     "angular-aria": "^1.8.2",
     "angular-ui-router": "^0.3.2",
     "angular-ui-validate": "^1.2.3",
-    "async": "^2.5.0",
+    "async": "^3.2.2",
     "body-parser": "^1.18.2",
     "clipboard": "^1.7.1",
     "details-element-polyfill": "^2.3.1",
