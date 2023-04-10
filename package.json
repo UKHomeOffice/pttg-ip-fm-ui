@@ -47,7 +47,7 @@
     "run-sequence": "^1.2.2",
     "sass": "^1.32.13",
     "serve-static": "^1.13.0",
-    "snyk": "^1.611.0",
+    "snyk": "^1.1140.0",
     "underscore": "^1.13.1",
     "uuid": "^3.4.0"
   },
@@ -76,7 +76,7 @@
     "karma-spec-reporter": "0.0.26",
     "kind-of": ">=6.0.3",
     "minimist": ">=1.2.3",
-    "selenium-webdriver": "^3.4.0",
+    "selenium-webdriver": "^4.8.2",
     "standard": "^14.3.4",
     "tar": "^6.1.0"
   },
