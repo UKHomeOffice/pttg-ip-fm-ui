@@ -29,7 +29,7 @@
     "graceful-fs": "^4.2.6",
     "gulp": "^4.0.2",
     "gulp-angular-templatecache": "^3.0.0",
-    "gulp-autoprefixer": "^3.1.1",
+    "gulp-autoprefixer": "^8.0.0",
     "gulp-compass": "^2.1.0",
     "gulp-concat": "^2.6.1",
     "gulp-htmlmin": "^5.0.1",
